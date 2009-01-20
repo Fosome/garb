@@ -25,7 +25,6 @@ module Garb
       request = Net::HTTP::Get.new(@url.path+url_parameters)
       request['Authorization'] = "GoogleLogin auth=#{@session.auth_token}"
       response = self.http.request(request)
-raise response.body.inspect
       begin
         Atom::Feed.load_feed response.body if response
       rescue ArgumentError

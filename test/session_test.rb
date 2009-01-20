@@ -42,12 +42,31 @@ module Garb
       
       should "get an auth token with email and password" do
         params = Session.default_params.merge({'Email' => 'ga@example.com', 'Passwd' => 'password'})
-        login_stub = stub(:post => stub(:body => 'Auth=blah'))
-
-        Request.expects(:new).with(Session::URL, params).returns(login_stub)
+        
+        response_stub = stub do |s|
+          s.stubs(:is_a?).with(Net::HTTPSuccess).returns(true)
+          s.stubs(:body).with().returns('Auth=blah')
+        end
+        request_stub  = stub {|s| s.stubs(:post).with().returns(response_stub) }
+        
+        Request.expects(:new).with(Session::URL, params).returns(request_stub)
+        
         @session.get_auth_token
         assert_equal 'blah', @session.auth_token
       end
+      
+      should "not set the auth token if the request is unsucessful" do
+        response_stub = stub {|s| s.stubs(:is_a?).with(Net::HTTPSuccess).returns(false) }
+        request_stub  = stub {|s| s.stubs(:post).with().returns(response_stub) }
+          
+        Request.expects(:new).with(Session::URL, kind_of(Hash)).returns(request_stub)
+        
+        @session.get_auth_token
+        assert_nil @session.auth_token
+      end
+      
+      
+      
     end
   end
 end

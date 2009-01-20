@@ -25,10 +25,11 @@ module Garb
     end
     
     def get_auth_token
-      request = Request.new(URL, @params)
-      response = request.post
-      self.auth_token = response.body.match(/Auth=(.*)/)[1] || nil
-      logged_in?
+      response = Request.new(URL, @params).post
+      if response.is_a?(Net::HTTPSuccess)
+        self.auth_token = response.body.match(/Auth=(.*)/)[1] || nil
+      end
     end
+    
   end
 end
