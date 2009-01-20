@@ -64,9 +64,19 @@ module Garb
         @session.get_auth_token
         assert_nil @session.auth_token
       end
-      
-      
-      
+
+      should "be able to make a request to a url" do
+        url  = "http://google.com"
+        feed = stub()
+        
+        request = mock()
+        request.expects(:session=).with(@session)
+        request.expects(:get).with().returns(feed)
+        
+        Request.expects(:new).with(url).returns(request)
+        
+        assert_equal feed, @session.request(url)
+      end
     end
   end
 end

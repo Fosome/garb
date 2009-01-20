@@ -2,11 +2,18 @@ module Garb
   class Account
     URL = "https://www.google.com/analytics/feeds/accounts/"
 
-    attr_reader :profiles, :session
-
-    def initialize(session)
-      @session = session
+    # def initialize(session)
+    #   @session = session
+    #   @profiles = []
+    # end
+    
+    def initialize(email, password)
+      @email, @password = email, password
       @profiles = []
+    end
+    
+    def session
+      @session ||= Session.new(@email, @password)
     end
 
     def request
@@ -15,10 +22,12 @@ module Garb
       @request
     end
 
-    def all
-      feed = request.get
-      feed.each_entry do |entry|
-        @profiles << Profile.new(entry)
+    def profiles
+      if @profiles.empty?
+        feed = session.request(URL+@email)
+        feed.each_entry do |entry|
+          @profiles << Profile.new(entry)
+        end
       end
       @profiles
     end

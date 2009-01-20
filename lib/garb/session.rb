@@ -31,5 +31,10 @@ module Garb
       end
     end
     
+    def request(url)
+      request = Request.new(url)
+      request.session = self
+      request.get
+    end
   end
 end
