@@ -1,0 +1,5 @@
+TODO
+====
+
+* Parse out error code on an unsuccessful HTTP request (Garb::Session)
+* Create fixture files with XML to better test API methods
