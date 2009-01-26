@@ -28,35 +28,22 @@ module Garb
         feed_stub    = stub {|s| s.stubs(:each_entry).with().yields(entry_stub) }
         
         session = mock
+        session.expects(:logged_in?).with().returns(true)
         session.expects(:request).with(Garb::Account::URL + @email).returns(feed_stub)
         
         @account.stubs(:session).returns(session)
         
-        Profile.expects(:new).with(entry_stub).returns(profile_stub)
+        Profile.expects(:new).with(entry_stub, session).returns(profile_stub)
         
         assert_equal [profile_stub], @account.profiles
       end
       
-      # should "create a request to be used from the URL and session email" do
-      #   request_stub = stub(:session=)
-      #   Request.stubs(:new).with(Account::URL+'ga@example.com').returns(request_stub)
-      #   assert_equal request_stub, @account.request
-      # end
-      # 
-      # should "get a list of all profiles for an account" do
-      #   feed_stub = stub do |s|
-      #     s.stubs(:each_entry).yields('entry')
-      #   end
-      # 
-      #   Profile.stubs(:new).with('entry').returns('profile')
-      #   @account.stubs(:request).returns(stub(:get => feed_stub))
-      # 
-      #   assert_equal ['profile'], @account.all
-      # end
-      # 
-      # should "store an array of profiles for an account" do
-      #   assert_equal [], @account.profiles
-      # end
+      should "retrieve a specific profile by tableId" do
+        profile_stub = stub
+        profile_stub.stubs(:tableId).returns('1234')
+        @account.stubs(:profiles).returns([profile_stub])
+        assert_equal profile_stub, @account.profile('1234')
+      end
     end
   end
 end
