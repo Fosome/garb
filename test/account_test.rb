@@ -40,9 +40,9 @@ module Garb
       
       should "retrieve a specific profile by tableId" do
         profile_stub = stub
-        profile_stub.stubs(:tableId).returns('1234')
+        profile_stub.stubs(:tableId).returns('ga:1234')
         @account.stubs(:profiles).returns([profile_stub])
-        assert_equal profile_stub, @account.profile('1234')
+        assert_equal profile_stub, @account.profile(1234)
       end
     end
   end
