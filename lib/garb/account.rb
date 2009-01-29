@@ -1,11 +1,6 @@
 module Garb
   class Account
     URL = "https://www.google.com/analytics/feeds/accounts/"
-
-    # def initialize(session)
-    #   @session = session
-    #   @profiles = []
-    # end
     
     def initialize(email, password)
       @email, @password = email, password

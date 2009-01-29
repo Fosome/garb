@@ -16,7 +16,7 @@ module Garb
         assert_equal 'ga:1234', profile.tableId
       end
       
-      should "get a defined report" do
+      should "build a defined report" do
         session = stub
         entry = stub do |s|
           s.stubs(:title).returns('entry')
@@ -25,15 +25,12 @@ module Garb
         Report.stubs(:property_value).with(entry, :tableId).returns('ga:1234')        
         profile = Profile.new(entry, session)
         
-        report_entry = stub
-        
-        report = mock
-        report.expects(:all).with().returns([report_entry])
-        
+        report = stub
+                
         report_class = mock
-        report_class.expects(:new).with(profile, session).returns(report)
+        report_class.expects(:new).with(profile).returns(report)
         
-        assert_equal [report_entry], profile.get(report_class)
+        assert_equal report, profile.build(report_class)
       end
     end
   end

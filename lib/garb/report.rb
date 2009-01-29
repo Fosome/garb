@@ -5,7 +5,7 @@ module Garb
     
     attr_accessor :metrics, :dimensions, :sort,
       :start_date, :max_results,
-      :end_date, :profile, :session
+      :end_date, :profile
 
     def self.element_id(property_name)
       property_name.is_a?(Symbol) ? "ga:#{property_name}" : property_name
@@ -25,9 +25,8 @@ module Garb
       t.strftime('%Y-%m-%d')
     end
 
-    def initialize(profile, session, opts={})
+    def initialize(profile, opts={})
       @profile = profile
-      @session = session
       @metrics = opts.fetch(:metrics, [])
       @dimensions = opts.fetch(:dimensions, [])
       @sort = opts.fetch(:sort, [])
@@ -66,7 +65,7 @@ module Garb
     
     def request
       @request = Request.new(URL, params)
-      @request.session = session
+      @request.session = profile.session
       @request
     end
     

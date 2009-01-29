@@ -1,6 +1,6 @@
 module Garb
   class Profile
-    attr_reader :tableId, :title
+    attr_reader :tableId, :title, :session
     
     def initialize(entry, session)
       @session = session
@@ -8,8 +8,8 @@ module Garb
       @title = entry.title
     end
     
-    def get(report_class)
-      report_class.new(self, @session).all
+    def build(report_class)
+      report_class.new(self)
     end
   end
 end

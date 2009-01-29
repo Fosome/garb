@@ -34,25 +34,25 @@ module Garb
 
     context "An instance of the Report class" do
       setup do
-        @profile = stub(:tableId => 'table')
         @session = stub
+        @profile = stub(:tableId => 'table', :session => @session)
         @now = Time.now
         Time.stubs(:now).returns(@now)
-        @report = Report.new(@profile, @session)
+        @report = Report.new(@profile)
       end
       
       should "have a collection of metrics" do
-        report = Report.new(@profile, @session, :metrics => [:pageviews])
+        report = Report.new(@profile, :metrics => [:pageviews])
         assert_equal [:pageviews], report.metrics
       end
 
       should "have a collection of dimensions" do
-        report = Report.new(@profile, @session, :dimensions => [:browser])
+        report = Report.new(@profile, :dimensions => [:browser])
         assert_equal [:browser], report.dimensions
       end
       
       should "have metrics and dimensions" do
-        report = Report.new(@profile, @session, :metrics => [:pageviews], :dimensions => [:browser])
+        report = Report.new(@profile, :metrics => [:pageviews], :dimensions => [:browser])
         assert_equal [:pageviews], report.metrics
         assert_equal [:browser], report.dimensions
       end
@@ -70,22 +70,22 @@ module Garb
       end
       
       should "parameterize metrics" do
-        report = Report.new(@profile, @session, :metrics => [:pageviews, :bounces])
+        report = Report.new(@profile, :metrics => [:pageviews, :bounces])
         assert_equal({'metrics' => 'ga:pageviews,ga:bounces'}, report.metric_params)
       end
       
       should "parameterize dimensions" do
-        report = Report.new(@profile, @session, :dimensions => [:browser, :city])
+        report = Report.new(@profile, :dimensions => [:browser, :city])
         assert_equal({'dimensions' => 'ga:browser,ga:city'}, report.dimension_params)
       end
       
       should "parameterize sort" do
-        report = Report.new(@profile, @session, :dimensions => [:browser, :city], :sort => [:browser, :city])
+        report = Report.new(@profile, :dimensions => [:browser, :city], :sort => [:browser, :city])
         assert_equal({'sort' => 'ga:browser,ga:city'}, report.sort_params)
       end
 
       should "have a start_date" do
-        report = Report.new(@profile, @session, :start_date => @now)
+        report = Report.new(@profile, :start_date => @now)
         assert_equal @now, report.start_date
       end
 
@@ -95,7 +95,7 @@ module Garb
       end
 
       should "have an end_date" do
-        report = Report.new(@profile, @session, :end_date => @now)
+        report = Report.new(@profile, :end_date => @now)
         assert_equal @now, report.end_date
       end
 
@@ -133,21 +133,16 @@ module Garb
         params = {'ids' => 'table', 'metrics' => 'ga:pageviews', 'dimensions' => 'ga:browser', 'sort' => '-ga:browser'}
         assert_equal params, @report.params
       end
-      
-      should "report should have a session" do
-        report = Report.new(@profile, 'session')
-        assert_equal 'session', report.session
-      end
-      
+            
       should "create a new request with URL and params" do
         request_stub = stub
-        request_stub.stubs(:session=).with(@report.session)
+        request_stub.stubs(:session=).with(@profile.session)
         Request.stubs(:new).with(Report::URL, @report.params).returns(request_stub)
         assert_equal request_stub, @report.request
       end
       
       should "collect the property values for each entry returned from the analytics feed" do
-        report = Report.new(@profile, @session, :metrics => [:pageviews, :bounces], :dimensions => [:browser])
+        report = Report.new(@profile, :metrics => [:pageviews, :bounces], :dimensions => [:browser])
         entry_params = {:pageviews => '120', :bounces => '2', :browser => 'firefox'}
         entry_stub = stub
         
