@@ -65,8 +65,12 @@ module Garb
         assert_equal [], @report.dimensions
       end
       
-      should "have an emptry array of dimensions and metrics for sort by default" do
+      should "have an empty array of dimensions and metrics for sort by default" do
         assert_equal [], @report.sort
+      end
+      
+      should "have an empty array for filters by default" do
+        assert_equal [], @report.filters
       end
       
       should "parameterize metrics" do
@@ -82,6 +86,23 @@ module Garb
       should "parameterize sort" do
         report = Report.new(@profile, :dimensions => [:browser, :city], :sort => [:browser, :city])
         assert_equal({'sort' => 'ga:browser,ga:city'}, report.sort_params)
+      end
+      
+      should "parameterize filters" do
+        @report.filters << "ga:browser%3D%3Dsafari"
+        @report.filters << "ga:pageviews%3E100"
+        assert_equal({'filters' => 'ga:browser%3D%3Dsafari,ga:pageviews%3E100'}, @report.filters_params)
+      end
+      
+      should "parameterize filters in a hash" do
+        @report.filters << {:pageviews => '>100'}
+        @report.filters << {:browser => '==safari'}
+        assert_equal({'filters' => 'ga:pageviews%3E100,ga:browser%3D%3Dsafari'}, @report.filters_params)
+      end
+      
+      should "join filter in a hash with a semicolon" do
+        @report.filters << {:pageviews => '>100', :browser => '==safari'}
+        assert_equal 2, @report.filters_params['filters'].split(';').size
       end
 
       should "have a start_date" do

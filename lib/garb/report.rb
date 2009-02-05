@@ -2,10 +2,141 @@ module Garb
   class Report
     MONTH = 2592000
     URL = "https://www.google.com/analytics/feeds/data"
+
+    METRICS = {
+      :visitor => [
+        :avgPageviews,
+        :avgSessionTime,
+        :bounces,
+        :bounceRate,
+        :entrances,
+        :exits,
+        :exitRate,
+        :newVisitors,
+        :pageDuration,
+        :pageviews,
+        :visitDuration,
+        :visitors,
+        :visits
+      ],
+      :campaign => [
+        :cost,
+        :clicks,
+        :clickThroughRate,
+        :costPerConversion,
+        :costPerGoalConversion,
+        :costPerMilleImpressions,
+        :costPerTransaction,
+        :impressions
+      ],
+      :content => [
+        :uniquePageviews
+      ],
+      :ecommerce => [
+        :productPurchases,
+        :productRevenue,
+        :products,
+        :revenue,
+        :revenuePerClick,
+        :revenuePerTransaction,
+        :revenuePerVisit,
+        :shipping,
+        :tax,
+        :transactions
+      ],
+      :internal_search => [
+        :searchDepth,
+        :searchDuration,
+        :searchExits,
+        :searchTransitions,
+        :uniqueInternalSearches,
+        :visitsWithSearches
+      ],
+      :goals => [
+        :goalCompletions1,
+        :goalCompletions2,
+        :goalCompletions3,
+        :goalCompletions4,
+        :goalCompletionsAll,
+        :goalConversionRate,
+        :goalStarts1,
+        :goalStarts2,
+        :goalStarts3,
+        :goalStarts4,
+        :goalStartsAll,
+        :goalValue1,
+        :goalValue2,
+        :goalValue3,
+        :goalValue4,
+        :goalValueAll,
+        :goalValuePerVisit
+      ]
+    }
     
-    attr_accessor :metrics, :dimensions, :sort,
-      :start_date, :max_results,
-      :end_date, :profile
+    DIMENSIONS = {
+      :visitor => [
+        :browser,
+        :browserVersion,
+        :city,
+        :connectionSpeed,
+        :continent,
+        :country,
+        :daysSinceLastVisit,
+        :domain,
+        :flashVersion,
+        :hostname,
+        :hour,
+        :javaEnabled,
+        :languqage,
+        :medium,
+        :organization,
+        :pageDepth,
+        :platform,
+        :platformVersion,
+        :referralPath,
+        :region,
+        :screenColors,
+        :screenResolution,
+        :subContinentRegion,
+        :userDefinedValue,
+        :visitNumber,
+        :visitorType
+      ],
+      :campaign => [
+        :adGroup,
+        :adSlot,
+        :adSlotPosition,
+        :campaign,
+        :content,
+        :keyword,
+        :source,
+        :sourceMedium
+      ],
+      :content => [
+        :pageTitle,
+        :requestUri,
+        :requestUri1,
+        :requestUriLast
+      ],
+      :ecommerce => [
+        :affiliation,
+        :daysToTransaction,
+        :productCode,
+        :productName,
+        :productVariation,
+        :transactionId,
+        :visitsToTransaction
+      ],
+      :internal_search => [
+        :hasInternalSearch,
+        :internalSearchKeyword,
+        :internalSearchNext,
+        :internalSearchType
+      ]
+    }
+    
+    attr_accessor :metrics, :dimensions, :sort, :filters,
+      :start_date, :max_results, :end_date, :profile
 
     def self.element_id(property_name)
       property_name.is_a?(Symbol) ? "ga:#{property_name}" : property_name
@@ -30,6 +161,7 @@ module Garb
       @metrics = opts.fetch(:metrics, [])
       @dimensions = opts.fetch(:dimensions, [])
       @sort = opts.fetch(:sort, [])
+      @filters = opts.fetch(:filters, [])
       @start_date = opts.fetch(:start_date, Time.now - MONTH)
       @end_date = opts.fetch(:end_date, Time.now)
       yield self if block_given?
@@ -45,6 +177,10 @@ module Garb
     
     def sort_params
       {'sort' => parameterize(sort)}
+    end
+    
+    def filters_params
+      {'filters' => parameterize(filters)}
     end
 
     def page_params
@@ -80,7 +216,14 @@ module Garb
 
     private
     def parameterize(coll)
-      coll.collect{|prop| self.class.element_id(prop)}.join(',')
+      coll.collect do |elem|
+        case elem
+        when String, Symbol
+          self.class.element_id(elem)
+        when Hash
+          elem.collect{|k,v| "#{self.class.element_id(k)}#{CGI::escape(v)}"}.join(';')
+        end
+      end.join(',')
     end
   end
 end

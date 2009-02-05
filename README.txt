@@ -31,7 +31,13 @@ Provides a Ruby API to the Google Analytics API.
   
   r.sort = '-ga:browser' # the minus is used to denote descending order
   
-  You could set all of your metrics, dimensions, and sort with strings. Symbols are prefixed with 'ga'
+  You could set all of your metrics, dimensions, and sort with strings. Symbols are prefixed with 'ga' for you.
+  
+  If you want to filter on some fields you can do this:
+  
+  r.filters << {:browser => '==Safari', :pageviews => '>100'}
+  
+  These filters will be AND'd together (Google does not support OR at this time). See the API docs for supported operators
 
 == REQUIREMENTS:
 
