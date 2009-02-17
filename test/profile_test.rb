@@ -22,7 +22,7 @@ module Garb
           s.stubs(:title).returns('entry')
         end
         
-        Report.stubs(:property_value).with(entry, :tableId).returns('ga:1234')        
+        Report.stubs(:property_value).with(entry, :tableId).returns('ga:1234')
         profile = Profile.new(entry, session)
         
         report = stub

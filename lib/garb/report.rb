@@ -1,3 +1,5 @@
+require 'ostruct'
+
 module Garb
   class Report
     MONTH = 2592000
@@ -139,17 +141,18 @@ module Garb
       :start_date, :max_results, :end_date, :profile
 
     def self.element_id(property_name)
-      property_name.is_a?(Symbol) ? "ga:#{property_name}" : property_name
+      property_name.is_a?(Operator) ? property_name.to_s : property_name.to_ga.lower_camelized
     end
     
     def self.property_value(entry, property_name)
-      entry[GA, property_name.to_s].first
+      entry[GA, property_name].first
     end
     
     def self.property_values(entry, property_names)
-      property_names.inject({}) do |hash, property_name|
-        hash.merge({property_name => property_value(entry, property_name)})
+      hash = property_names.inject({}) do |hash, property_name|
+        hash.merge({property_name => property_value(entry, property_name.to_s.lower_camelized)})
       end
+      OpenStruct.new hash
     end
 
     def self.format_time(t)
@@ -218,10 +221,8 @@ module Garb
     def parameterize(coll)
       coll.collect do |elem|
         case elem
-        when Operator
-          elem
-        when String, Symbol
-          elem.to_s.to_ga.lower_camelized
+        when String, Symbol, Operator
+          self.class.element_id(elem)
         when Hash # filters
           elem.collect do |k,v|
             next unless k.is_a?(Operator)

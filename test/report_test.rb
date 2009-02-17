@@ -3,27 +3,33 @@ require File.join(File.dirname(__FILE__), 'test_helper')
 module Garb
   class ReportTest < Test::Unit::TestCase
     context "The Report class" do
-      should "not convert a ga analytic property name in string format into an atom feed element identifier" do
-        assert_equal 'ga:tag', Report.element_id('ga:tag')
-        assert_equal '-ga:bob', Report.element_id('-ga:bob')
-      end
-
-      should "convert a ga analytic property name in symbol format into an atom feed element identifier" do
+      should "convert Symbols, Strings, and Operators to atom feed element identifier" do
         assert_equal 'ga:tag', Report.element_id(:tag)
+        assert_equal 'ga:metric', Report.element_id('metric')
+        assert_equal '-ga:tag', Report.element_id(Operator.new(:tag, '-', true))
       end
-
+      
       should "get the value for a given entry and property" do
         entry = stub do |s|
-          s.stubs(:[]).with(GA, 'balding').returns(['balding'])
+          s.stubs(:[]).with(GA, 'ga:balding').returns(['balding'])
         end
-        assert_equal 'balding', Report.property_value(entry, :balding)
+        assert_equal 'balding', Report.property_value(entry, Report.element_id(:balding))
       end
 
       should "get the values for a given entry and array of properties" do
         entry = stub
-        Report.stubs(:property_value).with(entry, :balding).returns('balding')
-        Report.stubs(:property_value).with(entry, :spaulding).returns('spaulding')
-        assert_equal({:balding => 'balding', :spaulding => 'spaulding'}, Report.property_values(entry, [:balding, :spaulding]))
+        Report.stubs(:property_value).with(entry, "balding").returns('balding')
+        Report.stubs(:property_value).with(entry, "spaulding").returns('spaulding')
+        
+        data = Report.property_values(entry, [:balding, :spaulding])
+        assert_equal 'balding', data.balding
+        assert_equal 'spaulding', data.spaulding
+      end
+      
+      should "return an ostruct for an entry" do
+        entry = stub
+        Report.stubs(:property_value).with(entry, "balding").returns('balding')
+        assert_equal true, Report.property_values(entry, [:balding]).is_a?(OpenStruct)
       end
       
       should "format time" do
