@@ -35,7 +35,7 @@ module Garb
     context "An instance of the Report class" do
       setup do
         @session = stub
-        @profile = stub(:tableId => 'table', :session => @session)
+        @profile = stub(:table_id => 'table', :session => @session)
         @now = Time.now
         Time.stubs(:now).returns(@now)
         @report = Report.new(@profile)
@@ -47,14 +47,14 @@ module Garb
       end
 
       should "have a collection of dimensions" do
-        report = Report.new(@profile, :dimensions => [:browser])
-        assert_equal [:browser], report.dimensions
+        report = Report.new(@profile, :dimensions => [:request_uri])
+        assert_equal [:request_uri], report.dimensions
       end
       
       should "have metrics and dimensions" do
-        report = Report.new(@profile, :metrics => [:pageviews], :dimensions => [:browser])
+        report = Report.new(@profile, :metrics => [:pageviews], :dimensions => [:request_uri])
         assert_equal [:pageviews], report.metrics
-        assert_equal [:browser], report.dimensions
+        assert_equal [:request_uri], report.dimensions
       end
 
       should "have an empty array of metrics by default" do
@@ -79,29 +79,34 @@ module Garb
       end
       
       should "parameterize dimensions" do
-        report = Report.new(@profile, :dimensions => [:browser, :city])
-        assert_equal({'dimensions' => 'ga:browser,ga:city'}, report.dimension_params)
+        report = Report.new(@profile, :dimensions => [:request_uri, :city])
+        assert_equal({'dimensions' => 'ga:requestUri,ga:city'}, report.dimension_params)
       end
       
       should "parameterize sort" do
-        report = Report.new(@profile, :dimensions => [:browser, :city], :sort => [:browser, :city])
-        assert_equal({'sort' => 'ga:browser,ga:city'}, report.sort_params)
+        report = Report.new(@profile, :dimensions => [:request_uri, :city], :sort => [:request_uri.desc, :city])
+        assert_equal({'sort' => '-ga:requestUri,ga:city'}, report.sort_params)
       end
       
       should "parameterize filters" do
-        @report.filters << "ga:browser%3D%3Dsafari"
-        @report.filters << "ga:pageviews%3E100"
-        assert_equal({'filters' => 'ga:browser%3D%3Dsafari,ga:pageviews%3E100'}, @report.filters_params)
+        @report.filters << "request_uri%3D%3Dsafari"
+        @report.filters << "pageviews%3E100"
+        assert_equal({'filters' => 'ga:requestUri%3D%3Dsafari,ga:pageviews%3E100'}, @report.filters_params)
       end
       
       should "parameterize filters in a hash" do
-        @report.filters << {:pageviews => '>100'}
-        @report.filters << {:browser => '==safari'}
-        assert_equal({'filters' => 'ga:pageviews%3E100,ga:browser%3D%3Dsafari'}, @report.filters_params)
+        @report.filters << {:pageviews.gt => '100'}
+        @report.filters << {:request_uri.eql => 'safari'}
+        assert_equal({'filters' => 'ga:pageviews%3E100,ga:requestUri%3D%3Dsafari'}, @report.filters_params)
+      end
+      
+      should "only accept filters using operators" do
+        @report.filters << {:pageviews => '100'}
+        assert_equal({"filters" => ""}, @report.filters_params)
       end
       
       should "join filter in a hash with a semicolon" do
-        @report.filters << {:pageviews => '>100', :browser => '==safari'}
+        @report.filters << {:pageviews.gt => '100', :request_uri.eql => 'safari'}
         assert_equal 2, @report.filters_params['filters'].split(';').size
       end
 
@@ -148,10 +153,10 @@ module Garb
       should "combine params for metrics, dimensions, sort, and defaults" do
         @report.stubs(:default_params).returns({'ids' => 'table'})
         @report.stubs(:metric_params).returns({'metrics' => 'ga:pageviews'})
-        @report.stubs(:dimension_params).returns({'dimensions' => 'ga:browser'})
-        @report.stubs(:sort_params).returns({'sort' => '-ga:browser'})
+        @report.stubs(:dimension_params).returns({'dimensions' => 'ga:requestUri'})
+        @report.stubs(:sort_params).returns({'sort' => '-ga:requestUri'})
 
-        params = {'ids' => 'table', 'metrics' => 'ga:pageviews', 'dimensions' => 'ga:browser', 'sort' => '-ga:browser'}
+        params = {'ids' => 'table', 'metrics' => 'ga:pageviews', 'dimensions' => 'ga:requestUri', 'sort' => '-ga:requestUri'}
         assert_equal params, @report.params
       end
             
@@ -163,8 +168,8 @@ module Garb
       end
       
       should "collect the property values for each entry returned from the analytics feed" do
-        report = Report.new(@profile, :metrics => [:pageviews, :bounces], :dimensions => [:browser])
-        entry_params = {:pageviews => '120', :bounces => '2', :browser => 'firefox'}
+        report = Report.new(@profile, :metrics => [:pageviews, :bounces], :dimensions => [:request_uri])
+        entry_params = {:pageviews => '120', :bounces => '2', :request_uri => 'firefox'}
         entry_stub = stub
         
         feed_stub = stub do |s|

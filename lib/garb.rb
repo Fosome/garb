@@ -12,6 +12,10 @@ require 'garb/account'
 require 'garb/profile'
 require 'garb/report'
 
+require 'extensions/string'
+require 'extensions/operator'
+require 'extensions/symbol'
+
 module Garb
   # :stopdoc:
   GA = "http://schemas.google.com/analytics/2008"

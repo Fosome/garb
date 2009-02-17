@@ -188,7 +188,7 @@ module Garb
     end
     
     def default_params
-      {'ids' => profile.tableId,
+      {'ids' => profile.table_id,
         'start-date' => self.class.format_time(start_date),
         'end-date' => self.class.format_time(end_date)}
     end
@@ -218,10 +218,15 @@ module Garb
     def parameterize(coll)
       coll.collect do |elem|
         case elem
+        when Operator
+          elem
         when String, Symbol
-          self.class.element_id(elem)
-        when Hash
-          elem.collect{|k,v| "#{self.class.element_id(k)}#{CGI::escape(v)}"}.join(';')
+          elem.to_s.to_ga.lower_camelized
+        when Hash # filters
+          elem.collect do |k,v|
+            next unless k.is_a?(Operator)
+            "#{k.target}#{CGI::escape(k.operator.to_s)}#{CGI::escape(v.to_s)}"
+          end.join(';')
         end
       end.join(',')
     end

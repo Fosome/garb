@@ -1,10 +1,10 @@
 module Garb
   class Profile
-    attr_reader :tableId, :title, :session
+    attr_reader :table_id, :title, :session
     
     def initialize(entry, session)
       @session = session
-      @tableId = Report.property_value(entry, :tableId)
+      @table_id = Report.property_value(entry, :tableId)
       @title = entry.title
     end
     

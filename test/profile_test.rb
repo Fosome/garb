@@ -13,7 +13,7 @@ module Garb
         
         profile = Profile.new(entry, session)
         assert_equal 'entry', profile.title
-        assert_equal 'ga:1234', profile.tableId
+        assert_equal 'ga:1234', profile.table_id
       end
       
       should "build a defined report" do

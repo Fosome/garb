@@ -23,7 +23,7 @@ module Garb
     end
     
     def profile(id)
-      profiles.detect{|p| p.tableId == "ga:#{id}"}
+      profiles.detect{|p| p.table_id == "#{id}".to_ga}
     end
   end
 end
