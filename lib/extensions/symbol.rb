@@ -1,61 +1,35 @@
 class Symbol
   # OPERATORS
 
+  def self.operator(operators)
+    operators.each do |method, operator|
+      class_eval <<-CODE
+        def #{method}
+          Operator.new(self, '#{operator}')
+        end
+      CODE
+    end
+  end
+
   # Sorting
   def desc
     Operator.new(self, '-', true)
   end
 
-  # Metric filters
-  def eql
-    Operator.new(self, "==")
-  end
-  
-  def not_eql
-    Operator.new(self, "!=")
-  end
+  operator  :eql => '==',
+            :not_eql => '!=',
+            :gt => '>',
+            :gte => '>=',
+            :lt => '<',
+            :lte => '<=',
+            :matches => '==',
+            :does_not_match => '!=',
+            :contains => '=~',
+            :does_not_contain => '!~',
+            :substring => '=@',
+            :not_substring => '!@'
 
-  def gt
-    Operator.new(self, ">")
-  end
-
-  def lt
-    Operator.new(self, "<")
-  end
-
-  def gte
-    Operator.new(self, ">=")
-  end
-
-  def lte
-    Operator.new(self, "<=")
-  end
-
-  # Dimension filters
-  def matches
-    Operator.new(self, "==")
-  end
-
-  def does_not_match
-    Operator.new(self, "!=")
-  end
-
-  def contains
-    Operator.new(self, "=~")
-  end
-
-  def does_not_contain
-    Operator.new(self, "!~")
-  end
-
-  def substring
-    Operator.new(self, "=@")
-  end
-
-  def not_substring
-    Operator.new(self, "!@")
-  end
-  
+  # Metric filters  
   def to_ga
     "ga:#{self}"
   end
