@@ -4,7 +4,7 @@ module Garb
     
     def initialize(email, password)
       @email, @password = email, password
-      @profiles = []
+      @profiles = {}
     end
     
     def session
@@ -16,14 +16,11 @@ module Garb
         session.get_auth_token unless session.logged_in?
         feed = session.request(URL+@email)
         feed.each_entry do |entry|
-          @profiles << Profile.new(entry, session)
+          profile = Profile.new(entry, session)
+          @profiles.merge!(profile.table_id => profile)
         end
       end
       @profiles
-    end
-    
-    def profile(id)
-      profiles.detect{|p| p.table_id == "#{id}".to_ga}
     end
   end
 end
