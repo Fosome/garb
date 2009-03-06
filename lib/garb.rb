@@ -5,6 +5,7 @@ require 'net/https'
 require 'rubygems'
 require 'cgi'
 require 'hpricot'
+require 'graft'
 
 require 'garb/authentication_request'
 require 'garb/data_request'

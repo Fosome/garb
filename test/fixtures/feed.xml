@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<feed xmlns='http://www.w3.org/2005/Atom'
+  xmlns:openSearch='http://a9.com/-/spec/opensearchrss/1.0/'>
+  <id>http://www.google.com/analytics/feeds/accounts/liz@gmail.com</id>
+  <updated>2008-09-13T16:12:49.000-07:00</updated>
+  <title type="text">Account list for liz@gmail.com.</title>
+  <link href="http://www.google.com/analytics/feeds/accounts/liz@gmail.com" 
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+  <link href="http://www.google.com/analytics/feeds/accounts/liz@gmail.com" 
+        rel="self" type="application/atom+xml"/>
+  <author>
+    <name>Google Analytics</name>
+  </author>
+  <generator version="1.0">Google Analytics</generator>
+  <openSearch:totalResults>4</openSearch:totalResults>
+  <openSearch:startIndex>1</openSearch:startIndex>
+  <openSearch:itemsPerPage>4</openSearch:itemsPerPage>
+  <entry>
+    <id>http://www.google.com/analytics/feeds/accounts/ga:4321</id>
+    <updated>2008-09-03T10:55:54.000-07:00</updated>
+    <title type="text">Darcy's Blog</title>
+    <link href="http://www.google.com/analytics/feeds/accounts/liz%40gmail.com" 
+          rel="self" type="application/atom+xml"/>
+    <dxp:property name='ga:accountId' value='12345'/>
+    <dxp:property name='ga:accountName' value='Pride and Prejudice'/>
+    <dxp:property name='ga:profileId' value='4321'/>
+    <dxp:property name='ga:webPropertyId' value='UA-12345-1'/>
+    <dxp:tableId>ga:4321</dxp:tableId>
+  </entry>
+  <entry>
+    <id>http://www.google.com/analytics/feeds/accounts/ga:5555</id>
+    <updated>2008-09-03T10:55:54.000-07:00</updated>
+    <title type="text">Jane's Blog</title>
+    <link href="http://www.google.com/analytics/feeds/accounts/liz%40gmail.com" 
+          rel="self" type="application/atom+xml"/>
+    <dxp:property name='ga:accountId' value='12345'/>
+    <dxp:property name='ga:accountName' value='Pride and Prejudice'/>
+    <dxp:property name='ga:profileId' value='5555'/>
+    <dxp:property name='ga:webPropertyId' value='UA-12345-2'/>
+    <dxp:tableId>ga:5555</dxp:tableId>
+  </entry>
+</feed>
