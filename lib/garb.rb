@@ -8,6 +8,7 @@ require 'cgi'
 require 'hpricot'
 
 require 'garb/request'
+require 'garb/authentication_request'
 require 'garb/session'
 require 'garb/account'
 require 'garb/profile'
