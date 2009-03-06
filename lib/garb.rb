@@ -3,12 +3,11 @@ $:.unshift File.expand_path(File.dirname(__FILE__))
 require 'net/http'
 require 'net/https'
 require 'rubygems'
-require 'atom'
 require 'cgi'
 require 'hpricot'
 
-require 'garb/request'
 require 'garb/authentication_request'
+require 'garb/data_request'
 require 'garb/session'
 require 'garb/account'
 require 'garb/profile'
