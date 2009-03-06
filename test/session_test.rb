@@ -13,6 +13,13 @@ module Garb
         assert_equal 'toke', Session.auth_token
       end
       
+      should "retain the email address for this session" do
+        AuthenticationRequest.stubs(:new).returns(stub(:auth_token => 'toke'))
+        
+        Session.login('email', 'password')
+        assert_equal 'email', Session.email
+      end
+      
     end
 
   end
