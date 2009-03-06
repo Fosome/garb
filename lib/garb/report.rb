@@ -145,7 +145,7 @@ module Garb
     end
     
     def self.property_value(entry, property_name)
-      entry[GA, property_name].first
+      (entry/property_name).first.inner_text
     end
     
     def self.property_values(entry, property_names)

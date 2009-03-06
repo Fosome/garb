@@ -4,8 +4,8 @@ module Garb
     
     def initialize(entry, session)
       @session = session
-      @table_id = Report.property_value(entry, :tableId)
-      @title = entry.title
+      @table_id = Report.property_value(entry, :"dxp:tableId")
+      @title = Report.property_value(entry, :title)
     end
     
     def build(report_class)

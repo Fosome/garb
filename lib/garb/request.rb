@@ -30,7 +30,7 @@ module Garb
       request['Authorization'] = "GoogleLogin auth=#{@session.auth_token}"
       response = self.https.request(request)
       begin
-        Atom::Feed.load_feed response.body if response
+        Hpricot.XML(response.body) if response
       rescue ArgumentError
         puts response.body.inspect
       end

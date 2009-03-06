@@ -5,6 +5,7 @@ require 'net/https'
 require 'rubygems'
 require 'atom'
 require 'cgi'
+require 'hpricot'
 
 require 'garb/request'
 require 'garb/session'
