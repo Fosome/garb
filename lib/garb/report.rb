@@ -203,8 +203,7 @@ module Garb
     end
     
     def request
-      @request = Request.new(URL, params)
-      @request.session = profile.session
+      @request = DataRequest.new(URL, params)
       @request
     end
     

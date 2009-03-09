@@ -17,19 +17,8 @@ module Garb
       response = DataRequest.new(url).send_request
       
       xml = Hpricot.XML(response.body)
-      (xml/'entry').map {|e| puts "in code: #{e.class}"; Garb::Profile.new(e) }
+      (xml/'entry').map {|e| Garb::Profile.new(e) }
     end
-    
-    # attr_reader :table_id, :title, :session
-    # 
-    # def initialize(entry, session)
-    #   @session = session
-    #   @table_id = Report.property_value(entry, :"dxp:tableId")
-    #   @title = Report.property_value(entry, :title)
-    # end
-    # 
-    # def build(report_class)
-    #   report_class.new(self)
-    # end
+
   end
 end
