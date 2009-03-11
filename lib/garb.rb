@@ -11,7 +11,6 @@ require 'happymapper'
 require 'garb/authentication_request'
 require 'garb/data_request'
 require 'garb/session'
-require 'garb/account'
 require 'garb/profile'
 require 'garb/report'
 require 'garb/report_parameter'
@@ -26,7 +25,7 @@ module Garb
   # :stopdoc:
   GA = "http://schemas.google.com/analytics/2008"
 
-  VERSION = '0.0.1'
+  VERSION = '0.1.0'
   LIBPATH = ::File.expand_path(::File.dirname(__FILE__)) + ::File::SEPARATOR
   PATH = ::File.dirname(LIBPATH) + ::File::SEPARATOR
   # :startdoc:
