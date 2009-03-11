@@ -7,7 +7,6 @@ lib/garb/profile.rb
 lib/garb/report.rb
 lib/garb/report_parameter.rb
 lib/garb/report_response.rb
-lib/garb/request.rb
 lib/garb/authentication_request.rb
 lib/garb/data_request.rb
 lib/garb/session.rb

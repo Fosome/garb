@@ -1,5 +1,4 @@
 /pkg/
 demo.rb
-*.txt
 .DS_Store
 output.xml
