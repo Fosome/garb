@@ -6,6 +6,7 @@ require 'rubygems'
 require 'cgi'
 require 'hpricot'
 require 'graft'
+require 'happymapper'
 
 require 'garb/authentication_request'
 require 'garb/data_request'
@@ -13,10 +14,13 @@ require 'garb/session'
 require 'garb/account'
 require 'garb/profile'
 require 'garb/report'
+require 'garb/report_parameter'
+require 'garb/report_response'
 
 require 'extensions/string'
 require 'extensions/operator'
 require 'extensions/symbol'
+require 'extensions/happymapper'
 
 module Garb
   # :stopdoc:
@@ -63,6 +67,6 @@ module Garb
   end
 end  # module Garb
 
-Garb.require_all_libs_relative_to(__FILE__)
+# Garb.require_all_libs_relative_to(__FILE__)
 
 # EOF

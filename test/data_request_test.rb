@@ -11,7 +11,7 @@ module Garb
         
         query_string = data_request.query_string
         
-        assert_match /^\?/, query_string
+        assert_match(/^\?/, query_string)
         
         query_string.sub!(/^\?/, '')
         
@@ -23,15 +23,6 @@ module Garb
         assert_equal "", data_request.query_string
       end
       
-      should "escape the keys and values in the parameter list" do
-        parameters = {'one' => 'two'}
-        CGI.expects(:escape).with('one').returns('escaped_one')
-        CGI.expects(:escape).with('two').returns('escaped_two')
-        
-        data_request = DataRequest.new('', parameters)
-        assert_equal '?escaped_one=escaped_two', data_request.query_string
-      end
-      
       should "be able to build a uri" do
         url        = 'http://example.com'
         expected = URI.parse('http://example.com')
@@ -41,7 +32,8 @@ module Garb
       
       should "be able to make a request to the GAAPI" do
         Session.expects(:auth_token).with().returns('toke')
-        response = stub()
+        response = mock
+        response.expects(:is_a?).with(Net::HTTPOK).returns(true)
         
         http = mock do |m|
           m.expects(:use_ssl=).with(true)

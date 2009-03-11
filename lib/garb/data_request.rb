@@ -7,7 +7,7 @@ module Garb
     end
     
     def query_string
-      parameter_list = @parameters.map {|k,v| "#{CGI.escape(k)}=#{CGI.escape(v)}" }
+      parameter_list = @parameters.map {|k,v| "#{k}=#{v}" }
       parameter_list.empty? ? '' : "?#{parameter_list.join('&')}"
     end
     
@@ -19,7 +19,9 @@ module Garb
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      http.get("#{uri.path}#{query_string}", 'Authorization' => "GoogleLogin auth=#{Session.auth_token}")
+      response = http.get("#{uri.path}#{query_string}", 'Authorization' => "GoogleLogin auth=#{Session.auth_token}")
+      raise response.body.inspect unless response.is_a?(Net::HTTPOK)
+      response
     end
     
   end

@@ -31,6 +31,6 @@ class Symbol
 
   # Metric filters  
   def to_ga
-    "ga:#{self}"
+    "ga:#{self.to_s.lower_camelized}"
   end
 end

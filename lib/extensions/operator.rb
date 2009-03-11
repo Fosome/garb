@@ -3,12 +3,12 @@ class Operator
   attr_reader :target, :operator, :prefix
   
   def initialize(target, operator, prefix=false)
-    @target   = target.to_ga.lower_camelized
+    @target   = target.to_ga
     @operator = operator
     @prefix = prefix
   end
   
-  def to_s
+  def to_ga
     @prefix ? "#{operator}#{target}" : "#{target}#{operator}"
   end
   

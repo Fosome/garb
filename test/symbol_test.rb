@@ -4,6 +4,10 @@ class SymbolTest < Test::Unit::TestCase
   
   context "An instance of the Symbol class" do
     
+    should "properly format itself for ga" do
+      assert_equal "ga:requestUri", :request_uri.to_ga
+    end
+    
     should "define a :desc operator" do
       operator = stub()
       symbol = :foo

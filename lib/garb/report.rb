@@ -138,52 +138,41 @@ module Garb
     }
     
     attr_accessor :metrics, :dimensions, :sort, :filters,
-      :start_date, :max_results, :end_date, :profile
-
-    def self.element_id(property_name)
-      property_name.is_a?(Operator) ? property_name.to_s : property_name.to_ga.lower_camelized
-    end
+      :start_date, :max_results, :end_date
     
-    def self.property_value(entry, property_name)
-      (entry/property_name).first.inner_text
-    end
-    
-    def self.property_values(entry, property_names)
-      hash = property_names.inject({}) do |hash, property_name|
-        hash.merge({property_name => property_value(entry, property_name.to_s.lower_camelized)})
-      end
-      OpenStruct.new hash
-    end
+    attr_reader :profile
 
+    # def self.element_id(property_name)
+    #   property_name.is_a?(Operator) ? property_name.to_s : property_name.to_ga.lower_camelized
+    # end
+    # 
+    # def self.property_value(entry, property_name)
+    #   (entry/property_name).first.inner_text
+    # end
+    # 
+    # def self.property_values(entry, property_names)
+    #   hash = property_names.inject({}) do |hash, property_name|
+    #     hash.merge({property_name => property_value(entry, property_name.to_s.lower_camelized)})
+    #   end
+    #   OpenStruct.new hash
+    # end
+    # 
     def self.format_time(t)
       t.strftime('%Y-%m-%d')
     end
-
+    
     def initialize(profile, opts={})
       @profile = profile
-      @metrics = opts.fetch(:metrics, [])
-      @dimensions = opts.fetch(:dimensions, [])
-      @sort = opts.fetch(:sort, [])
-      @filters = opts.fetch(:filters, [])
+
+      @sort = ReportParameter.new(:sort) << opts.fetch(:sort, [])
+      @filters = ReportParameter.new(:filters) << opts.fetch(:filters, [])      
+      @metrics = ReportParameter.new(:metrics) << opts.fetch(:metrics, [])
+      @dimensions = ReportParameter.new(:dimensions) << opts.fetch(:dimensions, [])
+    
       @start_date = opts.fetch(:start_date, Time.now - MONTH)
       @end_date = opts.fetch(:end_date, Time.now)
+      
       yield self if block_given?
-    end
-    
-    def metric_params
-      {'metrics' => parameterize(metrics)}
-    end
-
-    def dimension_params
-      {'dimensions' => parameterize(dimensions)}
-    end
-    
-    def sort_params
-      {'sort' => parameterize(sort)}
-    end
-    
-    def filters_params
-      {'filters' => parameterize(filters)}
     end
 
     def page_params
@@ -195,40 +184,28 @@ module Garb
         'start-date' => self.class.format_time(start_date),
         'end-date' => self.class.format_time(end_date)}
     end
-
+    
     def params
-      [metric_params, dimension_params, sort_params, page_params].inject(default_params) do |p, i|
+      [
+        metrics.to_params,
+        dimensions.to_params,
+        sort.to_params,
+        filters.to_params,
+        page_params
+      ].inject(default_params) do |p, i|
         p.merge(i)
       end
     end
     
-    def request
-      @request = DataRequest.new(URL, params)
-      @request
+    def send_request_for_body
+      request = DataRequest.new(URL, params)
+      response = request.send_request
+      response.body
     end
     
     def all
-      entries = []
-      feed = request.get
-      feed.each_entry do |entry|
-        entries << self.class.property_values(entry, metrics+dimensions)
-      end
-      entries
+      @entries = ReportResponse.new(send_request_for_body).parse
     end
-
-    private
-    def parameterize(coll)
-      coll.collect do |elem|
-        case elem
-        when String, Symbol, Operator
-          self.class.element_id(elem)
-        when Hash # filters
-          elem.collect do |k,v|
-            next unless k.is_a?(Operator)
-            "#{k.target}#{CGI::escape(k.operator.to_s)}#{CGI::escape(v.to_s)}"
-          end.join(';')
-        end
-      end.join(',')
-    end
+    
   end
 end
