@@ -17,12 +17,10 @@ module Garb
         
         DataRequest.expects(:new).with(url).returns(data_request)
         
-        entries = Hpricot.XML(xml)/'entry'
+        entries = [stub]
         
-        hpricot = mock
-        hpricot.expects(:/).with('entry').returns(entries)
-        Hpricot.expects(:XML).with(xml).returns(hpricot)
-        
+        Profile::Entry.expects(:parse).with(xml).returns(entries)
+                
         profiles = []
         entries.each do |entry|
           profile = stub
@@ -38,20 +36,20 @@ module Garb
     context "An instance of the Profile class" do
       
       setup do
-        @entry = (Hpricot.XML(read_fixture('profile_feed.xml'))/:entry).first
+        @entry = (Profile::Entry.parse(read_fixture('profile_feed.xml'))).first
         @profile = Profile.new(@entry)
       end
       
       should "have a value for :title" do
-        assert_equal "Darcy's Blog", @profile.title
+        assert_equal "Historical", @profile.title
       end
       
       should "have a value for :table_id" do
-        assert_equal 'ga:4321', @profile.table_id
+        assert_equal 'ga:12345', @profile.table_id
       end
       
       should "have a value for :id" do
-        assert_equal '4321', @profile.id
+        assert_equal '12345', @profile.id
       end
       
     end
