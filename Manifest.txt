@@ -1,6 +1,6 @@
 History.txt
 Manifest.txt
-README.txt
+README.md
 Rakefile
 lib/garb.rb
 lib/garb/profile.rb
@@ -19,7 +19,6 @@ test/data_request_test.rb
 test/fixtures/profile_feed.xml
 test/fixtures/report_feed.xml
 test/garb_test.rb
-test/oauth_session_test.rb
 test/operator_test.rb
 test/profile_test.rb
 test/report_parameter_test.rb
