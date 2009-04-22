@@ -4,8 +4,6 @@ require 'net/http'
 require 'net/https'
 require 'rubygems'
 require 'cgi'
-require 'hpricot'
-require 'graft'
 require 'happymapper'
 
 require 'garb/authentication_request'
@@ -25,7 +23,7 @@ module Garb
   # :stopdoc:
   GA = "http://schemas.google.com/analytics/2008"
 
-  VERSION = '0.1.0'
+  VERSION = '0.1.1'
   LIBPATH = ::File.expand_path(::File.dirname(__FILE__)) + ::File::SEPARATOR
   PATH = ::File.dirname(LIBPATH) + ::File::SEPARATOR
   # :startdoc:
@@ -65,7 +63,5 @@ module Garb
     Dir.glob(search_me).sort.each {|rb| require rb}
   end
 end  # module Garb
-
-# Garb.require_all_libs_relative_to(__FILE__)
 
 # EOF
