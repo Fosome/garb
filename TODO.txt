@@ -4,3 +4,6 @@ TODO
 * Sessions are currently global, which isn't awesome
 * Single user login is the only supported method currently. Intend to add hooks for using OAuth
 * Intend to make defined report classes before more like AR
+* Support start-index
+* Read opensearch header in results
+* OR joining filter parameters

@@ -26,8 +26,8 @@ Profiles
     > Garb::Profile.all
     > profile = Garb::Profile.all.first
 
-Define a Report *
------------------
+Define a Report Class
+---------------------
 
     class ExitsReport < Garb::Report
       def initialize(profile)
@@ -41,7 +41,7 @@ Define a Report *
         end
       end
     end
-    
+
 Parameters
 ----------
 
@@ -75,6 +75,50 @@ Building a Report
 
   reports will be an array of OpenStructs with methods for the metrics and dimensions returned.
 
+Build a One-Off Report
+----------------------
+
+    report = Garb::Report.new(profile)
+    report.metrics << :pageviews
+    report.dimensions << :request_uri
+
+    report.all
+
+Filtering
+---------
+
+  Google Analytics supports a significant number of filtering options.
+
+  http://code.google.com/apis/analytics/docs/gdata/gdataReference.html#filtering
+
+  We handle filtering as an array of hashes that you can push into, 
+  which will be joined together (AND'd)
+
+  Here is what we can do currently:
+  (the operator is a method on a symbol metric or dimension)
+
+  Operators on metrics:
+
+    :eql => '==',
+    :not_eql => '!=',
+    :gt => '>',
+    :gte => '>=',
+    :lt => '<',
+    :lte => '<='
+
+  Operators on dimensions:
+
+    :matches => '==',
+    :does_not_match => '!=',
+    :contains => '=~',
+    :does_not_contain => '!~',
+    :substring => '=@',
+    :not_substring => '!@'
+    
+  Given the previous example one-off report, we can add a line for filter:
+  
+    report.filters << {:request_uri.eql => '/extend/effectively-using-git-with-subversion/'}
+
 TODOS
 -----
 
@@ -82,11 +126,13 @@ TODOS
   * Single user login is the only supported method currently.
     Intend to add hooks for using OAuth
   * Intend to make defined report classes before more like AR
+  * Support start-index
+  * Read opensearch header in results
+  * OR joining filter parameters
 
 Requirements
 ------------
 
-  net/http
   happymapper
 
 Install
