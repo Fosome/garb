@@ -1,7 +1,7 @@
 garb
 ====
 
-  by Tony Pitale and Justin Marney
+  by Tony Pitale with much help from Justin Marney, Patrick Reagan and others at Viget Labs
 
   http://github.com/vigetlabs/garb
 
