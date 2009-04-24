@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name     = "garb"
-  s.version  = "0.1.1"
+  s.version  = "0.1.2"
   s.date     = "2009-04-22"
   s.summary  = "Google Analytics API Ruby Wrapper"
   s.email    = "tony.pitale@viget.com"
@@ -38,4 +38,5 @@ Gem::Specification.new do |s|
     'test/fixtures/profile_feed.xml',
     'test/fixtures/report_feed.xml']
   s.add_dependency("jnunemaker-happymapper", [">= 0.2.2"])
+  s.add_dependency("libxml-ruby", [">= 0.9.8"])
 end

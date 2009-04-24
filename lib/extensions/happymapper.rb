@@ -1,6 +1,10 @@
+require 'libxml'
+
 module HappyMapper
 
   module ClassMethods
+    include LibXML
+
     def parse(xml, options = {})
       # locally scoped copy of namespace for this parse run
       namespace = @namespace

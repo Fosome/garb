@@ -133,12 +133,13 @@ TODOS
 Requirements
 ------------
 
+  libxml
   happymapper
 
 Install
 -------
 
-    sudo gem install garb -s http://gems.github.com
+    sudo gem install vigetlabs-garb -s http://gems.github.com
 
 License
 -------
