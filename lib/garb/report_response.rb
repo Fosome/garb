@@ -1,5 +1,7 @@
 module Garb  
   class ReportResponse
+    # include Enumerable
+
     def initialize(response_body)
       @xml = response_body
     end
@@ -7,7 +9,7 @@ module Garb
     def parse      
       entries = Entry.parse(@xml)
       
-      entries.collect do |entry|
+      @results = entries.collect do |entry|
         hash = {}
         
         entry.metrics.each do |m|
@@ -22,6 +24,10 @@ module Garb
         
         OpenStruct.new(hash)
       end
+    end
+
+    def results
+      @results || parse
     end
     
     class Metric

@@ -1,8 +1,7 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
 module Garb
-  class ReportTest < Test::Unit::TestCase
-    
+  class ReportTest < Test::Unit::TestCase    
     context "An instance of the Report class" do
       setup do
         @now = Time.now

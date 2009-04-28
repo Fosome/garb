@@ -23,7 +23,7 @@ module Garb
         when Hash
           elem.collect do |k,v|
             next unless k.is_a?(Operator)
-            "#{k.target}#{CGI::escape(k.operator.to_s)}#{CGI::escape(v.to_s)}"
+            "#{k.target}#{URI.encode(k.operator.to_s, /[=<>]/)}#{CGI::escape(v.to_s)}"
           end.join(';')
         else
           elem.to_ga
@@ -31,6 +31,6 @@ module Garb
       end.join(',')
       
       params.empty? ? {} : {self.name => params}
-    end    
+    end
   end
 end

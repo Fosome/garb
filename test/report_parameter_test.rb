@@ -45,7 +45,14 @@ module Garb
         should "parameterize hash operators and join elements" do
           @metrics << {:city.eql => 'New York'}
           params = {'metrics' => 'ga:city%3D%3DNew+York'}
-          
+
+          assert_equal params, @metrics.to_params
+        end
+
+        should "properly encode operators" do
+          @metrics << {:request_uri.contains => 'New York'}
+          params = {'metrics' => 'ga:requestUri%3D~New+York'}
+
           assert_equal params, @metrics.to_params
         end
       end

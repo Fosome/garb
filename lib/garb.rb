@@ -13,6 +13,7 @@ require 'garb/profile'
 require 'garb/report'
 require 'garb/report_parameter'
 require 'garb/report_response'
+require 'garb/resource'
 
 require 'extensions/string'
 require 'extensions/operator'

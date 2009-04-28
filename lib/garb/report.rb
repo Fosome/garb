@@ -139,7 +139,7 @@ module Garb
     
     attr_accessor :metrics, :dimensions, :sort, :filters,
       :start_date, :max_results, :end_date
-    
+
     attr_reader :profile
 
     # def self.element_id(property_name)
@@ -160,7 +160,7 @@ module Garb
     def self.format_time(t)
       t.strftime('%Y-%m-%d')
     end
-    
+
     def initialize(profile, opts={})
       @profile = profile
 
@@ -178,13 +178,13 @@ module Garb
     def page_params
       max_results.nil? ? {} : {'max-results' => max_results}
     end
-    
+
     def default_params
       {'ids' => profile.table_id,
         'start-date' => self.class.format_time(start_date),
         'end-date' => self.class.format_time(end_date)}
     end
-    
+
     def params
       [
         metrics.to_params,
@@ -196,16 +196,16 @@ module Garb
         p.merge(i)
       end
     end
-    
+
     def send_request_for_body
       request = DataRequest.new(URL, params)
       response = request.send_request
       response.body
     end
-    
+
     def all
       @entries = ReportResponse.new(send_request_for_body).parse
     end
-    
+
   end
 end
