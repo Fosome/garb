@@ -49,7 +49,7 @@ module Garb
 
         instance_eval(&block) if block_given?
 
-        ReportResponse.new(send_request_for_body).parse
+        ReportResponse.new(send_request_for_body).results
       end
 
       def page_params

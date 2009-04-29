@@ -19,6 +19,11 @@ module Garb
         
         assert_equal(['entry1', 'entry2', 'entry3'], @response.parse)
       end
+
+      should "have results or parse them" do
+        @response.expects(:parse)
+        @response.results
+      end
     end
   end
 end

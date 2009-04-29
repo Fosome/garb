@@ -42,6 +42,7 @@ end
 desc "Generate RCov coverage report"
 Rcov::RcovTask.new(:rcov) do |t|
   t.test_files = FileList['test/**/*_test.rb']
+  t.rcov_opts << "-x lib/garb.rb -x lib/garb/version.rb"
 end
 
 task :default => 'test'

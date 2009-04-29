@@ -1,6 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', '/test_helper')
 
 module Garb
+  # Also tests Garb::Resource, which is the basis for Garb::Report
   class ReportTest < Test::Unit::TestCase    
     context "An instance of the Report class" do
       setup do
@@ -17,114 +18,53 @@ module Garb
       end
 
       should "have default parameters" do
-        {}
+        @report.stubs(:format_time).returns('2009-08-01')
+        params = {'ids' => 'ga:1234', 'start-date' => '2009-08-01', 'end-date' => '2009-08-01'}
+        assert_equal params, @report.default_params
+      end
+
+      should "collect params from metrics, dimensions, filters, sort, and defaults" do
+        @report.stubs(:metrics).returns(stub(:to_params => {'metrics' => 6}))
+        @report.stubs(:dimensions).returns(stub(:to_params => {'dimensions' => 5}))
+        @report.stubs(:filters).returns(stub(:to_params => {'filters' => 4}))
+        @report.stubs(:sorts).returns(stub(:to_params => {'sort' => 3}))
+        @report.stubs(:page_params).returns({'page_params' => 2})
+        @report.stubs(:default_params).returns({'default_params' => 1})
+        
+        params = {'metrics' => 6, 'dimensions' => 5, 'filters' => 4, 'sort' => 3, 'page_params' => 2, 'default_params' => 1}
+        assert_equal params, @report.params
+      end
+
+      should "format time" do
+        assert_equal @now.strftime('%Y-%m-%d'), @report.format_time(@now)
+      end
+
+      should "send a data request to GA" do
+        response = mock {|m| m.expects(:body).returns('response body') }
+        request = mock {|m| m.expects(:send_request).returns(response) }
+        @report.expects(:params).returns('params')
+
+        DataRequest.expects(:new).with(Garb::Report::URL, 'params').returns(request)
+        assert_equal 'response body', @report.send_request_for_body
+      end
+
+      should "fetch and parse results from GA" do
+        @report.expects(:send_request_for_body).with().returns('xml')
+        ReportResponse.expects(:new).with('xml').returns(mock(:results => ['entry']))
+        assert_equal ['entry'], @report.results
+      end
+    end
+    
+    context "An instance of the Report class with initial options" do
+      setup do
+        @profile = stub(:table_id => 'ga:1234')
+        @report = Report.new(@profile, :limit => 10, :offset => 20)
       end
 
       should "have page paramaters" do
-        
+        params = {'max-results' => 10, 'start-index' => 20}
+        assert_equal params, @report.page_params
       end
-
-    #   should "have a start_date" do
-    #     report = Report.new(@profile, :start_date => @now)
-    #     assert_equal @now, report.start_date
-    #   end
-    # 
-    #   should "have a default start_date of one month ago" do
-    #     month_ago = @now - Report::MONTH
-    #     assert_equal month_ago, @report.start_date
-    #   end
-    # 
-    #   should "have an end_date" do
-    #     report = Report.new(@profile, :end_date => @now)
-    #     assert_equal @now, report.end_date
-    #   end
-    # 
-    #   should "have a default end_date of now" do
-    #     assert_equal @now, @report.end_date
-    #   end
-    #   
-    #   should "have max results if set" do
-    #     @report.max_results = 5
-    #     assert_equal({'max-results' => 5}, @report.page_params)
-    #   end
-    #   
-    #   should "have an empty hash if max results not set" do
-    #     assert_equal({}, @report.page_params)
-    #   end
-    #   
-    #   should "have a profile" do
-    #     assert_equal @profile, @report.profile
-    #   end
-    #         
-    #   should "return default params with no options" do
-    #     @report.expects(:format_time).with(@report.start_date).returns('start')
-    #     @report.expects(:format_time).with(@report.end_date).returns('end')
-    #     
-    #     params = {'ids' => 'ga:1234', 'start-date' => 'start', 'end-date' => 'end'}
-    #     assert_equal params, @report.default_params
-    #   end
-    #   
-    #   should "combine parameters for request" do
-    #     @report.sort.expects(:to_params).returns({'sort' => 'value'})
-    #     @report.filters.expects(:to_params).returns({'filters' => 'value'})
-    #     @report.metrics.expects(:to_params).returns({'metrics' => 'value'})
-    #     @report.dimensions.expects(:to_params).returns({'dimensions' => 'value'})
-    #     
-    #     @report.expects(:page_params).returns({})
-    #     @report.expects(:default_params).returns({'ids' => 'ga:1234'})
-    #     
-    #     params = {'ids' => 'ga:1234', 'metrics' => 'value', 'dimensions' => 'value', 'sort' => 'value', 'filters' => 'value'}
-    #     
-    #     assert_equal params, @report.params
-    #   end
-    # 
-    #   should "send a request and get the response body" do
-    #     response = stub(:body => 'feed')
-    #     data_request = mock
-    #     data_request.expects(:send_request).with().returns(response)
-    #     
-    #     @report.stubs(:params).returns({'key' => 'value'})
-    #     DataRequest.expects(:new).with(Report::URL, {'key' => 'value'}).returns(data_request)
-    #     
-    #     assert_equal 'feed', @report.send_request_for_body
-    #   end
-    #   
-    #   should "fetch and parse all entries" do
-    #     @report.expects(:send_request_for_body).with().returns('xml')
-    #     ReportResponse.expects(:new).with('xml').returns(mock(:parse => ['entry']))
-    #     assert_equal ['entry'], @report.all
-    #   end
-    # end
-    # 
-    # context "The Report class" do
-    # 
-    # #   should "get the value for a given entry and property" do
-    # #     # entry = mock do |m|
-    # #     #   m.expects(:/).with().returns(['balding'])
-    # #     # end
-    # #     # assert_equal 'balding', Report.property_value(entry, Report.element_id(:balding))
-    # #   end
-    # # 
-    # #   should "get the values for a given entry and array of properties" do
-    # #     entry = stub
-    # #     Report.stubs(:property_value).with(entry, "balding").returns('balding')
-    # #     Report.stubs(:property_value).with(entry, "spaulding").returns('spaulding')
-    # #     
-    # #     data = Report.property_values(entry, [:balding, :spaulding])
-    # #     assert_equal 'balding', data.balding
-    # #     assert_equal 'spaulding', data.spaulding
-    # #   end
-    # #   
-    # #   should "return an ostruct for an entry" do
-    # #     entry = stub
-    # #     Report.stubs(:property_value).with(entry, "balding").returns('balding')
-    # #     assert_equal true, Report.property_values(entry, [:balding]).is_a?(OpenStruct)
-    # #   end
-    # 
-    #   should "format time" do
-    #     t = Time.now
-    #     assert_equal t.strftime('%Y-%m-%d'), Report.format_time(t)
-    #   end
     end
 
   end
