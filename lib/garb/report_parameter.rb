@@ -13,7 +13,7 @@ module Garb
     end
     
     def <<(element)
-      @elements += [element].flatten
+      (@elements += [element].flatten).compact!
       self
     end
     

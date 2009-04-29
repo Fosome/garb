@@ -24,23 +24,23 @@ module Garb
       end
 
       def filters
-        @filters
+        @filters ||= ReportParameter.new(:filters)
       end
 
       def sort(*fields)
-        @sort << fields
+        @sorts << fields
       end
 
       def sorts
-        @sort
+        @sorts ||= ReportParameter.new(:sort)
       end
 
-      def results(profile, opts = {}, &block = nil)
+      def results(profile, opts = {}, &block)
         @profile = profile
 
         # clear filters and sort
         @filters = ReportParameter.new(:filters)
-        @sort = ReportParameter.new(:sort)
+        @sorts = ReportParameter.new(:sort)
 
         @start_date = opts.fetch(:start_date, Time.now - MONTH)
         @end_date = opts.fetch(:end_date, Time.now)
