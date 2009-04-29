@@ -1,42 +1,33 @@
+# -*- encoding: utf-8 -*-
+
 Gem::Specification.new do |s|
-  s.name     = "garb"
-  s.version  = "0.1.2"
-  s.date     = "2009-04-22"
-  s.summary  = "Google Analytics API Ruby Wrapper"
-  s.email    = "tony.pitale@viget.com"
-  s.homepage = "http://github.com/vigetlabs/garb"
-  s.description = "A ruby gem to aid in the use of the Google Analytics API"
-  s.has_rdoc = false
-  s.authors  = ["Tony Pitale"]
-  s.files    = ["History.txt", 
-		"README.md",
-		"Rakefile",
-		"garb.gemspec",
-		"lib/garb.rb",
-		"lib/garb/authentication_request.rb",
-		"lib/garb/data_request.rb",
-		"lib/garb/profile.rb",
-		"lib/garb/report.rb",
-		"lib/garb/report_parameter.rb",
-		"lib/garb/report_response.rb",
-		"lib/garb/session.rb",
-		"lib/extensions/symbol.rb",
-		"lib/extensions/string.rb",
-		"lib/extensions/operator.rb",
-		"lib/extensions/happymapper.rb"]
-  s.test_files = ['test/authentication_request_test.rb',
-    'test/data_request_test.rb',
-    'test/garb_test.rb',
-    'test/operator_test.rb',
-    'test/profile_test.rb',
-    'test/report_parameter_test.rb',
-    'test/report_response_test.rb',
-    'test/report_test.rb',
-    'test/session_test.rb',
-    'test/symbol_test.rb',
-    'test/test_helper.rb',
-    'test/fixtures/profile_feed.xml',
-    'test/fixtures/report_feed.xml']
-  s.add_dependency("jnunemaker-happymapper", [">= 0.2.2"])
-  s.add_dependency("libxml-ruby", [">= 0.9.8"])
+  s.name = %q{garb}
+  s.version = "0.1.2"
+
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.authors = ["Tony Pitale", "Justin Marney", "Patrick Reagan"]
+  s.date = %q{2009-04-29}
+  s.email = %q{tony.pitale@viget.com}
+  s.files = ["README.md", "Rakefile", "lib/extensions", "lib/extensions/happymapper.rb", "lib/extensions/operator.rb", "lib/extensions/string.rb", "lib/extensions/symbol.rb", "lib/garb", "lib/garb/authentication_request.rb", "lib/garb/data_request.rb", "lib/garb/oauth_session.rb", "lib/garb/profile.rb", "lib/garb/report.rb", "lib/garb/report_parameter.rb", "lib/garb/report_response.rb", "lib/garb/resource.rb", "lib/garb/session.rb", "lib/garb/version.rb", "lib/garb.rb", "test/fixtures", "test/fixtures/profile_feed.xml", "test/fixtures/report_feed.xml", "test/test_helper.rb", "test/unit", "test/unit/authentication_request_test.rb", "test/unit/data_request_test.rb", "test/unit/garb_test.rb", "test/unit/oauth_session_test.rb", "test/unit/operator_test.rb", "test/unit/profile_test.rb", "test/unit/report_parameter_test.rb", "test/unit/report_response_test.rb", "test/unit/report_test.rb", "test/unit/session_test.rb", "test/unit/symbol_test.rb"]
+  s.homepage = %q{http://github.com/vigetlabs/garb}
+  s.require_paths = ["lib"]
+  s.rubygems_version = %q{1.3.1}
+  s.summary = %q{Google Analytics API Ruby Wrapper}
+  s.test_files = ["test/fixtures", "test/fixtures/profile_feed.xml", "test/fixtures/report_feed.xml", "test/test_helper.rb", "test/unit", "test/unit/authentication_request_test.rb", "test/unit/data_request_test.rb", "test/unit/garb_test.rb", "test/unit/oauth_session_test.rb", "test/unit/operator_test.rb", "test/unit/profile_test.rb", "test/unit/report_parameter_test.rb", "test/unit/report_response_test.rb", "test/unit/report_test.rb", "test/unit/session_test.rb", "test/unit/symbol_test.rb"]
+
+  if s.respond_to? :specification_version then
+    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
+    s.specification_version = 2
+
+    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<jnunemaker-happymapper>, [">= 0.2.2"])
+      s.add_runtime_dependency(%q<libxml-ruby>, [">= 0.9.8"])
+    else
+      s.add_dependency(%q<jnunemaker-happymapper>, [">= 0.2.2"])
+      s.add_dependency(%q<libxml-ruby>, [">= 0.9.8"])
+    end
+  else
+    s.add_dependency(%q<jnunemaker-happymapper>, [">= 0.2.2"])
+    s.add_dependency(%q<libxml-ruby>, [">= 0.9.8"])
+  end
 end

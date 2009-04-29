@@ -1,26 +1,49 @@
-# Look in the tasks/setup.rb file for the various options that can be
-# configured in this Rakefile. The .rake files in the tasks directory
-# are where the options are used.
+require 'rubygems'
+require 'rake/gempackagetask'
+require 'rake/testtask'
+require 'rcov/rcovtask'
 
-begin
-  require 'bones'
-  Bones.setup
-rescue LoadError
-  load 'tasks/setup.rb'
+require 'lib/garb'
+
+task :default => :test
+
+spec = Gem::Specification.new do |s|
+  s.name              = 'garb'
+  s.version           = Garb::Version.to_s
+  s.has_rdoc          = false
+  s.summary           = "Google Analytics API Ruby Wrapper"
+  s.authors           = ['Tony Pitale','Justin Marney', 'Patrick Reagan']
+  s.email             = 'tony.pitale@viget.com'
+  s.homepage          = 'http://github.com/vigetlabs/garb'
+  s.files             = %w(README.md Rakefile) + Dir.glob("lib/**/*")
+  s.test_files        = Dir.glob("test/**/*")
+
+  s.add_dependency("jnunemaker-happymapper", [">= 0.2.2"])
+  s.add_dependency("libxml-ruby", [">= 0.9.8"])
 end
 
-ensure_in_path 'lib'
-require 'garb'
+Rake::GemPackageTask.new(spec) do |pkg|
+  pkg.gem_spec = spec
+end
+
+Rake::TestTask.new do |t|
+  t.libs << 'test'
+  t.test_files = FileList["test/**/*_test.rb"]
+  t.verbose = true
+end
+
+desc 'Generate the gemspec to serve this Gem from Github'
+task :github do
+  file = File.dirname(__FILE__) + "/#{spec.name}.gemspec"
+  File.open(file, 'w') {|f| f << spec.to_ruby }
+  puts "Created gemspec: #{file}"
+end
+
+desc "Generate RCov coverage report"
+Rcov::RcovTask.new(:rcov) do |t|
+  t.test_files = FileList['test/**/*_test.rb']
+end
 
 task :default => 'test'
-
-PROJ.name = 'garb'
-PROJ.authors = ['Tony Pitale','Justin Marney']
-PROJ.email = 'tony.pitale@viget.com'
-PROJ.url = 'http://github.com/vigetlabs/garb'
-PROJ.version = Garb::VERSION
-PROJ.rubyforge.name = 'garb'
-PROJ.test.files = FileList['test/**/*_test.rb']
-PROJ.spec.opts << '--color'
 
 # EOF

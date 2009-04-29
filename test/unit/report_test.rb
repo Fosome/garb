@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'test_helper')
+require File.join(File.dirname(__FILE__), '..', '/test_helper')
 
 module Garb
   class ReportTest < Test::Unit::TestCase    
@@ -10,13 +10,17 @@ module Garb
         @report = Report.new(@profile)
       end
 
-      %w(metrics dimensions).each do |param|
+      %w(metrics dimensions filters sorts).each do |param|
         should "have parameters for #{param}" do
           assert @report.send(:"#{param}").is_a?(ReportParameter)
         end
       end
 
       should "have default parameters" do
+        {}
+      end
+
+      should "have page paramaters" do
         
       end
 

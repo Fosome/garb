@@ -1,10 +1,10 @@
-require File.join(File.dirname(__FILE__), 'test_helper')
+require File.join(File.dirname(__FILE__), '..', '/test_helper')
 
 module Garb
   class ReportResponseTest < Test::Unit::TestCase
     context "An instance of the ReportResponse class" do
       setup do
-        @xml = File.read(File.dirname(__FILE__) + "/fixtures/report_feed.xml")
+        @xml = File.read(File.join(File.dirname(__FILE__), '..', "/fixtures/report_feed.xml"))
         @response = ReportResponse.new(@xml)
       end
       

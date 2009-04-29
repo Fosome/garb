@@ -7,6 +7,7 @@ require 'cgi'
 require 'ostruct'
 require 'happymapper'
 
+require 'garb/version'
 require 'garb/authentication_request'
 require 'garb/data_request'
 require 'garb/session'
