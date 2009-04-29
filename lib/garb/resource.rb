@@ -35,9 +35,10 @@ module Garb
         @sort
       end
 
-      def all(profile, opts = {}, &block)
+      def results(profile, opts = {}, &block = nil)
         @profile = profile
-        
+
+        # clear filters and sort
         @filters = ReportParameter.new(:filters)
         @sort = ReportParameter.new(:sort)
 

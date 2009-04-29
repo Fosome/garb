@@ -4,6 +4,7 @@ require 'net/http'
 require 'net/https'
 require 'rubygems'
 require 'cgi'
+require 'ostruct'
 require 'happymapper'
 
 require 'garb/authentication_request'
