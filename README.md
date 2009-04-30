@@ -5,6 +5,13 @@ garb
 
   http://github.com/vigetlabs/garb
 
+Changes
+=======
+
+  Version 0.2.0 makes major changes to the way garb is used to build reports.
+  There is now both a module that gets included for generating defined classes.
+  As well as, slight changes to the way that the Report class can be used.
+
 Description
 -----------
 
