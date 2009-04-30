@@ -1,9 +1,8 @@
 require 'rubygems'
 require 'rake/gempackagetask'
 require 'rake/testtask'
-require 'rcov/rcovtask'
 
-require 'lib/garb'
+require 'lib/garb/version'
 
 task :default => :test
 
@@ -19,7 +18,6 @@ spec = Gem::Specification.new do |s|
   s.test_files        = Dir.glob("test/**/*")
 
   s.add_dependency("jnunemaker-happymapper", [">= 0.2.2"])
-  s.add_dependency("libxml-ruby", [">= 0.9.8"])
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
@@ -39,10 +37,16 @@ task :github do
   puts "Created gemspec: #{file}"
 end
 
-desc "Generate RCov coverage report"
-Rcov::RcovTask.new(:rcov) do |t|
-  t.test_files = FileList['test/**/*_test.rb']
-  t.rcov_opts << "-x lib/garb.rb -x lib/garb/version.rb"
+begin
+  require 'rcov/rcovtask'
+  
+  desc "Generate RCov coverage report"
+  Rcov::RcovTask.new(:rcov) do |t|
+    t.test_files = FileList['test/**/*_test.rb']
+    t.rcov_opts << "-x lib/garb.rb -x lib/garb/version.rb"
+  end
+rescue LoadError
+  nil
 end
 
 task :default => 'test'
