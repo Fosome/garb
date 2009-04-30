@@ -26,20 +26,14 @@ Profiles
     > Garb::Profile.all
     > profile = Garb::Profile.all.first
 
-Define a Report Class
----------------------
+Define a Report Class and Get Results
+-------------------------------------
 
-    class ExitsReport < Garb::Report
-      def initialize(profile)
-        super(profile) do |config|
-          config.start_date = Time.now.at_beginning_of_month
-          config.end_date = Time.now.at_end_of_month
-          config.metrics << [:exits, :pageviews, :exit_rate]
-          config.dimensions << :request_uri
-          config.sort << :exits.desc
-          config.max_results = 10
-        end
-      end
+    class Exits
+      include Garb::Resource
+
+      metrics :exits, :pageviews, :exit_rate
+      dimensions :request_uri
     end
 
 Parameters
@@ -47,7 +41,8 @@ Parameters
 
   * start_date: The date of the period you would like this report to start
   * end_date: The date to end, inclusive
-  * max_results: The maximum number of results to be returned
+  * limit: The maximum number of results to be returned
+  * offset: The starting index
 
 Metrics & Dimensions
 --------------------
@@ -65,13 +60,20 @@ Sorting
 -------
 
   Sorting can be done on any metric or dimension defined in the request, with .desc reversing the sort.
-  
+
 Building a Report
 -----------------
 
-  Given the class, session, and profile from above:
+  Given the class, session, and profile from above we can do:
 
-    reports = ExitsReport.new(profile).all
+    Exits.results(profile, :limit => 10, :offset => 19)
+
+  Or, with sorting and filters:
+
+    Exits.results(profile, :limit => 10, :offset => 19) do
+      filter :request_uri.contains => 'season', :exits.gt => 100
+      sort :exits
+    end
 
   reports will be an array of OpenStructs with methods for the metrics and dimensions returned.
 
@@ -79,10 +81,13 @@ Build a One-Off Report
 ----------------------
 
     report = Garb::Report.new(profile)
-    report.metrics << :pageviews
-    report.dimensions << :request_uri
+    report.metrics :pageviews
+    report.dimensions :request_uri
 
-    report.all
+    report.filter :request_uri.contains => 'season', :exits.gte => 10
+    report.sort :exits
+
+    report.results
 
 Filtering
 ---------
@@ -125,8 +130,6 @@ TODOS
   * Sessions are currently global, which isn't awesome
   * Single user login is the only supported method currently.
     Intend to add hooks for using OAuth
-  * Intend to make defined report classes before more like AR
-  * Support start-index
   * Read opensearch header in results
   * OR joining filter parameters
 
