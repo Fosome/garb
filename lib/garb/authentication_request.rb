@@ -23,20 +23,18 @@ module Garb
       URI.parse(URL)
     end
     
-    def send_request      
+    def send_request(ssl_mode)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-      http.cert_store = cert_store
+      http.verify_mode = ssl_mode
+
+      if ssl_mode == OpenSSL::SSL::VERIFY_PEER
+        http.ca_file = CA_CERT_FILE
+      end
+
       http.request(build_request) do |response|
         raise AuthError unless response.is_a?(Net::HTTPOK)
       end
-    end
-
-    def cert_store
-      store = OpenSSL::X509::Store.new
-      store.set_default_paths
-      store
     end
 
     def build_request
@@ -45,9 +43,10 @@ module Garb
       post
     end
     
-    def auth_token
-      send_request.body.match(/^Auth=(.*)$/)[1]
+    def auth_token(opts={})
+      ssl_mode = opts[:secure] ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE
+      send_request(ssl_mode).body.match(/^Auth=(.*)$/)[1]
     end
-    
+
   end
 end

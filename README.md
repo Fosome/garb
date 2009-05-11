@@ -8,7 +8,7 @@ garb
 Changes
 =======
 
-  Version 0.2.0 makes major changes to the way garb is used to build reports.
+  Version 0.2.0 makes major changes (compared to 0.1.0) to the way garb is used to build reports.
   There is now both a module that gets included for generating defined classes.
   As well as, slight changes to the way that the Report class can be used.
 
@@ -130,6 +130,19 @@ Filtering
   Given the previous example one-off report, we can add a line for filter:
   
     report.filters << {:request_uri.eql => '/extend/effectively-using-git-with-subversion/'}
+
+SSL
+---
+
+  Version 0.2.3 includes support for real ssl encryption for authentication. First do:
+
+    Garb::Session.login(username, password, :secure => true)
+
+  Next, be sure to download http://curl.haxx.se/ca/cacert.pem into your application somewhere.
+  Then, define a constant CA_CERT_FILE and point to that file.
+
+  For whatever reason, simply create a new certificate store and setting the defaults would
+  not validate the google ssl certificate as authentic.
 
 TODOS
 -----
