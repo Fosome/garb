@@ -141,7 +141,7 @@ SSL
   Next, be sure to download http://curl.haxx.se/ca/cacert.pem into your application somewhere.
   Then, define a constant CA_CERT_FILE and point to that file.
 
-  For whatever reason, simply create a new certificate store and setting the defaults would
+  For whatever reason, simply creating a new certificate store and setting the defaults would
   not validate the google ssl certificate as authentic.
 
 TODOS
