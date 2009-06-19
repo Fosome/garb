@@ -51,6 +51,14 @@ module Garb
       should "have a value for :id" do
         assert_equal '12345', @profile.id
       end
+
+      should "have a value for :account_id" do
+        assert_equal '1111', @profile.account_id
+      end
+
+      should "have a value for :account_name" do
+        assert_equal 'Blog Beta', @profile.account_name
+      end
       
     end
 

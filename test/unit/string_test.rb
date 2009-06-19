@@ -5,5 +5,9 @@ class StringTest < Test::Unit::TestCase
     should 'prefix a string with ga: for GA' do
       assert_equal 'ga:bob', 'bob'.to_ga
     end
+
+    should 'remove ga: prefix' do
+      assert_equal 'bob', 'ga:bob'.from_ga
+    end
   end
 end

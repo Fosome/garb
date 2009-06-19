@@ -17,7 +17,7 @@ spec = Gem::Specification.new do |s|
   s.files             = %w(README.md Rakefile) + Dir.glob("lib/**/*")
   s.test_files        = Dir.glob("test/**/*")
 
-  s.add_dependency("jnunemaker-happymapper", [">= 0.2.2"])
+  s.add_dependency("happymapper", [">= 0.2.5"])
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|

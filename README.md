@@ -5,12 +5,14 @@ garb
 
   http://github.com/vigetlabs/garb
 
-Changes
-=======
+Important Changes
+=================
+
+  Version 0.2.4 requires happymapper from rubygems, version 0.2.5. Be sure to update.
 
   Version 0.2.0 makes major changes (compared to 0.1.0) to the way garb is used to build reports.
-  There is now both a module that gets included for generating defined classes.
-  As well as, slight changes to the way that the Report class can be used.
+  There is now both a module that gets included for generating defined classes,
+  as well as, slight changes to the way that the Report class can be used.
 
 Description
 -----------
@@ -27,9 +29,15 @@ Login
   
     > Garb::Session.login(username, password)
 
+Accounts
+--------
+    > Garb::Account.all
+
 Profiles
 --------
 
+    > Garb::Account.first.profiles
+    
     > Garb::Profile.all
     > profile = Garb::Profile.all.first
 
@@ -156,11 +164,14 @@ TODOS
 Requirements
 ------------
 
-  libxml
-  happymapper
+  happymapper >= 0.2.5 (should also install libxml)
 
 Install
 -------
+
+    sudo gem install garb
+
+    OR
 
     sudo gem install vigetlabs-garb -s http://gems.github.com
 
