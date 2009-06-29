@@ -9,7 +9,7 @@ module Garb
     end
 
     def self.all
-      Profile.all.group_by{|p| p.account_id}.map{|profiles| new(profiles)}
+      Profile.all.group_to_array{|p| p.account_id}.map{|profiles| new(profiles)}
     end
   end
 end

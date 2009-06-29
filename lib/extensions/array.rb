@@ -1,5 +1,5 @@
 class Array
-  def group_by
+  def group_to_array
     h = Hash.new
 
     each do |element|
