@@ -6,9 +6,7 @@ module Garb
     context "The Profile class" do
       
       should "be able to return a list of all profiles" do
-        Session.stubs(:email).with().returns('user@host.com')
-        
-        url = 'https://www.google.com/analytics/feeds/accounts/user@host.com'
+        url = 'https://www.google.com/analytics/feeds/accounts/default'
         
         xml = read_fixture('profile_feed.xml')
         

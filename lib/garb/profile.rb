@@ -42,7 +42,7 @@ module Garb
     end
 
     def self.all
-      url = "https://www.google.com/analytics/feeds/accounts/#{Session.email}"
+      url = "https://www.google.com/analytics/feeds/accounts/default"
       response = DataRequest.new(url).send_request      
       Entry.parse(response.body).map {|entry| new(entry)}
     end
