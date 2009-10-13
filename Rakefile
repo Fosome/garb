@@ -10,6 +10,7 @@ spec = Gem::Specification.new do |s|
   s.name              = 'garb'
   s.version           = Garb::Version.to_s
   s.has_rdoc          = false
+  s.rubyforge_project = 'garb'
   s.summary           = "Google Analytics API Ruby Wrapper"
   s.authors           = ['Tony Pitale', 'Patrick Reagan']
   s.email             = 'tony.pitale@viget.com'
