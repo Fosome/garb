@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', '/test_helper')
 
 module Garb
-  class ReportParameterTest < Test::Unit::TestCase
+  class ReportParameterTest < MiniTest::Unit::TestCase
     
     context "An instance of the ReportParameter class" do
       setup do

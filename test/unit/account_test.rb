@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', '/test_helper')
 
 module Garb
-  class AccountTest < Test::Unit::TestCase
+  class AccountTest < MiniTest::Unit::TestCase
     context "The Account class" do
       should "have an array of accounts with all profiles" do
         p1 = stub(:account_id => '1111', :account_name => 'Blog 1')

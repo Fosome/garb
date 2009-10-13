@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), '..', '/test_helper')
 
-class SymbolTest < Test::Unit::TestCase
+class SymbolTest < MiniTest::Unit::TestCase
   
   context "An instance of the Symbol class" do
     

@@ -5,7 +5,7 @@ class TestReport
 end
 
 # Most of the resource testing is done as a part of ReportTest
-class ResourceTest < Test::Unit::TestCase
+class ResourceTest < MiniTest::Unit::TestCase
 
   context "A class with Garb::Resource mixed in" do
     should "get results from GA" do

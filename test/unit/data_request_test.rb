@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', '/test_helper')
 
 module Garb
-  class DataRequestTest < Test::Unit::TestCase
+  class DataRequestTest < MiniTest::Unit::TestCase
     
     context "An instance of the DataRequest class" do
 

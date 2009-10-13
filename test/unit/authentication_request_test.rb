@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), '..', '/test_helper')
 CA_CERT_FILE = File.join(File.dirname(__FILE__), '..', '/cacert.pem')
 
 module Garb
-  class AuthenticationRequestTest < Test::Unit::TestCase
+  class AuthenticationRequestTest < MiniTest::Unit::TestCase
     
     context "An instance of the AuthenticationRequest class" do
       
@@ -108,7 +108,7 @@ module Garb
 
         Net::HTTP.stubs(:new).with('www.google.com', 443).returns(http)
         
-        assert_raise(Garb::AuthenticationRequest::AuthError) do
+        assert_raises(Garb::AuthenticationRequest::AuthError) do
           @request.send_request(OpenSSL::SSL::VERIFY_NONE)
         end
       end

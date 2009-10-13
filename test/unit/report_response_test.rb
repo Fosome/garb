@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', '/test_helper')
 
 module Garb
-  class ReportResponseTest < Test::Unit::TestCase
+  class ReportResponseTest < MiniTest::Unit::TestCase
     context "An instance of the ReportResponse class" do
       setup do
         @xml = File.read(File.join(File.dirname(__FILE__), '..', "/fixtures/report_feed.xml"))

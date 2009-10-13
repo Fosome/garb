@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', '/test_helper')
 
 module Garb
-  class ProfileTest < Test::Unit::TestCase
+  class ProfileTest < MiniTest::Unit::TestCase
     
     context "The Profile class" do
       

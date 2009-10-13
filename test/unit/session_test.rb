@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', '/test_helper')
 
 module Garb
-  class SessionTest < Test::Unit::TestCase
+  class SessionTest < MiniTest::Unit::TestCase
     
     context "The Session class" do
       
