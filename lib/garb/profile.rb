@@ -7,7 +7,7 @@ module Garb
       include HappyMapper
       
       tag 'property'
-      namespace 'dxp'
+      namespace 'http://schemas.google.com/analytics/2009'
       
       attribute :name, String
       attribute :value, String
@@ -23,7 +23,7 @@ module Garb
       tag 'entry'
 
       element :title, String
-      element :tableId, String, :namespace => 'dxp'
+      element :tableId, String, :namespace => 'http://schemas.google.com/analytics/2009'
 
       has_many :properties, Property
     end

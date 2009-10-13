@@ -11,13 +11,13 @@ spec = Gem::Specification.new do |s|
   s.version           = Garb::Version.to_s
   s.has_rdoc          = false
   s.summary           = "Google Analytics API Ruby Wrapper"
-  s.authors           = ['Tony Pitale','Justin Marney', 'Patrick Reagan']
+  s.authors           = ['Tony Pitale', 'Patrick Reagan']
   s.email             = 'tony.pitale@viget.com'
   s.homepage          = 'http://github.com/vigetlabs/garb'
   s.files             = %w(README.md Rakefile) + Dir.glob("lib/**/*")
   s.test_files        = Dir.glob("test/**/*")
 
-  s.add_dependency("happymapper", [">= 0.2.5"])
+  s.add_dependency("happymapper", ["~> 0.3.0"])
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|

@@ -34,7 +34,7 @@ module Garb
       include HappyMapper
 
       tag 'metric'
-      namespace 'dxp'
+      namespace 'http://schemas.google.com/dataexport/2009'
 
       attribute :name, String
       attribute :value, String
@@ -44,7 +44,7 @@ module Garb
       include HappyMapper
 
       tag 'dimension'
-      namespace 'dxp'
+      namespace 'http://schemas.google.com/dataexport/2009'
 
       attribute :name, String
       attribute :value, String
