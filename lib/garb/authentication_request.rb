@@ -4,16 +4,17 @@ module Garb
     
     URL = 'https://www.google.com/accounts/ClientLogin'
     
-    def initialize(email, password)
+    def initialize(email, password, opts={})
       @email = email
       @password = password
+      @account_type = opts.fetch(:account_type, 'HOSTED_OR_GOOGLE')
     end
     
     def parameters
       {
         'Email'       => @email,
         'Passwd'      => @password,
-        'accountType' => 'HOSTED_OR_GOOGLE',
+        'accountType' => @account_type,
         'service'     => 'analytics',
         'source'      => 'vigetLabs-garb-001'
       }

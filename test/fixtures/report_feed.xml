@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns='http://www.w3.org/2005/Atom'
   xmlns:openSearch='http://a9.com/-/spec/opensearchrss/1.0/'
-  xmlns:dxp='http://schemas.google.com/dataexport/2009'
+  xmlns:dxp='http://schemas.google.com/analytics/2009'
   xmlns:ga='http://schemas.google.com/analytics/2008'>
     <id>http://www.google.com/analytics/feeds/data?ids=ga:983247&amp;dimensions=ga:country,ga:city&amp;metrics=ga:pageViews&amp;start-date=2008-01-01&amp;end-date=2008-01-02</id>
     <updated>2008-01-02T15:59:59.999-08:00 </updated>
