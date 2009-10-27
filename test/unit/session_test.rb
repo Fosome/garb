@@ -7,17 +7,18 @@ module Garb
       
       should "be able retrieve an auth_token for a user" do
         auth_request = mock {|m| m.expects(:auth_token).with({}).returns('toke') }
-        AuthenticationRequest.expects(:new).with('email', 'password').returns(auth_request)
+        AuthenticationRequest.expects(:new).with('email', 'password', {}).returns(auth_request)
 
         Session.login('email', 'password')
         assert_equal 'toke', Session.auth_token
       end
 
       should "be able retrieve an auth_token for a user with secure ssl" do
-        auth_request = mock {|m| m.expects(:auth_token).with({:secure => true}).returns('toke') }
-        AuthenticationRequest.expects(:new).with('email', 'password').returns(auth_request)
+        opts = {:secure => true, :account_type => 'GOOGLE'}
+        auth_request = mock {|m| m.expects(:auth_token).with(opts).returns('toke') }
+        AuthenticationRequest.expects(:new).with('email', 'password', opts).returns(auth_request)
 
-        Session.login('email', 'password', :secure => true)
+        Session.login('email', 'password', opts)
         assert_equal 'toke', Session.auth_token
       end
       

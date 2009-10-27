@@ -3,7 +3,7 @@ module Garb
     
     def self.login(email, password, opts={})
       @email = email
-      auth_request = AuthenticationRequest.new(email, password)
+      auth_request = AuthenticationRequest.new(email, password, opts)
       @auth_token = auth_request.auth_token(opts)
     end
 
