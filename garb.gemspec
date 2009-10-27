@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{garb}
-  s.version = "0.3.0"
+  s.version = "0.3.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Tony Pitale", "Patrick Reagan"]
-  s.date = %q{2009-10-26}
+  s.date = %q{2009-10-27}
   s.email = %q{tony.pitale@viget.com}
   s.files = ["README.md", "Rakefile", "lib/extensions", "lib/extensions/array.rb", "lib/extensions/operator.rb", "lib/extensions/string.rb", "lib/extensions/symbol.rb", "lib/garb", "lib/garb/account.rb", "lib/garb/authentication_request.rb", "lib/garb/data_request.rb", "lib/garb/oauth_session.rb", "lib/garb/profile.rb", "lib/garb/report.rb", "lib/garb/report_parameter.rb", "lib/garb/report_response.rb", "lib/garb/resource.rb", "lib/garb/session.rb", "lib/garb/version.rb", "lib/garb.rb", "test/fixtures", "test/fixtures/cacert.pem", "test/fixtures/profile_feed.xml", "test/fixtures/report_feed.xml", "test/test_helper.rb", "test/unit", "test/unit/account_test.rb", "test/unit/authentication_request_test.rb", "test/unit/data_request_test.rb", "test/unit/garb_test.rb", "test/unit/oauth_session_test.rb", "test/unit/operator_test.rb", "test/unit/profile_test.rb", "test/unit/report_parameter_test.rb", "test/unit/report_response_test.rb", "test/unit/report_test.rb", "test/unit/resource_test.rb", "test/unit/session_test.rb", "test/unit/string_test.rb", "test/unit/symbol_test.rb"]
   s.homepage = %q{http://github.com/vigetlabs/garb}
