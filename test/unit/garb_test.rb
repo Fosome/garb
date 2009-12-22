@@ -1,9 +1,13 @@
 require File.join(File.dirname(__FILE__), '..', '/test_helper')
 
 class GarbTest < MiniTest::Unit::TestCase
-  context "A green egg" do
-    should "be served with ham" do
-      assert true
+  context "The Garb module" do
+    should 'prefix a string with ga: for GA' do
+      assert_equal 'ga:bob', Garb.to_google_analytics('bob')
     end
-  end  
+
+    should 'remove ga: prefix' do
+      assert_equal 'bob', Garb.from_google_analytics('ga:bob')
+    end
+  end
 end

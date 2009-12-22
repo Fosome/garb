@@ -4,11 +4,11 @@ module Garb
     attr_reader :target, :operator, :prefix
   
     def initialize(target, operator, prefix=false)
-      @target   = target.to_google_analytics
+      @target   = Garb.to_google_analytics(target)
       @operator = operator
       @prefix = prefix
     end
-  
+
     def to_google_analytics
       @prefix ? "#{operator}#{target}" : "#{target}#{operator}"
     end

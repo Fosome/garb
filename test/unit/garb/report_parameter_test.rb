@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '..', '/test_helper')
+require File.join(File.dirname(__FILE__), '..', '..', '/test_helper')
 
 module Garb
   class ReportParameterTest < MiniTest::Unit::TestCase
@@ -35,25 +35,6 @@ module Garb
         should "join multiple symbol elements" do
           @metrics << :request_uri << :city
           assert_equal({'metrics' => 'ga:requestUri,ga:city'}, @metrics.to_params)
-        end
-        
-        should "join operator elements" do
-          @metrics << :city.desc
-          assert_equal({'metrics' => '-ga:city'}, @metrics.to_params)
-        end
-        
-        should "parameterize hash operators and join elements" do
-          @metrics << {:city.eql => 'New York'}
-          params = {'metrics' => 'ga:city%3D%3DNew+York'}
-
-          assert_equal params, @metrics.to_params
-        end
-
-        should "properly encode operators" do
-          @metrics << {:request_uri.contains => 'New York'}
-          params = {'metrics' => 'ga:requestUri%3D~New+York'}
-
-          assert_equal params, @metrics.to_params
         end
       end
     end

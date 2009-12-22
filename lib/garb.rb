@@ -15,15 +15,21 @@ require 'garb/data_request'
 require 'garb/session'
 require 'garb/profile'
 require 'garb/account'
+require 'garb/filter_parameters'
 require 'garb/report_parameter'
 require 'garb/report_response'
 require 'garb/resource'
 require 'garb/report'
 require 'garb/operator'
 
-require 'extensions/string'
-require 'extensions/symbol'
-
 module Garb
   GA = "http://schemas.google.com/analytics/2008"
+  
+  def self.to_google_analytics(thing)
+    "ga:#{thing.to_s.camelize(:lower)}"
+  end
+
+  def self.from_google_analytics(thing)
+    thing.to_s.gsub(/^ga\:/, '').underscore
+  end
 end

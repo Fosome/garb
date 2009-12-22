@@ -3,7 +3,7 @@ module Garb
     MONTH = 2592000
     URL = "https://www.google.com/analytics/feeds/data"
 
-    %w(metrics dimensions filters sort).each do |parameter|
+    %w(metrics dimensions sort).each do |parameter|
       class_eval <<-CODE
         def #{parameter}(*fields)
           @#{parameter} ||= ReportParameter.new(:#{parameter})
@@ -16,33 +16,15 @@ module Garb
       CODE
     end
 
-    # def metrics(*fields)
-    #   @metrics ||= ReportParameter.new(:metrics)
-    #   @metrics << fields
-    # end
-    # 
-    # def dimensions(*fields)
-    #   @dimensions ||= ReportParameter.new(:dimensions)
-    #   @dimensions << fields
-    # end
-    # 
-    # def filters(*hashes)
-    #   @filters ||= ReportParameter.new(:filters)
-    #   @filters << hashes
-    # end
-    # 
-    # def sort(*fields)
-    #   @sort ||= ReportParameter.new(:sort)
-    #   @sort << fields
-    # end
-    # 
-    # def clear_filters
-    #   @filters = ReportParameter.new(:filters)
-    # end
-    # 
-    # def clear_sort
-    #   @sort = ReportParameter.new(:sort)
-    # end
+    def filters(&block)
+      @filter_parameters ||= FilterParameters.new
+      @filter_parameters.filters(&block) if block_given?
+      @filter_parameters
+    end
+
+    def clear_filters
+      @filter_parameters = FilterParameters.new
+    end
 
     def results(profile, opts = {}, &block)
       @profile = profile.is_a?(Profile) ? profile : Profile.first(profile)

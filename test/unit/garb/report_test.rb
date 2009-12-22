@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '..', '/test_helper')
+require File.join(File.dirname(__FILE__), '..', '..', '/test_helper')
 
 module Garb
   # Also tests Garb::Resource, which is the basis for Garb::Report
@@ -11,7 +11,7 @@ module Garb
         @report = Report.new(@profile)
       end
 
-      %w(metrics dimensions filters sort).each do |param|
+      %w(metrics dimensions sort).each do |param|
         should "have parameters for #{param}" do
           assert @report.send(:"#{param}").is_a?(ReportParameter)
         end
@@ -19,6 +19,14 @@ module Garb
         should "clear parameters for #{param}" do
           assert_equal({}, @report.send(:"clear_#{param}").to_params)
         end
+      end
+
+      should "have filter parameters for filters" do
+        assert @report.filters.is_a?(FilterParameters)
+      end
+
+      should "clear filter parameters for filters" do
+        assert_equal({}, @report.filters.to_params)
       end
 
       should "have default parameters" do

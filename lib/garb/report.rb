@@ -15,7 +15,6 @@ module Garb
 
       metrics opts.fetch(:metrics, [])
       dimensions opts.fetch(:dimensions, [])
-      filters opts.fetch(:filters, [])
       sort opts.fetch(:sort, [])
     end
 

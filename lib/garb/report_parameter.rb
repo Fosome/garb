@@ -18,19 +18,8 @@ module Garb
     end
     
     def to_params
-      params = self.elements.map do |elem|
-        case elem
-        when Hash
-          elem.collect do |k,v|
-            next unless k.is_a?(Operator)
-            "#{k.target}#{URI.encode(k.operator.to_s, /[=<>]/)}#{CGI::escape(v.to_s)}"
-          end.join(';')
-        else
-          elem.to_google_analytics
-        end
-      end.join(',')
-      
-      params.empty? ? {} : {self.name => params}
+      value = self.elements.map{|param| Garb.to_google_analytics(param)}.join(',')
+      value.empty? ? {} : {self.name => value}
     end
   end
 end
