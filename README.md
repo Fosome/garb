@@ -8,6 +8,11 @@ garb
 Important Changes
 =================
 
+Version 0.5.0
+
+  * Filters now have a new DSL so that I could toss Symbol operators (which conflict with DataMapper and MongoMapper)
+  * The method of passing a hash to filters no longer works, at all
+
 Version 0.4.0
   
   * Changes the api for filters and sort making it consistent with metrics/dimensions
@@ -65,8 +70,11 @@ Define a Report Class and Get Results
 
       metrics :exits, :pageviews, :exit_rate
       dimensions :page_path
-      filters :page_path => 'season'
       sort :exits
+
+      filters do
+        eql(:page_path, 'season')
+      end
     end
 
 Other Parameters
@@ -116,10 +124,12 @@ Build a One-Off Report
     report = Garb::Report.new(profile)
     report.metrics :pageviews, :exits
     report.dimensions :page_path
-
-    report.filters :page_path.contains => 'season', :exits.gte => 10 # AND'd together
-    report.filters :page_path.contains => 'greeting' # OR'd with previous filters
     report.sort :exits
+
+    report.filters do
+      contains(:page_path, 'season')
+      gte(:exits, 10)
+    and
 
     report.results
 
@@ -156,7 +166,9 @@ Filtering
     
   Given the previous example one-off report, we can add a line for filter:
   
-    report.filters << {:request_uri.eql => '/extend/effectively-using-git-with-subversion/'}
+    report.filters do
+      eql(:request_uri, '/extend/effectively-using-git-with-subversion/')
+    end
 
 SSL
 ---
@@ -183,6 +195,7 @@ Requirements
 ------------
 
   happymapper >= 0.3.0 (should also install libxml)
+  active_support >= 2.3.0
 
 Install
 -------
