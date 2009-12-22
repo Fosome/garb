@@ -3,38 +3,49 @@ module Garb
     MONTH = 2592000
     URL = "https://www.google.com/analytics/feeds/data"
 
-    def metrics(*fields)
-      @metrics ||= ReportParameter.new(:metrics)
-      @metrics << fields
+    %w(metrics dimensions filters sort).each do |parameter|
+      class_eval <<-CODE
+        def #{parameter}(*fields)
+          @#{parameter} ||= ReportParameter.new(:#{parameter})
+          @#{parameter} << fields
+        end
+
+        def clear_#{parameter}
+          @#{parameter} = ReportParameter.new(:#{parameter})
+        end
+      CODE
     end
 
-    def dimensions(*fields)
-      @dimensions ||= ReportParameter.new(:dimensions)
-      @dimensions << fields
-    end
-
-    def filter(*hash)
-      @filters << hash
-    end
-
-    def filters
-      @filters ||= ReportParameter.new(:filters)
-    end
-
-    def sort(*fields)
-      @sorts << fields
-    end
-
-    def sorts
-      @sorts ||= ReportParameter.new(:sort)
-    end
+    # def metrics(*fields)
+    #   @metrics ||= ReportParameter.new(:metrics)
+    #   @metrics << fields
+    # end
+    # 
+    # def dimensions(*fields)
+    #   @dimensions ||= ReportParameter.new(:dimensions)
+    #   @dimensions << fields
+    # end
+    # 
+    # def filters(*hashes)
+    #   @filters ||= ReportParameter.new(:filters)
+    #   @filters << hashes
+    # end
+    # 
+    # def sort(*fields)
+    #   @sort ||= ReportParameter.new(:sort)
+    #   @sort << fields
+    # end
+    # 
+    # def clear_filters
+    #   @filters = ReportParameter.new(:filters)
+    # end
+    # 
+    # def clear_sort
+    #   @sort = ReportParameter.new(:sort)
+    # end
 
     def results(profile, opts = {}, &block)
-      @profile = profile
-
-      # clear filters and sort
-      @filters = ReportParameter.new(:filters)
-      @sorts = ReportParameter.new(:sort)
+      @profile = profile.is_a?(Profile) ? profile : Profile.first(profile)
 
       @start_date = opts.fetch(:start_date, Time.now - MONTH)
       @end_date = opts.fetch(:end_date, Time.now)
@@ -60,7 +71,7 @@ module Garb
       [
         metrics.to_params,
         dimensions.to_params,
-        sorts.to_params,
+        sort.to_params,
         filters.to_params,
         page_params
       ].inject(default_params) do |p, i|

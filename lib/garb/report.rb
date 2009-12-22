@@ -13,13 +13,9 @@ module Garb
       @limit = opts.fetch(:limit, nil)
       @offset = opts.fetch(:offset, nil)
 
-      # clear filters and sort
-      @filters = ReportParameter.new(:filters)
-      @sorts = ReportParameter.new(:sort)
-
       metrics opts.fetch(:metrics, [])
       dimensions opts.fetch(:dimensions, [])
-      filter opts.fetch(:filter, [])
+      filters opts.fetch(:filters, [])
       sort opts.fetch(:sort, [])
     end
 

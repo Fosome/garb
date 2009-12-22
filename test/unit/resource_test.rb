@@ -9,7 +9,7 @@ class ResourceTest < MiniTest::Unit::TestCase
 
   context "A class with Garb::Resource mixed in" do
     should "get results from GA" do
-      profile = stub
+      profile = stub(:is_a? => true)
       TestReport.expects(:send_request_for_body).returns('xml')
       Garb::ReportResponse.expects(:new).with('xml').returns(mock(:results => 'analytics'))
 

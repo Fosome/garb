@@ -11,9 +11,13 @@ module Garb
         @report = Report.new(@profile)
       end
 
-      %w(metrics dimensions filters sorts).each do |param|
+      %w(metrics dimensions filters sort).each do |param|
         should "have parameters for #{param}" do
           assert @report.send(:"#{param}").is_a?(ReportParameter)
+        end
+
+        should "clear parameters for #{param}" do
+          assert_equal({}, @report.send(:"clear_#{param}").to_params)
         end
       end
 
@@ -27,7 +31,7 @@ module Garb
         @report.stubs(:metrics).returns(stub(:to_params => {'metrics' => 6}))
         @report.stubs(:dimensions).returns(stub(:to_params => {'dimensions' => 5}))
         @report.stubs(:filters).returns(stub(:to_params => {'filters' => 4}))
-        @report.stubs(:sorts).returns(stub(:to_params => {'sort' => 3}))
+        @report.stubs(:sort).returns(stub(:to_params => {'sort' => 3}))
         @report.stubs(:page_params).returns({'page_params' => 2})
         @report.stubs(:default_params).returns({'default_params' => 1})
         
