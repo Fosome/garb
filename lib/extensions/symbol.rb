@@ -5,7 +5,7 @@ class Symbol
     operators.each do |method, operator|
       class_eval <<-CODE
         def #{method}
-          Operator.new(self, '#{operator}')
+          Garb::Operator.new(self, '#{operator}')
         end
       CODE
     end
@@ -13,7 +13,7 @@ class Symbol
 
   # Sorting
   def desc
-    Operator.new(self, '-', true)
+    Garb::Operator.new(self, '-', true)
   end
 
   operator  :eql => '==',
@@ -31,6 +31,6 @@ class Symbol
 
   # Metric filters  
   def to_ga
-    "ga:#{self.to_s.lower_camelized}"
+    self.to_s.camelize(:lower).to_ga
   end
 end

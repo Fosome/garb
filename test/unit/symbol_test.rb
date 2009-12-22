@@ -12,7 +12,7 @@ class SymbolTest < MiniTest::Unit::TestCase
       operator = stub()
       symbol = :foo
       
-      Operator.expects(:new).with(:foo, '-', true).returns(operator)
+      Garb::Operator.expects(:new).with(:foo, '-', true).returns(operator)
       assert_equal operator, :foo.desc
     end
 
@@ -22,7 +22,7 @@ class SymbolTest < MiniTest::Unit::TestCase
           new_operator = stub()
           symbol = :foo
 
-          Operator.expects(:new).with(:foo, operator).returns(new_operator)
+          Garb::Operator.expects(:new).with(:foo, operator).returns(new_operator)
           assert_equal new_operator, :foo.send(method)
         end
       end

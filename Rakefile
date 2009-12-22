@@ -19,6 +19,7 @@ spec = Gem::Specification.new do |s|
   s.test_files        = Dir.glob("test/**/*")
 
   s.add_dependency("happymapper", ["~> 0.3.0"])
+  s.add_dependency("activesupport", [">= 2.3.0"])
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|

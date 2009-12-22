@@ -13,7 +13,7 @@ module Garb
       attribute :value, String
 
       def instance_name
-        name.from_ga.underscored
+        name.from_ga.underscore
       end
     end
 

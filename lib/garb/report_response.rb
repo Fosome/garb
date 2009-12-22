@@ -13,12 +13,12 @@ module Garb
         hash = {}
         
         entry.metrics.each do |m|
-          name = m.name.sub(/^ga\:/,'').underscored
+          name = m.name.sub(/^ga\:/,'').underscore
           hash.merge!({name => m.value})
         end
         
         entry.dimensions.each do |d|
-          name = d.name.sub(/^ga\:/,'').underscored
+          name = d.name.sub(/^ga\:/,'').underscore
           hash.merge!({name => d.value})
         end
         
