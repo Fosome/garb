@@ -46,5 +46,9 @@ module Garb
       response = DataRequest.new(url).send_request      
       Entry.parse(response.body).map {|entry| new(entry)}
     end
+
+    def self.first(id)
+      all.detect {|profile| profile.id == id || profile.web_property_id == id }
+    end
   end
 end

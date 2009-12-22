@@ -28,7 +28,26 @@ module Garb
         
         assert_equal profiles, Profile.all
       end
-      
+
+      should "return the first profile for a given web property id" do
+        profile1 = stub(:web_property_id => '12345', :id => 'abcdef')
+        profile2 = stub(:web_property_id => '67890', :id => 'ghijkl')
+        entries = [profile1, profile2]
+
+        Garb::Profile.stubs(:all).returns(entries)
+
+        assert_equal profile1, Garb::Profile.first('12345')
+      end
+
+      should "return the first profile for a given table id" do
+        profile1 = stub(:id => '12345', :web_property_id => 'abcdef')
+        profile2 = stub(:id => '67890', :web_property_id => 'ghijkl')
+        entries = [profile1, profile2]
+
+        Garb::Profile.stubs(:all).returns(entries)
+
+        assert_equal profile2, Garb::Profile.first('67890')
+      end
     end
     
     context "An instance of the Profile class" do
