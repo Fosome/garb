@@ -30,7 +30,7 @@ class Symbol
             :not_substring => '!@'
 
   # Metric filters  
-  def to_ga
-    self.to_s.camelize(:lower).to_ga
+  def to_google_analytics
+    self.to_s.camelize(:lower).to_google_analytics
   end
 end

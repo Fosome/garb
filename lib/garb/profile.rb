@@ -13,7 +13,7 @@ module Garb
       attribute :value, String
 
       def instance_name
-        name.from_ga.underscore
+        name.from_google_analytics.underscore
       end
     end
 
@@ -38,7 +38,7 @@ module Garb
     end
 
     def id
-      @table_id.from_ga
+      @table_id.from_google_analytics
     end
 
     def self.all

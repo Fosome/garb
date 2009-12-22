@@ -5,7 +5,7 @@ class SymbolTest < MiniTest::Unit::TestCase
   context "An instance of the Symbol class" do
     
     should "properly format itself for ga" do
-      assert_equal "ga:requestUri", :request_uri.to_ga
+      assert_equal "ga:requestUri", :request_uri.to_google_analytics
     end
     
     should "define a :desc operator" do

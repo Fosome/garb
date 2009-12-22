@@ -1,9 +1,9 @@
 class String
-  def to_ga
+  def to_google_analytics
     "ga:#{self}"
   end
 
-  def from_ga
+  def from_google_analytics
     self.gsub(/^ga\:/, '')
   end
 end

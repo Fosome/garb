@@ -26,7 +26,7 @@ module Garb
             "#{k.target}#{URI.encode(k.operator.to_s, /[=<>]/)}#{CGI::escape(v.to_s)}"
           end.join(';')
         else
-          elem.to_ga
+          elem.to_google_analytics
         end
       end.join(',')
       

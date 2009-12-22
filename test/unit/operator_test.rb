@@ -4,15 +4,15 @@ module Garb
   class OperatorTest < MiniTest::Unit::TestCase
     context "An instance of an Operator" do
       should "lower camelize the target" do
-        assert_equal "ga:uniqueVisits=", Operator.new(:unique_visits, "=").to_ga
+        assert_equal "ga:uniqueVisits=", Operator.new(:unique_visits, "=").to_google_analytics
       end
     
       should "return target and operator together" do
-        assert_equal "ga:metric=", Operator.new(:metric, "=").to_ga
+        assert_equal "ga:metric=", Operator.new(:metric, "=").to_google_analytics
       end
     
       should "prefix the operator to the target" do
-        assert_equal "-ga:metric", Operator.new(:metric, "-", true).to_ga
+        assert_equal "-ga:metric", Operator.new(:metric, "-", true).to_google_analytics
       end
     
       should "know if it is equal to another operator" do
