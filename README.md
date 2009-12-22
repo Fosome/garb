@@ -8,11 +8,25 @@ garb
 Important Changes
 =================
 
-  Version 0.2.4 requires happymapper from rubygems, version 0.2.5. Be sure to update.
+Version 0.4.0
+  
+  * Changes the api for filters and sort making it consistent with metrics/dimensions
+  * If you wish to clear the defaults defined on a class, you may use clear_(filters/sort/metrics/dimensions)
+  * To make a custom class using Garb::Resource, you must now extend instead of include the module
 
-  Version 0.2.0 makes major changes (compared to 0.1.0) to the way garb is used to build reports.
-  There is now both a module that gets included for generating defined classes,
-  as well as, slight changes to the way that the Report class can be used.
+Version 0.3.2
+
+  * adds Profile.first which can be used to get the first profile with a table id, or web property id (UA number)
+
+Version 0.2.4
+
+  * requires happymapper from rubygems, version 0.2.5. Be sure to update.
+
+Version 0.2.0
+
+  * makes major changes (compared to 0.1.0) to the way garb is used to build reports.
+  * There is now both a module that gets included for generating defined classes,
+  * slight changes to the way that the Report class can be used.
 
 Description
 -----------
@@ -38,6 +52,8 @@ Profiles
 
     > Garb::Account.first.profiles
     
+    > Garb::Profile.first('UA-XXXX-XX')
+    
     > Garb::Profile.all
     > profile = Garb::Profile.all.first
 
@@ -45,14 +61,16 @@ Define a Report Class and Get Results
 -------------------------------------
 
     class Exits
-      include Garb::Resource
+      extend Garb::Resource
 
       metrics :exits, :pageviews, :exit_rate
-      dimensions :request_uri
+      dimensions :page_path
+      filters :page_path => 'season'
+      sort :exits
     end
 
-Parameters
-----------
+Other Parameters
+----------------
 
   * start_date: The date of the period you would like this report to start
   * end_date: The date to end, inclusive
@@ -86,7 +104,7 @@ Building a Report
   Or, with sorting and filters:
 
     Exits.results(profile, :limit => 10, :offset => 19) do
-      filter :request_uri.contains => 'season', :exits.gt => 100
+      filters :request_uri.contains => 'season', :exits.gt => 100
       sort :exits
     end
 
@@ -96,10 +114,11 @@ Build a One-Off Report
 ----------------------
 
     report = Garb::Report.new(profile)
-    report.metrics :pageviews
-    report.dimensions :request_uri
+    report.metrics :pageviews, :exits
+    report.dimensions :page_path
 
-    report.filter :request_uri.contains => 'season', :exits.gte => 10
+    report.filters :page_path.contains => 'season', :exits.gte => 10 # AND'd together
+    report.filters :page_path.contains => 'greeting' # OR'd with previous filters
     report.sort :exits
 
     report.results
@@ -159,21 +178,16 @@ TODOS
   * Single user login is the only supported method currently.
     Intend to add hooks for using OAuth
   * Read opensearch header in results
-  * OR joining filter parameters
 
 Requirements
 ------------
 
-  happymapper >= 0.2.5 (should also install libxml)
+  happymapper >= 0.3.0 (should also install libxml)
 
 Install
 -------
 
     sudo gem install garb
-
-    OR
-
-    sudo gem install vigetlabs-garb -s http://gems.github.com
 
 License
 -------
