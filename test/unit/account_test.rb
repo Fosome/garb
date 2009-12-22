@@ -6,7 +6,7 @@ module Garb
       should "have an array of accounts with all profiles" do
         p1 = stub(:account_id => '1111', :account_name => 'Blog 1')
         p2 = stub(:account_id => '1112', :account_name => 'Blog 2')
-        Profile.stubs(:all).returns([p1,p2,p1,p2])
+        Profile.stubs(:all).returns(ProfileArray.new([p1,p2,p1,p2]))
         Account.expects(:new).with([p1,p1]).returns('account1')
         Account.expects(:new).with([p2,p2]).returns('account2')
         assert_equal ['account1','account2'], Account.all

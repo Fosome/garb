@@ -44,7 +44,8 @@ module Garb
     def self.all
       url = "https://www.google.com/analytics/feeds/accounts/default"
       response = DataRequest.new(url).send_request      
-      Entry.parse(response.body).map {|entry| new(entry)}
+      profiles = Entry.parse(response.body).map {|entry| new(entry)}
+      ProfileArray.new(profiles)
     end
 
     def self.first(id)
