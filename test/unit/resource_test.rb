@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', '/test_helper')
 
 class TestReport
-  include Garb::Resource
+  extend Garb::Resource
 end
 
 # Most of the resource testing is done as a part of ReportTest

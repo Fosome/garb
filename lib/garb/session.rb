@@ -1,19 +1,13 @@
 module Garb
-  class Session
+  module Session
+    extend self
+
+    attr_accessor :auth_token, :email
     
-    def self.login(email, password, opts={})
-      @email = email
+    def login(email, password, opts={})
+      self.email = email
       auth_request = AuthenticationRequest.new(email, password, opts)
-      @auth_token = auth_request.auth_token(opts)
+      self.auth_token = auth_request.auth_token(opts)
     end
-
-    def self.auth_token
-      @auth_token
-    end
-
-    def self.email
-      @email
-    end
-
   end
 end

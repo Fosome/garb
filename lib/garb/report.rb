@@ -1,6 +1,6 @@
 module Garb
   class Report
-    include Resource::ResourceMethods
+    include Resource
 
     MONTH = 2592000
     URL = "https://www.google.com/analytics/feeds/data"
