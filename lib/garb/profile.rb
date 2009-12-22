@@ -1,7 +1,7 @@
 module Garb
   class Profile
     
-    attr_reader :table_id, :title, :account_name, :account_id
+    attr_reader :table_id, :title, :account_name, :account_id, :web_property_id
     
     class Property
       include HappyMapper
