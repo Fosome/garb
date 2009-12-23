@@ -53,10 +53,10 @@ module Garb
 
         should "properly encode operators" do
           @filter_parameters.filters do
-            contains(:request_uri, 'New York')
+            contains(:page_path, 'New York')
           end
 
-          params = {'filters' => 'ga:requestUri%3D~New+York'}
+          params = {'filters' => 'ga:pagePath%3D~New+York'}
           assert_equal params, @filter_parameters.to_params
         end
       end

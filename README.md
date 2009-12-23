@@ -112,8 +112,12 @@ Building a Report
   Or, with sorting and filters:
 
     Exits.results(profile, :limit => 10, :offset => 19) do
-      filters :request_uri.contains => 'season', :exits.gt => 100
       sort :exits
+
+      filters do
+        contains(:page_path, 'season')
+        gt(:exits, 100)
+      end
     end
 
   reports will be an array of OpenStructs with methods for the metrics and dimensions returned.
@@ -167,7 +171,7 @@ Filtering
   Given the previous example one-off report, we can add a line for filter:
   
     report.filters do
-      eql(:request_uri, '/extend/effectively-using-git-with-subversion/')
+      eql(:page_path, '/extend/effectively-using-git-with-subversion/')
     end
 
 SSL

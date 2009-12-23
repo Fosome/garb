@@ -26,7 +26,7 @@ module Garb
       end
 
       should "clear filter parameters for filters" do
-        assert_equal({}, @report.filters.to_params)
+        assert_equal({}, @report.clear_filters.to_params)
       end
 
       should "have default parameters" do
