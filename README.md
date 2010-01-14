@@ -118,6 +118,9 @@ Building a Report
         contains(:page_path, 'season')
         gt(:exits, 100)
       end
+
+      # or with a hash
+      # filters :page_path.contains => 'season', :exits.gt => 100
     end
 
   reports will be an array of OpenStructs with methods for the metrics and dimensions returned.
@@ -134,6 +137,9 @@ Build a One-Off Report
       contains(:page_path, 'season')
       gte(:exits, 10)
     and
+
+    # or with a hash
+    # report.filters :page_path.contains => 'season', :exits.gt => 100
 
     report.results
 
@@ -152,27 +158,31 @@ Filtering
 
   Operators on metrics:
 
-    :eql => '==',
-    :not_eql => '!=',
-    :gt => '>',
-    :gte => '>=',
-    :lt => '<',
-    :lte => '<='
+    eql => '==',
+    not_eql => '!=',
+    gt => '>',
+    gte => '>=',
+    lt => '<',
+    lte => '<='
 
   Operators on dimensions:
 
-    :matches => '==',
-    :does_not_match => '!=',
-    :contains => '=~',
-    :does_not_contain => '!~',
-    :substring => '=@',
-    :not_substring => '!@'
+    matches => '==',
+    does_not_match => '!=',
+    contains => '=~',
+    does_not_contain => '!~',
+    substring => '=@',
+    not_substring => '!@'
     
   Given the previous example one-off report, we can add a line for filter:
   
     report.filters do
       eql(:page_path, '/extend/effectively-using-git-with-subversion/')
     end
+
+  Or, if you're comfortable using symbol operators:
+
+    report.filters :page_path.eql => '/extend/effectively-using-git-with-subversion/'
 
 SSL
 ---
