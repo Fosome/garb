@@ -25,6 +25,14 @@ module Garb
         assert @report.filters.is_a?(FilterParameters)
       end
 
+      should "add new filters to filter parameters" do
+        @report.clear_filters
+        hash = {:thing.gt => 'val'}
+        @report.filters hash
+
+        assert_equal hash, @report.filters.parameters.first
+      end
+
       should "clear filter parameters for filters" do
         assert_equal({}, @report.clear_filters.to_params)
       end

@@ -3,6 +3,7 @@ require File.join(File.dirname(__FILE__), '..', '/test_helper')
 class GarbTest < MiniTest::Unit::TestCase
   context "The Garb module" do
     should 'prefix a string with ga: for GA' do
+      assert_equal '-ga:bob', Garb.to_google_analytics(stub(:to_google_analytics => '-ga:bob'))
       assert_equal 'ga:bob', Garb.to_google_analytics('bob')
     end
 

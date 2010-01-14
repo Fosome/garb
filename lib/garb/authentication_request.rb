@@ -1,15 +1,15 @@
 module Garb
   class AuthenticationRequest
     class AuthError < StandardError;end
-    
+
     URL = 'https://www.google.com/accounts/ClientLogin'
-    
+
     def initialize(email, password, opts={})
       @email = email
       @password = password
       @account_type = opts.fetch(:account_type, 'HOSTED_OR_GOOGLE')
     end
-    
+
     def parameters
       {
         'Email'       => @email,
@@ -23,7 +23,7 @@ module Garb
     def uri
       URI.parse(URL)
     end
-    
+
     def send_request(ssl_mode)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true

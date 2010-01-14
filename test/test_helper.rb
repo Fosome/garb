@@ -8,7 +8,7 @@ require 'mocha'
 require File.dirname(__FILE__) + '/../lib/garb'
 
 class MiniTest::Unit::TestCase
-  
+
   def read_fixture(filename)
     File.read(File.dirname(__FILE__) + "/fixtures/#{filename}")
   end

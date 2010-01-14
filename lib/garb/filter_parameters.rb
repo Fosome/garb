@@ -1,25 +1,17 @@
 module Garb
   class FilterParameters
-    def self.define_operator(key, operation)
-      class_eval <<-CODE
-        def #{key}(target, value)
-          self.parameters << {Operator.new(target, '#{operation}') => value}
-        end
-      CODE
+    def self.define_operators(*methods)
+      methods.each do |method|
+        class_eval <<-CODE
+          def #{method}(field, value)
+            self.parameters << {SymbolOperator.new(field, :#{method}) => value}
+          end
+        CODE
+      end
     end
 
-    define_operator(:eql, '==')
-    define_operator(:not_eql, '!=')
-    define_operator(:gt, '>')
-    define_operator(:gte, '>=')
-    define_operator(:lt, '<')
-    define_operator(:lte, '<=')
-    define_operator(:matches, '==')
-    define_operator(:does_not_match, '!=')
-    define_operator(:contains, '=~')
-    define_operator(:does_not_contain, '!~')
-    define_operator(:substring, '=@')
-    define_operator(:not_substring, '!@')
+    define_operators :eql, :not_eql, :gt, :gte, :lt, :lte, :matches,
+      :does_not_match, :contains, :does_not_contain, :substring, :not_substring
 
     attr_accessor :parameters
 
@@ -34,8 +26,8 @@ module Garb
     def to_params
       value = self.parameters.map do |param|
         param.map do |k,v|
-          next unless k.is_a?(Garb::Operator)
-          "#{k.target}#{URI.encode(k.operator.to_s, /[=<>]/)}#{CGI::escape(v.to_s)}"
+          next unless k.is_a?(SymbolOperator)
+          "#{URI.encode(k.to_google_analytics, /[=<>]/)}#{CGI::escape(v.to_s)}"
         end.join(',') # Hash AND
       end.join(';') # Array OR
 

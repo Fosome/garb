@@ -16,8 +16,13 @@ module Garb
       CODE
     end
 
-    def filters(&block)
+    def filters(*hashes, &block)
       @filter_parameters ||= FilterParameters.new
+
+      hashes.each do |hash|
+        @filter_parameters.parameters << hash
+      end
+
       @filter_parameters.filters(&block) if block_given?
       @filter_parameters
     end
