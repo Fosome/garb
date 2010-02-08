@@ -9,7 +9,6 @@ require 'happymapper'
 require 'active_support'
 
 require 'garb/version'
-require 'garb/profile_array'
 require 'garb/authentication_request'
 require 'garb/data_request'
 require 'garb/session'

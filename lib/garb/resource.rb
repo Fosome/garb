@@ -3,6 +3,14 @@ module Garb
     MONTH = 2592000
     URL = "https://www.google.com/analytics/feeds/data"
 
+    def self.extended(base)
+      # define a method on a module that gets included into profile
+      # Exits would make:
+      # to enable profile.exits(options_hash, &block)
+      # returns Exits.results(self, options_hash, &block)
+      # every class defined which extends Resource will add to the module
+    end
+
     %w(metrics dimensions sort).each do |parameter|
       class_eval <<-CODE
         def #{parameter}(*fields)
