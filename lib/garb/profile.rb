@@ -1,6 +1,8 @@
 module Garb
   class Profile
-    
+
+    include ProfileReports
+
     attr_reader :table_id, :title, :account_name, :account_id, :web_property_id
     
     class Property

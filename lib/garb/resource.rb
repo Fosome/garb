@@ -9,6 +9,7 @@ module Garb
       # to enable profile.exits(options_hash, &block)
       # returns Exits.results(self, options_hash, &block)
       # every class defined which extends Resource will add to the module
+      ProfileReports.add_report_method(base)
     end
 
     %w(metrics dimensions sort).each do |parameter|
