@@ -32,8 +32,12 @@ module Garb
       
       should "be able to send a request for a single user" do
         Session.stubs(:single_user?).returns(true)
+        response = mock('Net::HTTPOK') do |m|
+          m.expects(:kind_of?).with(Net::HTTPSuccess).returns(true)
+        end
+
         data_request = DataRequest.new('https://example.com/data', 'key' => 'value')
-        data_request.stubs(:single_user_request)
+        data_request.stubs(:single_user_request).returns(response)
         data_request.send_request
 
         assert_received(data_request, :single_user_request)
@@ -42,11 +46,28 @@ module Garb
       should "be able to send a request for an oauth user" do
         Session.stubs(:single_user?).returns(false)
         Session.stubs(:oauth_user?).returns(true)
+        response = mock('Net::HTTPOK') do |m|
+          m.expects(:kind_of?).with(Net::HTTPSuccess).returns(true)
+        end
+
         data_request = DataRequest.new('https://example.com/data', 'key' => 'value')
-        data_request.stubs(:oauth_user_request)
+        data_request.stubs(:oauth_user_request).returns(response)
         data_request.send_request
 
         assert_received(data_request, :oauth_user_request)
+      end
+
+      should "raise if the request is unauthorized" do
+        Session.stubs(:single_user?).returns(false)
+        Session.stubs(:oauth_user?).returns(true)
+        response = mock('Net::HTTPUnauthorized', :body => 'Error')
+
+        data_request = DataRequest.new('https://example.com/data', 'key' => 'value')
+        data_request.stubs(:oauth_user_request).returns(response)
+
+        assert_raises(Garb::DataRequest::ClientError) do
+          data_request.send_request
+        end
       end
 
       should "be able to request via the ouath access token" do
@@ -63,7 +84,6 @@ module Garb
       should "be able to request via http with an auth token" do
         Session.expects(:auth_token).with().returns('toke')
         response = mock
-        response.expects(:is_a?).with(Net::HTTPOK).returns(true)
 
         http = mock do |m|
           m.expects(:use_ssl=).with(true)
