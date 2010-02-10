@@ -28,7 +28,16 @@ module Garb
         Session.login('email', 'password')
         assert_equal 'email', Session.email
       end
-      
+
+      should "know if the Session is for a single user" do
+        Session.auth_token = "abcdefg1234567"
+        assert_equal true, Session.single_user?
+      end
+
+      should "know if the Session is for oauth" do
+        Session.access_token = 'some_oauth_access_token'
+        assert_equal true, Session.oauth_user?
+      end
     end
 
   end

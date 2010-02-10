@@ -16,6 +16,14 @@ module Garb
     end
 
     def send_request
+      if Session.single_user?
+        single_user_request
+      elsif Session.oauth_user?
+        oauth_user_request
+      end
+    end
+
+    def single_user_request
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
@@ -24,5 +32,8 @@ module Garb
       response
     end
 
+    def oauth_user_request
+      Session.access_token.get("#{uri}#{query_string}")
+    end
   end
 end
