@@ -1,37 +1,12 @@
-garb
+Garb
 ====
-
-  by Tony Pitale with much help from Justin Marney, Patrick Reagan and others at Viget Labs
 
   http://github.com/vigetlabs/garb
 
 Important Changes
 =================
 
-Version 0.5.0
-
-  * Filters now have a new DSL so that I could toss Symbol operators (which conflict with DataMapper and MongoMapper)
-  * The method of passing a hash to filters no longer works, at all
-
-Version 0.4.0
-  
-  * Changes the api for filters and sort making it consistent with metrics/dimensions
-  * If you wish to clear the defaults defined on a class, you may use clear_(filters/sort/metrics/dimensions)
-  * To make a custom class using Garb::Resource, you must now extend instead of include the module
-
-Version 0.3.2
-
-  * adds Profile.first which can be used to get the first profile with a table id, or web property id (UA number)
-
-Version 0.2.4
-
-  * requires happymapper from rubygems, version 0.2.5. Be sure to update.
-
-Version 0.2.0
-
-  * makes major changes (compared to 0.1.0) to the way garb is used to build reports.
-  * There is now both a module that gets included for generating defined classes,
-  * slight changes to the way that the Report class can be used.
+ Please read CHANGELOG
 
 Description
 -----------
@@ -43,13 +18,19 @@ Description
 Basic Usage
 ===========
 
-Login
------
+Single User Login
+-----------------
   
     > Garb::Session.login(username, password)
+    
+OAuth Access Token
+------------------
+
+    > Garb::Session.access_token = access_token # assign from oauth gem
 
 Accounts
 --------
+
     > Garb::Account.all
 
 Profiles
@@ -62,8 +43,8 @@ Profiles
     > Garb::Profile.all
     > profile = Garb::Profile.all.first
 
-Define a Report Class and Get Results
--------------------------------------
+Define a Report Class
+---------------------
 
     class Exits
       extend Garb::Resource
@@ -75,7 +56,19 @@ Define a Report Class and Get Results
       filters do
         eql(:page_path, 'season')
       end
+
+      # alternative:
+      # filters :page_path.eql => 10
     end
+
+Get the Results
+---------------
+
+    > Exits.results(profile)
+
+  OR shorthand
+
+    > profile.exits
 
 Other Parameters
 ----------------
@@ -187,7 +180,7 @@ Filtering
 SSL
 ---
 
-  Version 0.2.3 includes support for real ssl encryption for authentication. First do:
+  Version 0.2.3 includes support for real ssl encryption for SINGLE USER authentication. First do:
 
     Garb::Session.login(username, password, :secure => true)
 
@@ -201,27 +194,40 @@ TODOS
 -----
 
   * Sessions are currently global, which isn't awesome
-  * Single user login is the only supported method currently.
-    Intend to add hooks for using OAuth
   * Read opensearch header in results
 
 Requirements
 ------------
 
-  happymapper >= 0.3.0 (should also install libxml)
-  active_support >= 2.3.0
+  * happymapper >= 0.3.0 (should also install libxml)
+  * active_support >= 2.3.0
+
+Requirements for Testing
+------------------------
+
+  * jferris-mocha
+  * tpitale-shoulda (works with minitest)
 
 Install
 -------
 
     sudo gem install garb
 
+Contributors
+------------
+
+  Many Thanks, for all their help, goes to:
+
+  * Patrick Reagan
+  * Justin Marney
+  * Nick Plante
+
 License
 -------
 
   (The MIT License)
 
-  Copyright (c) 2008 Viget Labs
+  Copyright (c) 2010 Viget Labs
 
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the
