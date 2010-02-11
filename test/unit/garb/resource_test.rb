@@ -15,5 +15,15 @@ class ResourceTest < MiniTest::Unit::TestCase
 
       assert_equal 'analytics', TestReport.results(profile)
     end
+
+    should "get results from GA using a specific user session" do
+      profile = '123'
+      session = Garb::Session.new
+      TestReport.expects(:send_request_for_body).returns('xml')
+      Garb::ReportResponse.expects(:new).with('xml').returns(mock(:results => 'analytics'))
+      Garb::Profile.expects(:first).with(profile, session)
+
+      assert_equal 'analytics', TestReport.results(profile, :session => session)
+    end
   end
 end

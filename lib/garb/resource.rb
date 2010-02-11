@@ -41,7 +41,7 @@ module Garb
     end
 
     def results(profile, opts = {}, &block)
-      @profile = profile.is_a?(Profile) ? profile : Profile.first(profile)
+      @profile = profile.is_a?(Profile) ? profile : Profile.first(profile, opts.fetch(:session, Session))
 
       @start_date = opts.fetch(:start_date, Time.now - MONTH)
       @end_date = opts.fetch(:end_date, Time.now)
