@@ -7,7 +7,7 @@ module Garb
       setup do
         @now = Time.now
         Time.stubs(:now).returns(@now)
-        @profile = stub(:table_id => 'ga:1234')
+        @profile = stub(:table_id => 'ga:1234', :session => Session)
         @report = Report.new(@profile)
       end
 
@@ -64,7 +64,7 @@ module Garb
         request = mock {|m| m.expects(:send_request).returns(response) }
         @report.expects(:params).returns('params')
 
-        DataRequest.expects(:new).with(Garb::Report::URL, 'params').returns(request)
+        DataRequest.expects(:new).with(Session, Garb::Report::URL, 'params').returns(request)
         assert_equal 'response body', @report.send_request_for_body
       end
 

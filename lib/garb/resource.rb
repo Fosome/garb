@@ -80,7 +80,7 @@ module Garb
     end
 
     def send_request_for_body
-      request = DataRequest.new(URL, params)
+      request = DataRequest.new(@profile.session, URL, params)
       response = request.send_request
       response.body
     end
