@@ -18,13 +18,24 @@ module Garb
     end
 
     context "An instance of the Account class" do
-      context "when creating a new account from an array of profiles" do
-        setup do
-          profile = stub(:account_id => '1111', :account_name => 'Blog 1')
-          @profiles = [profile,profile]
-          @account = Account.new(@profiles)
-        end
+      setup do
+        profile = stub(:account_id => '1111', :account_name => 'Blog 1')
+        @profiles = [profile,profile]
+        @account = Account.new(@profiles)
+      end
 
+      context "all" do
+        should "use an optional user session" do
+          session = Session.new
+          Garb::Profile.expects(:all).with(session).returns(@profiles)
+
+          accounts = Account.all(session)
+          assert_equal 1, accounts.size
+          assert_equal @profiles, accounts.first.profiles
+        end
+      end
+
+      context "when creating a new account from an array of profiles" do
         should "take the account id from the first profile" do
           assert_equal @profiles.first.account_id, @account.id
         end

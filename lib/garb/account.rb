@@ -8,10 +8,10 @@ module Garb
       @profiles = profiles
     end
 
-    def self.all
+    def self.all(session = Session)
       # Profile.all.group_to_array{|p| p.account_id}.map{|profiles| new(profiles)}
 
-      profile_groups = Profile.all.inject({}) do |hash, profile|
+      profile_groups = Profile.all(session).inject({}) do |hash, profile|
         key = profile.account_id
         
         if hash.has_key?(key)
