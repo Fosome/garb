@@ -21,9 +21,18 @@ class ResourceTest < MiniTest::Unit::TestCase
       session = Garb::Session.new
       TestReport.expects(:send_request_for_body).returns('xml')
       Garb::ReportResponse.expects(:new).with('xml').returns(mock(:results => 'analytics'))
-      Garb::Profile.expects(:first).with(profile, session)
+      Garb::Profile.expects(:first).with(profile, session).returns(mock('Garb::Profile'))
 
       assert_equal 'analytics', TestReport.results(profile, :session => session)
+    end
+
+    should "return an empty result set if profile is invalid" do
+      profile = '123'
+      TestReport.expects(:send_request_for_body).never
+      Garb::ReportResponse.expects(:new).never
+
+      Garb::Profile.expects(:first).returns(nil)
+      assert_equal [], TestReport.results(profile)
     end
   end
 end

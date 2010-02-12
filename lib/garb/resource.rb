@@ -43,14 +43,18 @@ module Garb
     def results(profile, opts = {}, &block)
       @profile = profile.is_a?(Profile) ? profile : Profile.first(profile, opts.fetch(:session, Session))
 
-      @start_date = opts.fetch(:start_date, Time.now - MONTH)
-      @end_date = opts.fetch(:end_date, Time.now)
-      @limit = opts.fetch(:limit, nil)
-      @offset = opts.fetch(:offset, nil)
+      if @profile
+        @start_date = opts.fetch(:start_date, Time.now - MONTH)
+        @end_date = opts.fetch(:end_date, Time.now)
+        @limit = opts.fetch(:limit, nil)
+        @offset = opts.fetch(:offset, nil)
 
-      instance_eval(&block) if block_given?
+        instance_eval(&block) if block_given?
 
-      ReportResponse.new(send_request_for_body).results
+        ReportResponse.new(send_request_for_body).results
+      else
+        []
+      end
     end
 
     def page_params
