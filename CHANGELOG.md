@@ -1,3 +1,7 @@
+Version 0.7.0
+
+  * Adds multi-session support
+
 Version 0.6.0
 
   * Adds OAuth access token support

@@ -193,8 +193,9 @@ SSL
 TODOS
 -----
 
-  * Sessions are currently global, which isn't awesome
   * Read opensearch header in results
+  * Investigate new features from GA to see if they're in the API, implement if so
+  * clarify AND/OR filtering behavior in code and documentation
 
 Requirements
 ------------
