@@ -1,9 +1,2 @@
 TODO
 ====
-
-* Sessions are currently global, which isn't awesome
-* Single user login is the only supported method currently. Intend to add hooks for using OAuth
-* Intend to make defined report classes behave more like AR
-* Read opensearch header in results
-* OR joining filter parameters
-* DONE: Support start-index
