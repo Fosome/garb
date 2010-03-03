@@ -1,5 +1,5 @@
 class Exits
   extend Garb::Resource
 
-  metric :exits
+  metrics :exits
 end
