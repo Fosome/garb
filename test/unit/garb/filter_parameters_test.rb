@@ -9,7 +9,9 @@ module Garb
           symbol = :foo
 
           SymbolOperator.expects(:new).with(:bar, operator).returns(new_operator)
-          @filter_parameters.send(operator.to_sym, :bar, 100)
+          @filter_parameters.filters do
+            send(operator.to_sym, :bar, 100)
+          end
 
           parameter = {new_operator => 100}
           assert_equal parameter, @filter_parameters.parameters.last
@@ -33,14 +35,14 @@ module Garb
       end
 
       context "when converting parameters hash into query string parameters" do
-        should "parameterize hash operators and join elements" do
+        should "parameterize hash operators and join elements with AND" do
           @filter_parameters.filters do
-            eql(:city, 'New York')
+            eql(:city, 'New York City')
             eql(:state, 'New York')
           end
 
-          params = {'filters' => 'ga:city%3D%3DNew+York;ga:state%3D%3DNew+York'}
-          assert_equal params, @filter_parameters.to_params
+          params = ['ga:city%3D%3DNew+York+City', 'ga:state%3D%3DNew+York']
+          assert_equal params, @filter_parameters.to_params['filters'].split(';').sort
         end
 
         should "properly encode operators" do

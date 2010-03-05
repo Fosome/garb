@@ -4,7 +4,7 @@ module Garb
       methods.each do |method|
         class_eval <<-CODE
           def #{method}(field, value)
-            self.parameters << {SymbolOperator.new(field, :#{method}) => value}
+            @filter_hash.merge!({SymbolOperator.new(field, :#{method}) => value})
           end
         CODE
       end
@@ -20,7 +20,11 @@ module Garb
     end
 
     def filters(&block)
+      @filter_hash = {}
+
       instance_eval &block
+
+      self.parameters << @filter_hash
     end
 
     def to_params
@@ -28,8 +32,8 @@ module Garb
         param.map do |k,v|
           next unless k.is_a?(SymbolOperator)
           "#{URI.encode(k.to_google_analytics, /[=<>]/)}#{CGI::escape(v.to_s)}"
-        end.join(',') # Hash AND
-      end.join(';') # Array OR
+        end.join(';') # Hash AND (no duplicate keys)
+      end.join(',') # Array OR
 
       value.empty? ? {} : {'filters' => value}
     end
