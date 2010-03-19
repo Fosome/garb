@@ -200,8 +200,8 @@ TODOS
 Requirements
 ------------
 
-  * happymapper >= 0.3.0 (should also install libxml)
-  * active_support >= 2.3.0
+  * happymapper >= 0.3.0, 0.5.2 recommended (no need for libxml)
+  * active_support >= 2.2.0
 
 Requirements for Testing
 ------------------------
