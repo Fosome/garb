@@ -5,7 +5,7 @@ require 'net/https'
 
 require 'cgi'
 require 'ostruct'
-require 'happymapper'
+require 'crack'
 require 'active_support'
 
 require 'garb/version'
@@ -25,14 +25,18 @@ require 'support'
 
 module Garb
   GA = "http://schemas.google.com/analytics/2008"
-  
-  def self.to_google_analytics(thing)
+
+  extend self
+
+  def to_google_analytics(thing)
     return thing.to_google_analytics if thing.respond_to?(:to_google_analytics)
 
     "ga:#{thing.to_s.camelize(:lower)}"
   end
+  alias :to_ga :to_google_analytics
 
-  def self.from_google_analytics(thing)
+  def from_google_analytics(thing)
     thing.to_s.gsub(/^ga\:/, '').underscore
   end
+  alias :from_ga :from_google_analytics
 end

@@ -1,62 +1,33 @@
 module Garb  
   class ReportResponse
-    # include Enumerable
+    KEYS = ['dxp:metric', 'dxp:dimension']
 
     def initialize(response_body)
       @xml = response_body
     end
-    
-    def parse      
-      entries = Entry.parse(@xml)
-      
-      @results = entries.collect do |entry|
-        hash = {}
-        
-        entry.metrics.each do |m|
-          name = m.name.sub(/^ga\:/,'').underscore
-          hash.merge!({name => m.value})
+
+    def results
+      @results ||= parse
+    end
+
+    private
+    def parse
+      entries.map do |entry|
+        hash = values_for(entry).inject({}) do |h, v|
+          h.merge(Garb.from_ga(v['name']) => v['value'])
         end
-        
-        entry.dimensions.each do |d|
-          name = d.name.sub(/^ga\:/,'').underscore
-          hash.merge!({name => d.value})
-        end
-        
+
         OpenStruct.new(hash)
       end
     end
 
-    def results
-      @results || parse
+    def entries
+      entry_hash = Crack::XML.parse(@xml)
+      entry_hash ? [entry_hash['feed']['entry']].flatten : []
     end
-    
-    class Metric
-      include HappyMapper
 
-      tag 'metric'
-      namespace 'http://schemas.google.com/analytics/2009'
-
-      attribute :name, String
-      attribute :value, String
-    end
-  
-    class Dimension
-      include HappyMapper
-
-      tag 'dimension'
-      namespace 'http://schemas.google.com/analytics/2009'
-
-      attribute :name, String
-      attribute :value, String
-    end
-  
-    class Entry
-      include HappyMapper
-    
-      tag 'entry'
-
-      has_many :metrics, Metric
-      has_many :dimensions, Dimension
+    def values_for(entry)
+      KEYS.map {|k| entry[k]}.flatten.compact
     end
   end
 end
