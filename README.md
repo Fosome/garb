@@ -200,7 +200,7 @@ TODOS
 Requirements
 ------------
 
-  * happymapper >= 0.3.0
+  * crack >= 0.1.6
   * active_support >= 2.2.0
 
 Requirements for Testing

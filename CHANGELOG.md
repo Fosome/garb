@@ -1,3 +1,7 @@
+Version 0.7.4
+
+  * Removes HappyMapper dependency in favor of Crack so we can drop libxml dependency
+
 Version 0.7.0
 
   * Adds multi-session support
