@@ -3,7 +3,7 @@ module Garb
 
     include ProfileReports
 
-    attr_reader :session, :table_id, :title, :account_name, :account_id, :web_property_id
+    attr_reader :session, :table_id, :title, :account_name, :account_id, :web_property_id, :segments
 
     def initialize(entry, session)
       @session = session
@@ -22,16 +22,20 @@ module Garb
     def self.all(session = Session)
       url = "https://www.google.com/analytics/feeds/accounts/default"
       response = DataRequest.new(session, url).send_request
-      parse(response.body).map {|entry| new(entry, session)}
+
+      parse_entries(parse(response.body)).map {|entry| new(entry, session)}
     end
 
     def self.first(id, session = Session)
       all(session).detect {|profile| profile.id == id || profile.web_property_id == id }
     end
 
-    def self.parse(response_body)
-      entry_hash = Crack::XML.parse(response_body)
+    def self.parse_entries(entry_hash)
       entry_hash ? [entry_hash['feed']['entry']].flatten : []
+    end
+
+    def self.parse(response_body)
+      Crack::XML.parse(response_body)
     end
   end
 end

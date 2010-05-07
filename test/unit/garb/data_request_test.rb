@@ -90,7 +90,10 @@ module Garb
         http = mock do |m|
           m.expects(:use_ssl=).with(true)
           m.expects(:verify_mode=).with(OpenSSL::SSL::VERIFY_NONE)
-          m.expects(:get).with('/data?key=value', {'Authorization' => 'GoogleLogin auth=toke', 'GData-Version' => '2'}).returns(response)
+          m.expects(:get).with('/data?key=value', {
+            'Authorization' => 'GoogleLogin auth=toke',
+            'GData-Version' => '2'
+          }).returns(response)
         end
 
         Net::HTTP.expects(:new).with('example.com', 443).returns(http)

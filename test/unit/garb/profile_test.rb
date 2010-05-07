@@ -47,7 +47,7 @@ module Garb
 
     context "An instance of the Profile class" do
       setup do
-        entry = Profile.parse(read_fixture('profile_feed.xml')).first
+        entry = Profile.parse_entries(Profile.parse(read_fixture('profile_feed.xml'))).first
         @profile = Profile.new(entry, Session)
       end
 
