@@ -9,21 +9,13 @@ module Garb
     end
 
     def self.all(session = Session)
-      # Profile.all.group_to_array{|p| p.account_id}.map{|profiles| new(profiles)}
+      profiles = {}
 
-      profile_groups = Profile.all(session).inject({}) do |hash, profile|
-        key = profile.account_id
-        
-        if hash.has_key?(key)
-          hash[key] << profile
-        else
-          hash[key] = [profile]
-        end
-
-        hash
+      Profile.all(session).each do |profile|
+        (profiles[profile.account_id] ||= []) << profile
       end
 
-      profile_groups.map {|k,v| v}.map {|profiles| new(profiles)}
+      profiles.map {|k,v| v}.map {|profiles| new(profiles)}
     end
   end
 end

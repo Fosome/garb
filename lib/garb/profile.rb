@@ -23,6 +23,7 @@ module Garb
       url = "https://www.google.com/analytics/feeds/accounts/default"
       response = DataRequest.new(session, url).send_request
 
+      puts response.body
       parse_entries(parse(response.body)).map {|entry| new(entry, session)}
     end
 
