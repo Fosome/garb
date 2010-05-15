@@ -23,7 +23,7 @@ module Garb
 
     def entries
       entry_hash = Crack::XML.parse(@xml)
-      entry_hash ? [entry_hash['feed']['entry']].flatten : []
+      entry_hash ? [entry_hash['feed']['entry']].flatten.compact : []
     end
 
     def values_for(entry)
