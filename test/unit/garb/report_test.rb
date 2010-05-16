@@ -43,6 +43,11 @@ module Garb
         assert_equal params, @report.default_params
       end
 
+      should "allow setting a segment id to the segment params" do
+        @report.set_segment_id 121
+        assert_equal({'segment' => 'gaid::121'}, @report.segment_params)
+      end
+
       should "collect params from metrics, dimensions, filters, sort, and defaults" do
         @report.stubs(:metrics).returns(stub(:to_params => {'metrics' => 6}))
         @report.stubs(:dimensions).returns(stub(:to_params => {'dimensions' => 5}))
@@ -50,9 +55,12 @@ module Garb
         @report.stubs(:sort).returns(stub(:to_params => {'sort' => 3}))
         @report.stubs(:page_params).returns({'page_params' => 2})
         @report.stubs(:default_params).returns({'default_params' => 1})
+        @report.stubs(:segment_params).returns({'segment' => 'gaid::10'})
         
-        params = {'metrics' => 6, 'dimensions' => 5, 'filters' => 4, 'sort' => 3, 'page_params' => 2, 'default_params' => 1}
-        assert_equal params, @report.params
+        expected_params = {'metrics' => 6,'dimensions' => 5, 'filters' => 4, 'sort' => 3,
+                            'page_params' => 2, 'default_params' => 1, 'segment' => 'gaid::10'}
+
+        assert_equal expected_params, @report.params
       end
 
       should "format time" do

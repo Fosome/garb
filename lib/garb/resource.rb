@@ -40,6 +40,10 @@ module Garb
       @filter_parameters = FilterParameters.new
     end
 
+    def set_segment_id(id)
+      @segment = "gaid::#{id.to_i}"
+    end
+
     def results(profile, opts = {}, &block)
       @profile = profile.is_a?(Profile) ? profile : Profile.first(profile, opts.fetch(:session, Session))
 
@@ -67,13 +71,18 @@ module Garb
         'end-date' => format_time(@end_date)}
     end
 
+    def segment_params
+      @segment ? {'segment' => @segment} : {}
+    end
+
     def params
       [
         metrics.to_params,
         dimensions.to_params,
         sort.to_params,
         filters.to_params,
-        page_params
+        page_params,
+        segment_params
       ].inject(default_params) do |p, i|
         p.merge(i)
       end

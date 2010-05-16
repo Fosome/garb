@@ -32,11 +32,11 @@ module Garb
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      http.get("#{uri.path}#{query_string}", 'Authorization' => "GoogleLogin auth=#{@session.auth_token}")
+      http.get("#{uri.path}#{query_string}", {'Authorization' => "GoogleLogin auth=#{@session.auth_token}", 'GData-Version' => '2'})
     end
 
     def oauth_user_request
-      @session.access_token.get("#{uri}#{query_string}")
+      @session.access_token.get("#{uri}#{query_string}", {'GData-Version' => '2'})
     end
   end
 end
