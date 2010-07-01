@@ -1,5 +1,5 @@
 module Garb
-  class AccountFeedRequest < DataRequest
+  class AccountFeedRequest
     URL = "https://www.google.com/analytics/feeds/accounts/default"
 
     def initialize(session = Session)
