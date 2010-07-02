@@ -26,6 +26,20 @@
     <updated>2008-07-21T14:05:57.000-07:00</updated>
     <title>Historical</title>
     <link rel='alternate' type='text/html' href='http://www.google.com/analytics'/>
+    <ga:goal active='true' name='Read Blog' number='1' value='10.0'>
+      <ga:destination caseSensitive='false' expression='/blog.html' matchType='head' step1Required='false'/>
+    </ga:goal>
+    <ga:goal active='true' name='Go for Support' number='2' value='5.0'>
+      <ga:destination caseSensitive='false' expression='/support.html' matchType='head' step1Required='false'/>
+    </ga:goal>
+    <ga:goal active='true' name='Contact Form Submission' number='3' value='100.0'>
+      <ga:destination caseSensitive='false' expression='/contact-submit' matchType='exact' step1Required='true'>
+        <ga:step name='Contact Form Page' number='1' path='/contact.html'/>
+      </ga:destination>
+    </ga:goal>
+    <ga:goal active='true' name='Newsletter Form Submission' number='4' value='25.0'>
+      <ga:destination caseSensitive='false' expression='/newsletter-submit' matchType='exact' step1Required='false'/>
+    </ga:goal>
     <dxp:property name="ga:accountId" value="1111"/>
     <dxp:property name="ga:accountName" value="Blog Beta"/>
     <dxp:property name="ga:profileId" value="1212"/>

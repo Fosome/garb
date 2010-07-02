@@ -19,7 +19,7 @@ module Garb
     end
 
     def segments
-      parsed_response ? [parsed_response['dxp:segment']].flatten : []
+      parsed_response ? [parsed_response['feed']['dxp:segment']].flatten : []
     end
   end
 end

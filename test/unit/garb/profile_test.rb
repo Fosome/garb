@@ -40,7 +40,7 @@ module Garb
       end
     end
 
-    context "An instance of the Profile class" do
+    context "A Profile" do
       setup do
         afr = AccountFeedRequest.new
         afr.stubs(:parsed_response).returns(Crack::XML.parse(read_fixture('profile_feed.xml')))
@@ -67,6 +67,10 @@ module Garb
     
       should "have a value for :account_name" do
         assert_equal 'Blog Beta', @profile.account_name
+      end
+
+      should "have goals" do
+        assert_equal 4, @profile.goals.size
       end
     end
   end

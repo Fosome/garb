@@ -3,12 +3,13 @@ module Garb
 
     include ProfileReports
 
-    attr_reader :session, :table_id, :title, :account_name, :account_id, :web_property_id, :segments
+    attr_reader :session, :table_id, :title, :account_name, :account_id, :web_property_id, :goals
 
     def initialize(entry, session)
       @session = session
       @title = entry['title']
       @table_id = entry['dxp:tableId']
+      @goals = (entry[Garb.to_ga('goal')] || []).map {|g| Goal.new(g)}
 
       entry['dxp:property'].each do |p|
         instance_variable_set :"@#{Garb.from_ga(p['name'])}", p['value']
