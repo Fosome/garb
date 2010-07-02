@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '..', '..', '/test_helper')
+require 'test_helper'
 
 module Garb
   # Also tests Garb::Resource, which is the basis for Garb::Report

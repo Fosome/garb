@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '..', '..', '/test_helper')
+require 'test_helper'
 
 CA_CERT_FILE = File.join(File.dirname(__FILE__), '..', '/cacert.pem')
 

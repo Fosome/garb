@@ -5,7 +5,8 @@ require 'minitest/unit'
 require 'shoulda'
 require 'mocha'
 
-require File.dirname(__FILE__) + '/../lib/garb'
+$:.unshift File.expand_path('../../lib', __FILE__)
+require 'garb'
 
 class MiniTest::Unit::TestCase
 
