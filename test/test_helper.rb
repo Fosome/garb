@@ -1,8 +1,18 @@
+begin
+  require 'simplecov'
+  SimpleCov.start 'rails'
+rescue LoadError
+  puts "Install simplecov if you use 1.9 and want coverage metrics"
+end
+
 $:.reject! { |e| e.include? 'TextMate' }
 
 require 'rubygems'
-require 'minitest/unit'
+require 'bundler'
+Bundler.setup(:default, :test)
+
 require 'shoulda'
+require 'minitest/unit'
 require 'mocha'
 
 $:.unshift File.expand_path('../../lib', __FILE__)
@@ -18,7 +28,6 @@ class MiniTest::Unit::TestCase
   def read_fixture(filename)
     File.read(File.dirname(__FILE__) + "/fixtures/#{filename}")
   end
-  
 end
 
 MiniTest::Unit.autorun

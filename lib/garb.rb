@@ -4,7 +4,12 @@ require 'net/https'
 require 'cgi'
 require 'ostruct'
 require 'crack'
-require 'active_support'
+
+begin
+  require 'active_support/inflector'
+rescue LoadError
+  require 'active_support'
+end
 
 require 'garb/version'
 require 'garb/authentication_request'
