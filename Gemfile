@@ -9,3 +9,7 @@ group :test do
   gem 'minitest', :require => false
   gem 'jferris-mocha', :require => false
 end
+
+group :demo do
+  gem 'oauth'
+end

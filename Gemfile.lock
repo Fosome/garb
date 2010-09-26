@@ -7,6 +7,7 @@ GEM
     jferris-mocha (0.9.8.20100526112143)
       rake
     minitest (1.7.1)
+    oauth (0.4.3)
     rake (0.8.7)
     shoulda (2.11.3)
 
@@ -18,4 +19,5 @@ DEPENDENCIES
   crack
   jferris-mocha
   minitest
+  oauth
   shoulda
