@@ -44,6 +44,18 @@ module Garb
       @segment = "gaid::#{id.to_i}"
     end
 
+    def segment
+      @segment
+    end
+
+    def set_instance_klass(klass)
+      @instance_klass = klass
+    end
+
+    def instance_klass
+      @instance_klass || OpenStruct
+    end
+
     def results(profile, opts = {}, &block)
       @profile = profile.is_a?(Profile) ? profile : Profile.first(profile, opts.fetch(:session, Session))
 
@@ -55,7 +67,7 @@ module Garb
 
         instance_eval(&block) if block_given?
 
-        ReportResponse.new(send_request_for_body).results
+        ReportResponse.new(send_request_for_body, instance_klass).results
       else
         []
       end
@@ -72,7 +84,7 @@ module Garb
     end
 
     def segment_params
-      @segment ? {'segment' => @segment} : {}
+      segment.nil? ? {} : {'segment' => segment}
     end
 
     def params
