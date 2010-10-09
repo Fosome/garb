@@ -1,33 +1,42 @@
 module Garb
-  class Profile
+  module Management
+    class Profile
 
-    include ProfileReports
+      include ProfileReports
 
-    attr_reader :session, :table_id, :title, :account_name, :account_id, :web_property_id, :goals
+      attr_reader :session, :path
+      attr_reader :id, :title, :account_id, :web_property_id
 
-    # def initialize(entry, session)
-    #   @session = session
-    #   @title = entry['title']
-    #   @table_id = entry['dxp:tableId']
-    #   @goals = (entry[Garb.to_ga('goal')] || []).map {|g| Goal.new(g)}
-    # 
-    #   entry['dxp:property'].each do |p|
-    #     instance_variable_set :"@#{Garb.from_ga(p['name'])}", p['value']
-    #   end
-    # end
-    # 
-    # def id
-    #   Garb.from_ga(@table_id)
-    # end
-    # 
-    # def self.all(session = Session)
-    #   AccountFeedRequest.new(session).entries.map {|entry| new(entry, session)}
-    # end
-    # 
-    # def self.first(id, session = Session)
-    #   all(session).detect {|profile| profile.id == id || profile.web_property_id == id }
-    # end
+      def self.all(session = Session, path = '/accounts/~all/webproperties/~all/profiles')
+        feed = Feed.new(session, path)
+        feed.entries.map {|entry| new(entry, session)}
+      end
 
-    extend 
+      def self.for_account(account)
+        all(account.session, account.path+'/webproperties/~all/profiles')
+      end
+
+      def self.for_web_property(web_property)
+        all(web_property.session, web_property.path+'/profiles')
+      end
+
+      def initialize(entry, session)
+        @session = session
+        @path = Garb.parse_link(entry, "self").gsub(Feed::BASE_URL, '')
+        @title = entry['title'].gsub('Google Analytics Profile ', '')
+
+        properties = Garb.parse_properties(entry)
+        @id = properties['profile_id']
+        @account_id = properties['account_id']
+        @web_property_id = properties['web_property_id']
+      end
+
+      # def path
+      #   ['/accounts', self.account_id, 'webproperties', self.web_property_id, 'profiles', self.id].join('/')
+      # end
+
+      # def goals
+      # end
+    end
   end
 end

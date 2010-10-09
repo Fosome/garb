@@ -28,6 +28,12 @@ require 'garb/report_response'
 require 'garb/resource'
 require 'garb/report'
 
+# management
+require 'garb/management/feed'
+require 'garb/management/account'
+require 'garb/management/web_property'
+require 'garb/management/profile'
+
 require 'support'
 
 module Garb
@@ -46,4 +52,15 @@ module Garb
     thing.to_s.gsub(/^ga\:/, '').underscore
   end
   alias :from_ga :from_google_analytics
+
+  def parse_properties(entry)
+    entry['dxp:property'].inject({}) do |hash, p|
+      hash[Garb.from_ga(p['name'])] = p['value']
+      hash
+    end
+  end
+
+  def parse_link(entry, rel)
+    entry['link'].detect {|link| link["rel"] == rel}['href']
+  end
 end

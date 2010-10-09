@@ -1,45 +1,32 @@
 module Garb
-  class Account
-    attr_reader :id, :name, :profiles
+  module Management
+    class Account
+      attr_reader :session, :path
+      attr_reader :id, :title, :name
 
-    # def initialize(profiles)
-    #   @id = profiles.first.account_id
-    #   @name = profiles.first.account_name
-    #   @profiles = profiles
-    # end
+      def self.all(session = Session)
+        feed = Feed.new(session, '/accounts') # builds request and parses response
 
-    # def self.all(session = Session)
-    #   profiles = {}
-    # 
-    #   Profile.all(session).each do |profile|
-    #     (profiles[profile.account_id] ||= []) << profile
-    #   end
-    # 
-    #   profiles.map {|k,v| v}.map {|profiles| new(profiles)}
-    # end
+        feed.entries.map {|entry| new(entry, session)}
+      end
 
-    extend ManagementFeed
+      def initialize(entry, session)
+        @session = session
+        @path = Garb.parse_link(entry, "self").gsub(Feed::BASE_URL, '')
+        @title = entry['title'].gsub('Google Analytics Account ', '')
 
-    def self.all(*)
-      super # builds request and parses response
+        properties = Garb.parse_properties(entry)
+        @id = properties["account_id"]
+        @name = properties["account_name"]
+      end
 
-      @parsed_response['entry'].map {|entry| new(entry)}
+      def web_properties
+        @web_properties ||= WebProperty.for_account(self) # will call path
+      end
+
+      def profiles
+        @profiles ||= Profile.for_account(self)
+      end
     end
-
-    def self.path
-      '/accounts'
-    end
-
-    def path
-      [self.class.path, self.id].join('/')
-    end
-
-    def initialize(entry)
-      @id = entry[]
-    end
-
-    # def web_properties
-    #   @web_properties ||= WebProperty.for_account(self) # will call path
-    # end
   end
 end

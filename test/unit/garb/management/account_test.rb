@@ -1,59 +1,54 @@
 require 'test_helper'
 
 module Garb
-  class AccountTest < MiniTest::Unit::TestCase
-    context "The Account class" do
-      should "have a path to the management feed" do
-        assert_equal ManagementFeed::BASE_URL+'/accounts', Account.url
+  module Management
+    class AccountTest < MiniTest::Unit::TestCase
+      context "The Account class" do
+        should "turn entries for path into array of accounts" do
+          feed = stub(:entries => ["entry1"])
+          Feed.stubs(:new).returns(feed)
+
+          Account.stubs(:new)
+          Account.all
+
+          assert_received(Feed, :new) {|e| e.with(Session, '/accounts')}
+          assert_received(feed, :entries)
+          assert_received(Account, :new) {|e| e.with("entry1", Session)}
+        end
+      end
+
+      context "an Account" do
+        setup do
+          entry = {
+            "title" => "Google Analytics Account Garb",
+            "link" => [{"rel" => "self", "href" => Feed::BASE_URL+"/accounts/123456"}],
+            "dxp:property" => [
+              {"name" => "ga:accountId", "value" => "123456"},
+              {"name" => "ga:accountName", "value" => "Garb"}
+            ]
+          }
+          @account = Account.new(entry, Session)
+        end
+
+        should "extract id and title from GA entry" do
+          assert_equal "Garb", @account.title
+          assert_equal "123456", @account.id
+        end
+
+        should "extract a name from GA entry properties" do
+          assert_equal "Garb", @account.name
+        end
+
+        should "combine the Account.path and the id into an new path" do
+          assert_equal "/accounts/123456", @account.path
+        end
+
+        should "have a reference to the session it was created with" do
+          assert_equal Session, @account.session
+        end
+
+        should "have web properties"
       end
     end
-
-    # context "The Account class" do
-    #   should "have an array of accounts with all profiles" do
-    #     p1 = stub(:account_id => '1111', :account_name => 'Blog 1')
-    #     p2 = stub(:account_id => '1112', :account_name => 'Blog 2')
-    # 
-    #     Profile.stubs(:all).returns([p1,p2,p1,p2])
-    #     Account.stubs(:new).returns('account1', 'account2')
-    # 
-    #     assert_equal ['account1','account2'], Account.all
-    #     assert_received(Profile, :all)
-    #     assert_received(Account, :new) {|e| e.with([p1,p1])}
-    #     assert_received(Account, :new) {|e| e.with([p2,p2])}
-    #   end
-    # end
-    # 
-    # context "An instance of the Account class" do
-    #   setup do
-    #     profile = stub(:account_id => '1111', :account_name => 'Blog 1')
-    #     @profiles = [profile,profile]
-    #     @account = Account.new(@profiles)
-    #   end
-    # 
-    #   context "all" do
-    #     should "use an optional user session" do
-    #       session = Session.new
-    #       Garb::Profile.expects(:all).with(session).returns(@profiles)
-    # 
-    #       accounts = Account.all(session)
-    #       assert_equal 1, accounts.size
-    #       assert_equal @profiles, accounts.first.profiles
-    #     end
-    #   end
-    # 
-    #   context "when creating a new account from an array of profiles" do
-    #     should "take the account id from the first profile" do
-    #       assert_equal @profiles.first.account_id, @account.id
-    #     end
-    # 
-    #     should "take the account name from the first profile" do
-    #       assert_equal @profiles.first.account_name, @account.name
-    #     end
-    # 
-    #     should "store the array of profiles" do
-    #       assert_equal @profiles, @account.profiles
-    #     end
-    #   end
-    # end
   end
 end

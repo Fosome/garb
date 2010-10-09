@@ -11,8 +11,8 @@ module Garb
       @table_id = entry['dxp:tableId']
       @goals = (entry[Garb.to_ga('goal')] || []).map {|g| Goal.new(g)}
 
-      entry['dxp:property'].each do |p|
-        instance_variable_set :"@#{Garb.from_ga(p['name'])}", p['value']
+      Garb.parse_properties(entry).each do |k,v|
+        instance_variable_set :"@#{k}", v
       end
     end
 
@@ -24,6 +24,7 @@ module Garb
       AccountFeedRequest.new(session).entries.map {|entry| new(entry, session)}
     end
 
+    # ActiveSupport::Deprecation.warn
     def self.first(id, session = Session)
       all(session).detect {|profile| profile.id == id || profile.web_property_id == id }
     end
