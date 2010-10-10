@@ -31,10 +31,6 @@ module Garb
         @web_property_id = properties['web_property_id']
       end
 
-      # def path
-      #   ['/accounts', self.account_id, 'webproperties', self.web_property_id, 'profiles', self.id].join('/')
-      # end
-
       # def goals
       # end
     end

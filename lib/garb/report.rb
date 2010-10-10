@@ -6,6 +6,8 @@ module Garb
     URL = "https://www.google.com/analytics/feeds/data"
 
     def initialize(profile, opts={})
+      # ActiveSupport::Deprecation.warn("The use of report will be removed in favor of extend Garb::Scheme")
+
       @profile = profile
 
       @start_date = opts.fetch(:start_date, Time.now - MONTH)

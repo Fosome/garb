@@ -6,7 +6,14 @@ Garb
 Important Changes
 =================
 
- Please read CHANGELOG
+  I've started to work on a new module for reporting. You can see that work
+  in lib/garb/model.rb. This will be the API to replace both Garb::Resource
+  and Garb::Report. However, it isn't complete yet, so I would advise against
+  using it right now. Resource and Report will be deprecated around 0.9.0 and
+  I'd like to remove them for 1.0.0. I will start this process after I've
+  updated the documentation and I feel that Garb::Model is in a solid place.
+
+  Please read CHANGELOG
 
 Description
 -----------

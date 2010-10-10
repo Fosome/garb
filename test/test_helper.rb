@@ -28,6 +28,10 @@ class MiniTest::Unit::TestCase
   def read_fixture(filename)
     File.read(File.dirname(__FILE__) + "/fixtures/#{filename}")
   end
+
+  def assert_data_params(expected)
+    assert_received(Garb::DataRequest, :new) {|e| e.with(Garb::Session, Garb::Model::URL, expected)}
+  end
 end
 
 MiniTest::Unit.autorun

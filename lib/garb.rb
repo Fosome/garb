@@ -28,6 +28,8 @@ require 'garb/report_response'
 require 'garb/resource'
 require 'garb/report'
 
+require 'garb/model'
+
 # management
 require 'garb/management/feed'
 require 'garb/management/account'
