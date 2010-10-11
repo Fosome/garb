@@ -26,7 +26,7 @@ module Garb
 
         properties = Garb.parse_properties(entry)
         @id = properties['profile_id']
-        @table_id = properties['table_id']
+        @table_id = properties['dxp:table_id']
         @title = properties['profile_name']
         @account_id = properties['account_id']
         @web_property_id = properties['web_property_id']

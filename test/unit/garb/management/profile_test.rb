@@ -28,7 +28,8 @@ module Garb
               {"name" => "ga:profileId", "value" => "98765"},
               {"name" => "ga:accountId", "value" => "1189765"},
               {"name" => "ga:webPropertyId", "value" => 'UA-1189765-1'},
-              {"name" => "ga:profileName", "value" => "example.com"}
+              {"name" => "ga:profileName", "value" => "example.com"},
+              {"name" => "dxp:tableId", "value" => "ga:12345678" }
             ]
           }
           @profile = Profile.new(entry, Session)
@@ -52,6 +53,10 @@ module Garb
 
         should "have a path" do
           assert_equal "/accounts/1189765/webproperties/UA-1189765-1/profiles/98765", @profile.path
+        end
+        
+        should "have a table_id" do
+          assert_equal "ga:12345678", @profile.table_id
         end
       end
     end
