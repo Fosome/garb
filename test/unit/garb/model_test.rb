@@ -60,12 +60,17 @@ module Garb
             DataRequest.stubs(:new).returns(stub(:send_request => @response))
             ReportResponse.stubs(:new).returns(stub(:results => ['result']))
 
+            @test_model.stubs(:metrics).returns(stub(:to_params => {'metrics' => 'ga:visits'}))
+            @test_model.stubs(:dimensions).returns(stub(:to_params => {'dimensions' => 'ga:pagePath'}))
+
             now = Time.now
             Time.stubs(:new).returns(now)
 
             @params = {'ids' => Garb.to_ga(@profile.id),
               'start-date' => (now - Model::MONTH).strftime('%Y-%m-%d'),
-              'end-date' => now.strftime('%Y-%m-%d')}
+              'end-date' => now.strftime('%Y-%m-%d'),
+              'metrics' => 'ga:visits',
+              'dimensions' => 'ga:pagePath'}
           end
 
           should "get all results" do

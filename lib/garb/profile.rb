@@ -21,11 +21,12 @@ module Garb
     end
 
     def self.all(session = Session)
+      ActiveSupport::Deprecation.warn("Garb::Profile.all is deprecated in favor of Garb::Management::Profile.all")
       AccountFeedRequest.new(session).entries.map {|entry| new(entry, session)}
     end
 
-    # ActiveSupport::Deprecation.warn
     def self.first(id, session = Session)
+      ActiveSupport::Deprecation.warn("Garb::Profile.first is deprecated in favor of Garb::Management::WebProperty")
       all(session).detect {|profile| profile.id == id || profile.web_property_id == id }
     end
   end

@@ -3,6 +3,10 @@ module Garb
     MONTH = 2592000
     URL = "https://www.google.com/analytics/feeds/data"
 
+    def self.extended(base)
+      ProfileReports.add_report_method(base)
+    end
+
     def metrics(*fields)
       @metrics ||= ReportParameter.new(:metrics)
       @metrics << fields
@@ -26,6 +30,8 @@ module Garb
 
       param_set = [
         default_params,
+        metrics.to_params,
+        dimensions.to_params,
         parse_filters(options).to_params,
         parse_segment(options),
         parse_sort(options).to_params,

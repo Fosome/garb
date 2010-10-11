@@ -6,7 +6,7 @@ module Garb
     URL = "https://www.google.com/analytics/feeds/data"
 
     def initialize(profile, opts={})
-      # ActiveSupport::Deprecation.warn("The use of report will be removed in favor of extend Garb::Scheme")
+      ActiveSupport::Deprecation.warn("The use of Report will be removed in favor of 'extend Garb::Model'")
 
       @profile = profile
 

@@ -7,6 +7,7 @@ require 'crack'
 
 begin
   require 'active_support/inflector'
+  require 'active_support/deprecation'
 rescue LoadError
   require 'active_support'
 end

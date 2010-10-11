@@ -3,7 +3,8 @@ module Garb
     def self.add_report_method(klass)
       # demodulize leaves potential to redefine
       # these methods given different namespaces
-      method_name = klass.to_s.demodulize.underscore
+      method_name = klass.name.demodulize.underscore
+      return unless method_name.length > 0
 
       class_eval <<-CODE
         def #{method_name}(opts = {}, &block)
