@@ -32,7 +32,7 @@ module Garb
         param.map do |k,v|
           next unless k.is_a?(SymbolOperator)
           "#{URI.encode(k.to_google_analytics, /[=<>]/)}#{CGI::escape(v.to_s)}"
-        end.join(';') # Hash AND (no duplicate keys)
+        end.join('%3B') # Hash AND (no duplicate keys), escape char for ';' fixes oauth
       end.join(',') # Array OR
 
       value.empty? ? {} : {'filters' => value}
