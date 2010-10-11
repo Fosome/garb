@@ -17,18 +17,19 @@ class SymbolOperator
       :does_not_contain => '!~',
       :substring => '=@',
       :not_substring => '!@',
-      :desc => '-'
+      :desc => '-',
+      :descending => '-'
     }
 
     target = Garb.to_google_analytics(@field)
     operator = operators[@operator]
 
-    @operator == :desc ? "#{operator}#{target}" : "#{target}#{operator}"
+    [:desc, :descending].include?(@operator) ? "#{operator}#{target}" : "#{target}#{operator}"
   end
 end
 
 class Symbol
-  [:eql, :not_eql, :gt, :gte, :lt, :lte, :desc,
+  [:eql, :not_eql, :gt, :gte, :lt, :lte, :desc, :descending,
     :matches, :does_not_match, :contains, :does_not_contain,
     :substring, :not_substring].each do |operator|
 
