@@ -8,12 +8,12 @@ module Garb
           feed = stub(:entries => ["entry1"])
           Feed.stubs(:new).returns(feed)
 
-          WebProperty.stubs(:new)
+          WebProperty.stubs(:new_from_entry)
           WebProperty.all
 
           assert_received(Feed, :new) {|e| e.with(Session, '/accounts/~all/webproperties')}
           assert_received(feed, :entries)
-          assert_received(WebProperty, :new) {|e| e.with("entry1", Session)}
+          assert_received(WebProperty, :new_from_entry) {|e| e.with("entry1", Session)}
         end
 
         should "find all web properties for a given account" do
@@ -36,7 +36,7 @@ module Garb
             ]
           }
 
-          @web_property = WebProperty.new(entry, Session)
+          @web_property = WebProperty.new_from_entry(entry, Session)
         end
 
         should "have an id" do
