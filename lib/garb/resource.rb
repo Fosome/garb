@@ -59,20 +59,32 @@ module Garb
     end
 
     def results(profile, opts = {}, &block)
-      @profile = profile.is_a?(Profile) ? profile : Profile.first(profile, opts.fetch(:session, Session))
-
-      if @profile
-        @start_date = opts.fetch(:start_date, Time.now - MONTH)
-        @end_date = opts.fetch(:end_date, Time.now)
-        @limit = opts.fetch(:limit, nil)
-        @offset = opts.fetch(:offset, nil)
-
-        instance_eval(&block) if block_given?
-
-        ReportResponse.new(send_request_for_body, instance_klass).results
+      if response = make_request(profile, opts, &block)
+        response.results
       else
         []
       end
+    end
+    
+    def total_results(profile, opts = {}, &block)
+      if response = make_request(profile, opts, &block)
+        response.total_results
+      else
+        0
+      end
+    end
+    
+    def make_request(profile, opts = {}, &block)
+      @profile = profile.is_a?(Profile) ? profile : Profile.first(profile, opts.fetch(:session, Session))
+
+      @start_date = opts.fetch(:start_date, Time.now - MONTH)
+      @end_date = opts.fetch(:end_date, Time.now)
+      @limit = opts.fetch(:limit, nil)
+      @offset = opts.fetch(:offset, nil)
+
+      instance_eval(&block) if block_given?
+
+      ReportResponse.new(send_request_for_body, instance_klass) if @profile
     end
 
     def page_params

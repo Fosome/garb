@@ -15,6 +15,14 @@ class ResourceTest < MiniTest::Unit::TestCase
 
       assert_equal 'analytics', TestReport.results(profile)
     end
+    
+    should "get total_results from GA" do
+      profile = stub(:is_a? => true)
+      TestReport.expects(:send_request_for_body).returns('xml')
+      Garb::ReportResponse.expects(:new).with('xml', OpenStruct).returns(mock(:total_results => 0))
+    
+      assert_equal 0, TestReport.total_results(profile)
+    end
 
     should "get results from GA using a specific user session" do
       profile = '123'
