@@ -13,8 +13,8 @@ module Garb
     
     def total_results
       if feed = Crack::XML.parse(@xml)['feed'] and feed["openSearch:totalResults"]
-        feed["openSearch:totalResults"]
-      end.to_i
+        feed["openSearch:totalResults"].to_i
+      end
     end
 
     private
