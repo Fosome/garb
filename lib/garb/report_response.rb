@@ -12,7 +12,8 @@ module Garb
     end
     
     def total_results
-      if feed = Crack::XML.parse(@xml)['feed'] and feed["openSearch:totalResults"]
+      feed = Crack::XML.parse(@xml)['feed']
+      if feed and feed["openSearch:totalResults"] and feed["entry"]
         feed["openSearch:totalResults"].to_i
       end
     end
