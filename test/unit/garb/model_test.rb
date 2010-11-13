@@ -51,7 +51,7 @@ module Garb
             ]
           }
 
-          @profile = Garb::Management::Profile.new(entry, Session)
+          @profile = Garb::Management::Profile.new_from_entry(entry, Session)
         end
 
         context "when getting results" do
@@ -65,6 +65,8 @@ module Garb
 
             now = Time.now
             Time.stubs(:new).returns(now)
+
+            # p @profile.id
 
             @params = {'ids' => Garb.to_ga(@profile.id),
               'start-date' => (now - Model::MONTH).strftime('%Y-%m-%d'),

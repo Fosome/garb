@@ -57,10 +57,7 @@ module Garb
   alias :from_ga :from_google_analytics
 
   def parse_properties(entry)
-    entry['dxp:property'].inject({}) do |hash, p|
-      hash[Garb.from_ga(p['name'])] = p['value']
-      hash
-    end
+    Hash[entry['dxp:property'].map {|p| [Garb.from_ga(p['name']),p['value']]}]
   end
 
   def parse_link(entry, rel)
