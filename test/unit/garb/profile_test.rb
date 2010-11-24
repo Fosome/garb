@@ -38,6 +38,18 @@ module Garb
 
         assert_received(Profile, :all) {|e| e.with(@session)}
       end
+      
+      should "return the first profile for a given table id passed as an integer" do
+        profile1 = stub(:id => '12345', :web_property_id => 'abcdef')
+        profile2 = stub(:id => '67890', :web_property_id => 'ghijkl')
+        entries = [profile1, profile2]
+
+        Profile.stubs(:all).returns(entries)
+
+        assert_equal profile2, Profile.first(67890, @session)
+
+        assert_received(Profile, :all) {|e| e.with(@session)}
+      end
     end
 
     context "A Profile" do
