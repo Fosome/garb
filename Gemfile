@@ -1,6 +1,7 @@
 source :rubygems
 source "http://gems.github.com"
 
+gem 'i18n'
 gem 'activesupport'
 gem 'crack'
 

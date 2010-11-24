@@ -2,12 +2,13 @@ GEM
   remote: http://rubygems.org/
   remote: http://gems.github.com/
   specs:
-    activesupport (3.0.0)
+    activesupport (3.0.3)
     crack (0.1.8)
+    i18n (0.4.2)
     jferris-mocha (0.9.8.20100526112143)
       rake
-    minitest (1.7.1)
-    oauth (0.4.3)
+    minitest (2.0.0)
+    oauth (0.4.4)
     rake (0.8.7)
     shoulda (2.11.3)
 
@@ -17,6 +18,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   crack
+  i18n
   jferris-mocha
   minitest
   oauth
