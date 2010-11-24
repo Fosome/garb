@@ -14,11 +14,9 @@ module Garb
     private
     def parse
       entries.map do |entry|
-        hash = values_for(entry).inject({}) do |h, v|
-          h.merge(Garb.from_ga(v['name']) => v['value'])
-        end
-
-        @instance_klass.new(hash)
+        @instance_klass.new(Hash[
+          values_for(entry).map {|v| [Garb.from_ga(v['name']), v['value']]}
+        ])
       end
     end
 
