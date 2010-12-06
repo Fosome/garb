@@ -3,7 +3,7 @@ module Garb
 
     MAJOR = 0
     MINOR = 8
-    TINY  = 4
+    TINY  = 5
 
     def self.to_s # :nodoc:
       [MAJOR, MINOR, TINY].join('.')

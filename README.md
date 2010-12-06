@@ -77,6 +77,8 @@ Get the Results
 
     > profile.exits
 
+  Be forewarned, these numbers are for the last **30** days and may be slightly different from the numbers displayed in Google Analytics' dashboard for **1 month**.
+
 Other Parameters
 ----------------
 
@@ -88,7 +90,7 @@ Other Parameters
 Metrics & Dimensions
 --------------------
 
-  Metrics and Dimensions are very complex because of the ways in which the can and cannot be combined.
+  **Metrics and Dimensions are very complex because of the ways in which the can and cannot be combined.**
 
   I suggest reading the google documentation to familiarize yourself with this.
 
@@ -100,7 +102,7 @@ Metrics & Dimensions
 Sorting
 -------
 
-  Sorting can be done on any metric or dimension defined in the request, with .desc reversing the sort.
+  Sorting can be done on any metric or dimension defined in the request, with .desc (or .descending) reversing the sort.
 
 Building a Report
 -----------------
