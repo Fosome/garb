@@ -32,7 +32,7 @@ module Garb
 
       def properties=(properties)
         self.id = properties['profile_id']
-        self.table_id = properties['table_id']
+        self.table_id = properties['dxp:table_id']
         self.title = properties['profile_name']
         self.account_id = properties['account_id']
         self.web_property_id = properties['web_property_id']
