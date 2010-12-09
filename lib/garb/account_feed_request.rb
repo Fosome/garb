@@ -15,11 +15,11 @@ module Garb
     end
 
     def entries
-      parsed_response ? [parsed_response['feed']['entry']].flatten : []
+      parsed_response ? Array(parsed_response['feed']['entry']).flatten.compact : []
     end
 
     def segments
-      parsed_response ? [parsed_response['feed']['dxp:segment']].flatten : []
+      parsed_response ? Array(parsed_response['feed']['dxp:segment']).flatten.compact : []
     end
   end
 end

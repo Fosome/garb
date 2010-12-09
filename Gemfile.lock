@@ -11,6 +11,9 @@ GEM
     oauth (0.4.4)
     rake (0.8.7)
     shoulda (2.11.3)
+    simplecov (0.3.7)
+      simplecov-html (>= 0.3.7)
+    simplecov-html (0.3.9)
 
 PLATFORMS
   ruby
@@ -23,3 +26,4 @@ DEPENDENCIES
   minitest
   oauth
   shoulda
+  simplecov

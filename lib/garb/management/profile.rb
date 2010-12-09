@@ -22,11 +22,9 @@ module Garb
 
       def self.new_from_entry(entry, session)
         profile = new
-
         profile.session = session
         profile.path = Garb.parse_link(entry, "self").gsub(Feed::BASE_URL, '')
         profile.properties = Garb.parse_properties(entry)
-
         profile
       end
 
@@ -38,8 +36,9 @@ module Garb
         self.web_property_id = properties['web_property_id']
       end
 
-      # def goals
-      # end
+      def goals
+        Goal.for_profile(self)
+      end
     end
   end
 end

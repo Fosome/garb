@@ -29,6 +29,10 @@ module Garb
       def profiles
         @profiles ||= Profile.for_web_property(self)
       end
+
+      def goals
+        @goals ||= Goal.for_web_property(self)
+      end
     end
   end
 end

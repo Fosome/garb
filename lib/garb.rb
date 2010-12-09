@@ -36,6 +36,7 @@ require 'garb/management/feed'
 require 'garb/management/account'
 require 'garb/management/web_property'
 require 'garb/management/profile'
+require 'garb/management/goal'
 
 require 'support'
 

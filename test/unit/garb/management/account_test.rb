@@ -47,7 +47,23 @@ module Garb
           assert_equal Session, @account.session
         end
 
-        should "have web properties"
+        should "have web properties" do
+          WebProperty.stubs(:for_account)
+          @account.web_properties
+          assert_received(WebProperty, :for_account) {|e| e.with(@account)}
+        end
+
+        should "have profiles" do
+          Profile.stubs(:for_account)
+          @account.profiles
+          assert_received(Profile, :for_account) {|e| e.with(@account)}
+        end
+
+        should "have goals" do
+          Goal.stubs(:for_account)
+          @account.goals
+          assert_received(Goal, :for_account) {|e| e.with(@account)}
+        end
       end
     end
   end

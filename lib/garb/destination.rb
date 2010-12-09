@@ -1,6 +1,8 @@
 module Garb
   class Destination
-    attr_reader :match_type, :expression, :steps
+    attr_reader :match_type, :expression, :steps, :case_sensitive
+
+    alias :case_sensitive? :case_sensitive
 
     def initialize(attributes)
       return unless attributes.is_a?(Hash)
@@ -11,10 +13,6 @@ module Garb
 
       step_attributes = attributes[Garb.to_ga('step')]
       @steps = Array(step_attributes.is_a?(Hash) ? [step_attributes] : step_attributes).map {|s| Step.new(s)}
-    end
-
-    def case_sensitive?
-      @case_sensitive
     end
   end
 end

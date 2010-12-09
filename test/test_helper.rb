@@ -1,6 +1,14 @@
 begin
   require 'simplecov'
-  SimpleCov.start 'rails'
+  SimpleCov.adapters.define 'garb' do
+    add_filter '/test/'
+    add_filter '/config/'
+    add_filter 'version'
+
+    add_group 'Libraries', 'lib'
+  end
+
+  SimpleCov.start 'garb'
 rescue LoadError
   puts "Install simplecov if you use 1.9 and want coverage metrics"
 end

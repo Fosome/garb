@@ -52,6 +52,12 @@ module Garb
           @web_property.profiles
           assert_received(Profile, :for_web_property) {|e| e.with(@web_property)}
         end
+
+        should "have goals" do
+          Goal.stubs(:for_web_property)
+          @web_property.goals
+          assert_received(Goal, :for_web_property) {|e| e.with(@web_property)}
+        end
       end
     end
   end

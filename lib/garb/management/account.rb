@@ -14,7 +14,7 @@ module Garb
         account = new
         account.session = session
         account.path = Garb.parse_link(entry, "self").gsub(Feed::BASE_URL, '')
-        account.title = entry['title'].gsub('Google Analytics Account ', '')
+        account.title = entry['title'].gsub('Google Analytics Account ', '') # can we get this in properties=?
         account.properties = Garb.parse_properties(entry)
         account
       end
@@ -25,11 +25,15 @@ module Garb
       end
 
       def web_properties
-        @web_properties ||= WebProperty.for_account(self) # will call path
+        @web_properties ||= WebProperty.for_account(self)
       end
 
       def profiles
         @profiles ||= Profile.for_account(self)
+      end
+
+      def goals
+        @goals ||= Goal.for_account(self)
       end
     end
   end
