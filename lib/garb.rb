@@ -33,6 +33,7 @@ require 'garb/model'
 
 # management
 require 'garb/management/feed'
+require 'garb/management/segment'
 require 'garb/management/account'
 require 'garb/management/web_property'
 require 'garb/management/profile'

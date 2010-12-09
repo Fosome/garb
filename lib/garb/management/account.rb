@@ -5,8 +5,7 @@ module Garb
       attr_accessor :id, :title, :name
 
       def self.all(session = Session)
-        feed = Feed.new(session, '/accounts') # builds request and parses response
-
+        feed = Feed.new(session, '/accounts')
         feed.entries.map {|entry| new_from_entry(entry, session)}
       end
 
