@@ -82,14 +82,13 @@ Other Parameters
 Metrics & Dimensions
 --------------------
 
-  **Metrics and Dimensions are very complex because of the ways in which the can and cannot be combined.**
+  **Metrics and Dimensions are very complex because of the ways in which they can and cannot be combined.**
 
   I suggest reading the google documentation to familiarize yourself with this.
 
   http://code.google.com/apis/analytics/docs/gdata/gdataReferenceDimensionsMetrics.html#bounceRate
 
-  When you've returned, you can pass the appropriate combinations (up to 50 metrics and 2 dimenstions)
-  to garb, as an array, of symbols. Or you can simply push a symbol into the array.
+  When you've returned, you can pass the appropriate combinations to Garb, as symbols.
 
 Filtering
 ---------
@@ -98,11 +97,8 @@ Filtering
 
   http://code.google.com/apis/analytics/docs/gdata/gdataReference.html#filtering
 
-  We handle filtering as an array of hashes that you can push into, 
-  which will be joined together (AND'd)
-
   Here is what we can do currently:
-  (the operator is a method on a symbol metric or dimension)
+  (the operator is a method on a symbol for the appropriate metric or dimension)
 
   Operators on metrics:
 
@@ -122,7 +118,7 @@ Filtering
     substring => '=@',
     not_substring => '!@'
     
-  Given the previous Exits example report, we can add an options for filter:
+  Given the previous Exits example report in shorthand, we can add an option for filter:
 
     profile.exits(:filters => {:page_path.eql => '/extend/effectively-using-git-with-subversion/')
 
