@@ -6,12 +6,14 @@ Garb
 Important Changes
 =================
 
-  I've started to work on a new module for reporting. You can see that work
-  in lib/garb/model.rb. This will be the API to replace both Garb::Resource
-  and Garb::Report. However, it isn't complete yet, so I would advise against
-  using it right now. Resource and Report will be deprecated around 0.9.0 and
-  I'd like to remove them for 1.0.0. I will start this process after I've
-  updated the documentation and I feel that Garb::Model is in a solid place.
+  With The release of version 0.9.0 I have officially deprecated Garb::Report, Garb::Resource,
+  Garb::Profile, and Garb::Account. Garb::Report and Garb::Resource should be replaced by Garb::Model.
+  Garb::Profile and Garb::Account are supplanted by their Garb::Management::* counterparts.
+  
+  I'll be working hard to update the documentation over the next day or so to highlight all of the
+  old features in the new classes, as well as any new features brought by the new classes. If you
+  are looking for something in particular, please open an issue and I will try to prioritize these
+  requests.
 
   Please read CHANGELOG
 
@@ -35,47 +37,37 @@ OAuth Access Token
 
     > Garb::Session.access_token = access_token # assign from oauth gem
 
-Accounts
+Accounts, WebProperties, Profiles, and Goals
 --------
 
-    > Garb::Account.all
+    > Garb::Management::Account.all
+    > Garb::Management::WebProperty.all
+    > Garb::Management::Profile.all
+    > Garb::Management::Goal.all
 
-Profiles
+Profiles for a UA- Number (a WebProperty)
 --------
 
-    > Garb::Account.first.profiles
-    
-    > Garb::Profile.first('UA-XXXX-XX')
-    
-    > Garb::Profile.all
-    > profile = Garb::Profile.all.first
+    > profile = profile = Garb::Management::Profile.all.detect {|p| p.web_property_id == 'UA-XXXXXXX-X'}
 
 Define a Report Class
 ---------------------
 
     class Exits
-      extend Garb::Resource
+      extend Garb::Model
 
-      metrics :exits, :pageviews, :exit_rate
+      metrics :exits, :pageviews
       dimensions :page_path
-      sort :exits
-
-      filters do
-        eql(:page_path, 'season')
-      end
-
-      # alternative:
-      # filters :page_path.eql => 10
     end
 
 Get the Results
 ---------------
 
-    > Exits.results(profile)
+    > Exits.results(profile, :filters => {:page_path.eql => '/'})
 
   OR shorthand
 
-    > profile.exits
+    > profile.exits(:filters => {:page_path.eql => '/'})
 
   Be forewarned, these numbers are for the last **30** days and may be slightly different from the numbers displayed in Google Analytics' dashboard for **1 month**.
 
@@ -98,52 +90,6 @@ Metrics & Dimensions
 
   When you've returned, you can pass the appropriate combinations (up to 50 metrics and 2 dimenstions)
   to garb, as an array, of symbols. Or you can simply push a symbol into the array.
-
-Sorting
--------
-
-  Sorting can be done on any metric or dimension defined in the request, with .desc (or .descending) reversing the sort.
-
-Building a Report
------------------
-
-  Given the class, session, and profile from above we can do:
-
-    Exits.results(profile, :limit => 10, :offset => 19)
-
-  Or, with sorting and filters:
-
-    Exits.results(profile, :limit => 10, :offset => 19) do
-      sort :exits
-
-      filters do
-        contains(:page_path, 'season')
-        gt(:exits, 100)
-      end
-
-      # or with a hash
-      # filters :page_path.contains => 'season', :exits.gt => 100
-    end
-
-  reports will be an array of OpenStructs with methods for the metrics and dimensions returned.
-
-Build a One-Off Report
-----------------------
-
-    report = Garb::Report.new(profile)
-    report.metrics :pageviews, :exits
-    report.dimensions :page_path
-    report.sort :exits
-
-    report.filters do
-      contains(:page_path, 'season')
-      gte(:exits, 10)
-    and
-
-    # or with a hash
-    # report.filters :page_path.contains => 'season', :exits.gt => 100
-
-    report.results
 
 Filtering
 ---------
@@ -176,15 +122,9 @@ Filtering
     substring => '=@',
     not_substring => '!@'
     
-  Given the previous example one-off report, we can add a line for filter:
-  
-    report.filters do
-      eql(:page_path, '/extend/effectively-using-git-with-subversion/')
-    end
+  Given the previous Exits example report, we can add an options for filter:
 
-  Or, if you're comfortable using symbol operators:
-
-    report.filters :page_path.eql => '/extend/effectively-using-git-with-subversion/'
+    profile.exits(:filters => {:page_path.eql => '/extend/effectively-using-git-with-subversion/')
 
 SSL
 ---
@@ -202,9 +142,7 @@ SSL
 TODOS
 -----
 
-  * Read opensearch header in results
-  * Investigate new features from GA to see if they're in the API, implement if so
-  * clarify AND/OR filtering behavior in code and documentation
+  * rebuild AND/OR filtering in Garb::Model
 
 Requirements
 ------------
@@ -215,13 +153,13 @@ Requirements
 Requirements for Testing
 ------------------------
 
+  * shoulda
   * jferris-mocha
-  * tpitale-shoulda (works with minitest)
 
 Install
 -------
 
-    sudo gem install garb
+    gem install garb
 
 Contributors
 ------------

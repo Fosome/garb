@@ -9,6 +9,7 @@ module Garb
     end
 
     def self.all(session = Session)
+      ActiveSupport::Deprecation.warn("The use of Garb::Account has been deprecated in favor of 'Garb::Management::Account'")
       profiles = {}
 
       Profile.all(session).each do |profile|

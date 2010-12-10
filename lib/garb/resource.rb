@@ -10,7 +10,7 @@ module Garb
       # returns Exits.results(self, options_hash, &block)
       # every class defined which extends Resource will add to the module
 
-      # ActiveSupport::Deprecation.warn
+      ActiveSupport::Deprecation.warn("The use of Garb::Resource will be removed in favor of 'extend Garb::Model'")
       ProfileReports.add_report_method(base)
     end
 
