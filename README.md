@@ -48,7 +48,7 @@ Accounts, WebProperties, Profiles, and Goals
 Profiles for a UA- Number (a WebProperty)
 --------
 
-    > profile = profile = Garb::Management::Profile.all.detect {|p| p.web_property_id == 'UA-XXXXXXX-X'}
+    > profile = Garb::Management::Profile.all.detect {|p| p.web_property_id == 'UA-XXXXXXX-X'}
 
 Define a Report Class
 ---------------------
