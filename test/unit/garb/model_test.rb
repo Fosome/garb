@@ -116,6 +116,15 @@ module Garb
           end
 
           # should "be able to shift the date range"
+          should "be able to set start date" do
+            assert_equal ['result'], @test_model.results(@profile, 'start_date' => (Date.today - 7))
+            assert_data_params(@params.merge({'start-date' => (Date.today - 7).strftime('%Y-%m-%d')}))
+          end
+
+          should "be able to set end date" do
+            assert_equal ['result'], @test_model.results(@profile, 'end_date' => (Date.today - 7))
+            assert_data_params(@params.merge({'end-date' => (Date.today - 7).strftime('%Y-%m-%d')}))
+          end
 
           should "return a set of results in the defined class" do
             @test_model.stubs(:instance_klass).returns(ResultKlass)
