@@ -11,6 +11,11 @@ module Garb
       @results ||= parse
     end
 
+    def total_results
+      response_hash = Crack::XML.parse(@xml)
+      response_hash ? response_hash['feed']['openSearch:totalResults'].to_i : 0
+    end
+
     private
     def parse
       entries.map do |entry|

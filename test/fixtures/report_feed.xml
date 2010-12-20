@@ -14,10 +14,10 @@
     </author>    
   <openSearch:startIndex>3</openSearch:startIndex>
   <openSearch:itemsPerPage>4</openSearch:itemsPerPage>
+  <openSearch:totalResults>6</openSearch:totalResults>
   <ga:webPropertyID>UA-983247-67</ga:webPropertyID>
   <ga:start-date>2008-01-01</ga:start-date>
   <ga:end-date>2008-01-02</ga:end-date>
-
   <entry>
     <id> http://www.google.com/analytics/feeds/data?ids=ga:1174&amp;ga:country=%28not%20set%29&amp;ga:city=%28not%20set%29&amp;start-date=2008-01-01&amp;end-date=2008-01-02 </id>
     <updated> 2008-01-01T16:00:00.001-08:00 </updated>

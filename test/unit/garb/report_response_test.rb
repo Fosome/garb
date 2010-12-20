@@ -24,6 +24,11 @@ module Garb
           response = ReportResponse.new(@file, SpecialKlass)
           assert_equal [SpecialKlass, SpecialKlass, SpecialKlass], response.results.map(&:class)
         end
+
+	should "return the total number of results" do
+          response = ReportResponse.new(@file)
+          assert_equal 6, response.total_results
+        end
       end
 
       should "return an empty array if there are no results" do
