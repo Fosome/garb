@@ -25,7 +25,7 @@ module Garb
           assert_equal [SpecialKlass, SpecialKlass, SpecialKlass], response.results.map(&:class)
         end
 
-	should "return the total number of results" do
+        should "return the total number of results" do
           response = ReportResponse.new(@file)
           assert_equal 6, response.total_results
         end
