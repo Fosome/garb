@@ -64,7 +64,7 @@ module Garb
             @test_model.stubs(:dimensions).returns(stub(:to_params => {'dimensions' => 'ga:pagePath'}))
 
             now = Time.now
-            Time.stubs(:new).returns(now)
+            Time.stubs(:now).returns(now)
 
             # p @profile.id
 
@@ -115,7 +115,13 @@ module Garb
             assert_data_params(@params.merge({'start-index' => 10}))
           end
 
-          # should "be able to shift the date range"
+          should "be able to shift the date range" do
+            start_date = (Time.now - 1296000)
+            end_date = Time.now
+
+            assert_equal ['result'], @test_model.results(@profile, :start_date => start_date, :end_date => end_date)
+            assert_data_params(@params.merge({'start-date' => start_date.strftime('%Y-%m-%d'), 'end-date' => end_date.strftime('%Y-%m-%d')}))
+          end
 
           should "return a set of results in the defined class" do
             @test_model.stubs(:instance_klass).returns(ResultKlass)
@@ -125,7 +131,6 @@ module Garb
           end
         end
 
-        # should "have a block syntax for filtering results"
         # should "return results as an array of the class it belongs to, if that class is an ActiveRecord descendant"
         # should "return results as an array of the class it belongs to, if that class is a DataMapper descendant"
         # should "return results as an array of the class it belongs to, if that class is a MongoMapper descendant"

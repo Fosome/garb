@@ -11,6 +11,16 @@ module Garb
       @results ||= parse
     end
 
+    def total_results
+      feed? ? parsed_xml['feed']['openSearch:totalResults'].to_i : 0
+    end
+
+    alias :size :total_results
+    alias :count :total_results
+
+    def sampled?
+    end
+
     private
     def parse
       entries.map do |entry|
@@ -21,8 +31,15 @@ module Garb
     end
 
     def entries
-      entry_hash = Crack::XML.parse(@xml)
-      entry_hash ? [entry_hash['feed']['entry']].flatten.compact : []
+      feed? ? [parsed_xml['feed']['entry']].flatten.compact : []
+    end
+
+    def parsed_xml
+      @parsed_xml ||= Crack::XML.parse(@xml)
+    end
+
+    def feed?
+      !parsed_xml['feed'].nil?
     end
 
     def values_for(entry)
