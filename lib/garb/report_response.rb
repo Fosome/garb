@@ -8,15 +8,13 @@ module Garb
     end
 
     def results
-      @results ||= parse
-    end
+      if @results.nil?
+        @results = ResultSet.new(parse)
+        @results.total_results = parse_total_results
+      end
 
-    def total_results
-      feed? ? parsed_xml['feed']['openSearch:totalResults'].to_i : 0
+      @results
     end
-
-    alias :size :total_results
-    alias :count :total_results
 
     def sampled?
     end
@@ -32,6 +30,10 @@ module Garb
 
     def entries
       feed? ? [parsed_xml['feed']['entry']].flatten.compact : []
+    end
+
+    def parse_total_results
+      feed? ? parsed_xml['feed']['openSearch:totalResults'].to_i : 0
     end
 
     def parsed_xml

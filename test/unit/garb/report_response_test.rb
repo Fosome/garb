@@ -27,9 +27,7 @@ module Garb
 
         should "know the total number of results" do
           response = ReportResponse.new(@file)
-          assert_equal 18, response.total_results
-          assert_equal 18, response.size
-          assert_equal 18, response.count
+          assert_equal 18, response.results.total_results
         end
 
         should "know if the data has been sampled"
@@ -39,7 +37,7 @@ module Garb
         response = ReportResponse.new("result xml")
         Crack::XML.stubs(:parse).with("result xml").returns({'feed' => {'entry' => nil}})
 
-        assert_equal [], response.results
+        assert_equal [], response.results.to_a
       end
     end
   end
