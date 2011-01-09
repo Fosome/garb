@@ -53,6 +53,15 @@ module Garb
           params = {'filters' => 'ga:pagePath%3D~New+York'}
           assert_equal params, @filter_parameters.to_params
         end
+
+        should "escape comma, semicolon, and backslash in values" do
+          @filter_parameters.filters do
+            eql(:url, 'this;that,thing\other')
+          end
+
+          params = {'filters' => 'ga:url%3D%3Dthis%5C%3Bthat%5C%2Cthing%5C%5Cother'}
+          assert_equal params, @filter_parameters.to_params
+        end
       end
     end
   end
