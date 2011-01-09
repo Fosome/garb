@@ -11,6 +11,7 @@ module Garb
       if @results.nil?
         @results = ResultSet.new(parse)
         @results.total_results = parse_total_results
+        @results.sampled = parse_sampled_flag
       end
 
       @results
@@ -34,6 +35,10 @@ module Garb
 
     def parse_total_results
       feed? ? parsed_xml['feed']['openSearch:totalResults'].to_i : 0
+    end
+
+    def parse_sampled_flag
+      feed? ? (parsed_xml['feed']['dxp:containsSampledData'] == 'true') : false
     end
 
     def parsed_xml
