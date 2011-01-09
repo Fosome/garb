@@ -15,7 +15,7 @@ module Garb
 
       def entries
         # possible to have nil entries, yuck
-        parsed_response ? Array(parsed_response['feed']['entry']).flatten.compact : []
+        parsed_response ? [parsed_response['feed']['entry']].flatten.compact : []
       end
 
       def response
