@@ -95,6 +95,17 @@ module Garb
             assert_data_params(@params.merge({'segment' => 'gaid::1'}))
           end
 
+          should "be able to filter with a dynamic segment" do
+            # parse_filters called first...
+            filter_parameters = stub(:<<)
+            filters = stub(:parameters => filter_parameters, :to_params => {'filters' => nil})
+            segments = stub(:parameters => filter_parameters, :to_params => {'filters' => 'dynamic_segment_params'})
+            FilterParameters.stubs(:new).returns(filters).then.returns(segments)
+
+            assert_equal ['result'], @test_model.results(@profile, :dynamic_segment => 'dynamic_segment_params')
+            assert_data_params(@params.merge({'segment' => 'dynamic::dynamic_segment_params'}))
+          end
+
           should "be able to sort" do
             sort_parameter = stub(:<<)
             sort_parameter.stubs(:to_params => {'sort' => 'sort value'})
