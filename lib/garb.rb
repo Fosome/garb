@@ -40,7 +40,7 @@ require 'garb/management/web_property'
 require 'garb/management/profile'
 require 'garb/management/goal'
 
-require 'support'
+require File.dirname(__FILE__) + '/support'
 
 module Garb
   GA = "http://schemas.google.com/analytics/2008"
