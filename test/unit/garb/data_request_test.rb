@@ -96,7 +96,7 @@ module Garb
           }).returns(response)
         end
 
-        Net::HTTP.expects(:new).with('example.com', 443).returns(http)
+        Net::HTTP.expects(:new).with('example.com', 443, nil, nil).returns(http)
 
         data_request = DataRequest.new(@session, 'https://example.com/data', 'key' => 'value')
         assert_equal response, data_request.single_user_request

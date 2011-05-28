@@ -29,7 +29,8 @@ module Garb
       start_date = options.fetch(:start_date, Time.now - MONTH)
       end_date = options.fetch(:end_date, Time.now)
       default_params = build_default_params(profile, start_date, end_date)
-
+      proxy = {:proxy => options.fetch(:proxy, nil)}
+      
       param_set = [
         default_params,
         metrics.to_params,
@@ -37,7 +38,8 @@ module Garb
         parse_filters(options).to_params,
         parse_segment(options),
         parse_sort(options).to_params,
-        build_page_params(options)
+        build_page_params(options),
+        proxy
       ]
 
       data = send_request_for_data(profile, build_params(param_set))
