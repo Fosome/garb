@@ -8,6 +8,8 @@ module Garb
       @email = email
       @password = password
       @account_type = opts.fetch(:account_type, 'HOSTED_OR_GOOGLE')
+      proxy = opts.fetch(:proxy, nil)
+      @proxy_host, @proxy_port = proxy.split(":") unless(proxy.nil?)
     end
 
     def parameters
@@ -25,7 +27,7 @@ module Garb
     end
 
     def send_request(ssl_mode)
-      http = Net::HTTP.new(uri.host, uri.port)
+      http = Net::HTTP.new(uri.host, uri.port, @proxy_host, @proxy_port)
       http.use_ssl = true
       http.verify_mode = ssl_mode
 
@@ -51,3 +53,4 @@ module Garb
 
   end
 end
+

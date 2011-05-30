@@ -39,7 +39,7 @@ module Garb
           m.expects(:request).with('post').yields(response)
         end
         
-        Net::HTTP.expects(:new).with('www.google.com', 443).returns(http)
+        Net::HTTP.expects(:new).with('www.google.com', 443, nil, nil).returns(http)
 
         @request.send_request(OpenSSL::SSL::VERIFY_PEER)
       end
@@ -55,7 +55,7 @@ module Garb
           m.expects(:request).with('post').yields(response)
         end
         
-        Net::HTTP.expects(:new).with('www.google.com', 443).returns(http)
+        Net::HTTP.expects(:new).with('www.google.com', 443, nil, nil).returns(http)
 
         @request.send_request(OpenSSL::SSL::VERIFY_NONE)
       end
@@ -106,7 +106,7 @@ module Garb
           s.stubs(:request).yields(response)
         end
 
-        Net::HTTP.stubs(:new).with('www.google.com', 443).returns(http)
+        Net::HTTP.stubs(:new).with('www.google.com', 443, nil, nil).returns(http)
         
         assert_raises(Garb::AuthenticationRequest::AuthError) do
           @request.send_request(OpenSSL::SSL::VERIFY_NONE)
