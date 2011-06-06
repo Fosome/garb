@@ -34,7 +34,6 @@ module Garb
       if ssl_mode == OpenSSL::SSL::VERIFY_PEER
         http.ca_file = CA_CERT_FILE
       end
-      puts("Authentication...")
       http.request(build_request) do |response|
         raise AuthError unless response.is_a?(Net::HTTPOK)
       end

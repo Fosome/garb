@@ -33,7 +33,6 @@ module Garb
       http = Net::HTTP.new(uri.host, uri.port, proxy_host, proxy_port, {:open_timeout => 30, :read_timeout => 30, :ssl_timeout => 30})
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      puts("Data request...")
       http.get("#{uri.path}#{query_string}", {'Authorization' => "GoogleLogin auth=#{@session.auth_token}", 'GData-Version' => '2'})
     end
 
