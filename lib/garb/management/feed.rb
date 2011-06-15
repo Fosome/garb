@@ -5,8 +5,8 @@ module Garb
 
       attr_reader :request
 
-      def initialize(session, path)
-        @request = DataRequest.new(session, BASE_URL+path)
+      def initialize(session, path, proxy = nil)
+        @request = DataRequest.new(session, BASE_URL+path, :proxy => proxy)
       end
 
       def parsed_response

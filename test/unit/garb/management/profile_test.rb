@@ -11,7 +11,7 @@ module Garb
           Profile.stubs(:new_from_entry)
           Profile.all
 
-          assert_received(Feed, :new) {|e| e.with(Session, '/accounts/~all/webproperties/~all/profiles')}
+          assert_received(Feed, :new) {|e| e.with(Session, '/accounts/~all/webproperties/~all/profiles', nil)}
           assert_received(feed, :entries)
           assert_received(Profile, :new_from_entry) {|e| e.with("entry1", Session)}
         end

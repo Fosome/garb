@@ -7,8 +7,8 @@ module Garb
       attr_accessor :session, :path
       attr_accessor :id, :table_id, :title, :account_id, :web_property_id
 
-      def self.all(session = Session, path = '/accounts/~all/webproperties/~all/profiles')
-        feed = Feed.new(session, path)
+      def self.all(session = Session, path = '/accounts/~all/webproperties/~all/profiles', proxy = nil)
+        feed = Feed.new(session, path, proxy)
         feed.entries.map {|entry| new_from_entry(entry, session)}
       end
 

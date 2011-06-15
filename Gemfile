@@ -7,7 +7,7 @@ gem 'crack'
 
 group :test do
   gem 'shoulda'
-  gem 'simplecov'
+  gem 'simplecov', '0.3.9'
   gem 'minitest', :require => false
   gem 'jferris-mocha', :require => false
 end

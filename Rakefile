@@ -52,6 +52,5 @@ rescue LoadError
   nil
 end
 
-task :default => 'test'
-
 # EOF
+
