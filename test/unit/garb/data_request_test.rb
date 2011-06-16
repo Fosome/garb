@@ -9,6 +9,11 @@ module Garb
         @session.auth_token = 'abcdefg123456'
       end
 
+      teardown do
+        Garb.proxy_address = nil
+        Garb.proxy_port = nil
+      end
+
       should "be able to build the query string from parameters" do
         parameters = {'ids' => '12345', 'metrics' => 'country'}
         data_request = DataRequest.new(@session, "", parameters)
@@ -96,7 +101,9 @@ module Garb
           }).returns(response)
         end
 
-        Net::HTTP.expects(:new).with('example.com', 443).returns(http)
+        Garb.proxy_address = "127.0.0.1"
+        Garb.proxy_port = "1234"
+        Net::HTTP.expects(:new).with('example.com', 443, "127.0.0.1", "1234").returns(http)
 
         data_request = DataRequest.new(@session, 'https://example.com/data', 'key' => 'value')
         assert_equal response, data_request.single_user_request

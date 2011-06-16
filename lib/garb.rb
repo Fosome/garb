@@ -47,6 +47,10 @@ module Garb
 
   extend self
 
+  class << self
+    attr_accessor :proxy_address, :proxy_port, :proxy_user, :proxy_password
+  end
+
   def to_google_analytics(thing)
     return thing.to_google_analytics if thing.respond_to?(:to_google_analytics)
 
@@ -66,4 +70,9 @@ module Garb
   def parse_link(entry, rel)
     entry['link'].detect {|link| link["rel"] == rel}['href']
   end
+
+  # new(address, port = nil, p_addr = nil, p_port = nil, p_user = nil, p_pass = nil)
+
+  # opts => open_timeout, read_timeout, ssl_timeout
+  # probably just support open_timeout
 end

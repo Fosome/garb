@@ -8,6 +8,10 @@ module Garb
     context "An instance of the AuthenticationRequest class" do
       
       setup { @request = AuthenticationRequest.new('email', 'password') }
+      teardown do
+        Garb.proxy_address = nil
+        Garb.proxy_port = nil
+      end
       
       should "have a collection of parameters that include the email and password" do
         expected = 
@@ -27,7 +31,7 @@ module Garb
         assert_equal URI.parse('https://www.google.com/accounts/ClientLogin'), @request.uri
       end
 
-      should "be able to send a request to the GAAPI service with proper ssl" do        
+      should "be able to send a request to the GAAPI service with proper ssl" do
         @request.expects(:build_request).returns('post')
 
         response = mock {|m| m.expects(:is_a?).with(Net::HTTPOK).returns(true) }
@@ -39,12 +43,12 @@ module Garb
           m.expects(:request).with('post').yields(response)
         end
         
-        Net::HTTP.expects(:new).with('www.google.com', 443).returns(http)
+        Net::HTTP.expects(:new).with('www.google.com', 443, nil, nil).returns(http)
 
         @request.send_request(OpenSSL::SSL::VERIFY_PEER)
       end
 
-      should "be able to send a request to the GAAPI service with ignoring ssl" do        
+      should "be able to send a request to the GAAPI service with ignoring ssl" do
         @request.expects(:build_request).returns('post')
 
         response = mock {|m| m.expects(:is_a?).with(Net::HTTPOK).returns(true) }
@@ -55,7 +59,7 @@ module Garb
           m.expects(:request).with('post').yields(response)
         end
         
-        Net::HTTP.expects(:new).with('www.google.com', 443).returns(http)
+        Net::HTTP.expects(:new).with('www.google.com', 443, nil, nil).returns(http)
 
         @request.send_request(OpenSSL::SSL::VERIFY_NONE)
       end
@@ -106,16 +110,31 @@ module Garb
           s.stubs(:request).yields(response)
         end
 
-        Net::HTTP.stubs(:new).with('www.google.com', 443).returns(http)
+        Net::HTTP.stubs(:new).with('www.google.com', 443, nil, nil).returns(http)
         
         assert_raises(Garb::AuthenticationRequest::AuthError) do
           @request.send_request(OpenSSL::SSL::VERIFY_NONE)
         end
       end
-      
+
+      should "make use of Garb proxy settings in Net::HTTP request" do
+        @request.expects(:build_request).returns('post')
+
+        response = stub {|s| s.stubs(:is_a?).returns(true) }
+
+        http = mock do |m|
+          m.stubs(:use_ssl=)
+          m.stubs(:verify_mode=)
+          m.stubs(:request).yields(response)
+        end
+
+        Garb.proxy_address = '127.0.0.1'
+        Garb.proxy_port = '1234'
+
+        Net::HTTP.expects(:new).with('www.google.com', 443, '127.0.0.1', '1234').returns(http)
+
+        @request.send_request(nil)
+      end
     end
-    
-    
-    
   end
 end

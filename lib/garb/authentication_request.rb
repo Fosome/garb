@@ -25,7 +25,7 @@ module Garb
     end
 
     def send_request(ssl_mode)
-      http = Net::HTTP.new(uri.host, uri.port)
+      http = Net::HTTP.new(uri.host, uri.port, Garb.proxy_address, Garb.proxy_port)
       http.use_ssl = true
       http.verify_mode = ssl_mode
 
