@@ -25,5 +25,6 @@ DEPENDENCIES
   jferris-mocha
   minitest
   oauth
+  rake (~> 0.8.7)
   shoulda
   simplecov

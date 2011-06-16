@@ -15,7 +15,6 @@ end
 
 $:.reject! { |e| e.include? 'TextMate' }
 
-require 'rubygems'
 require 'bundler'
 Bundler.setup(:default, :test)
 
@@ -25,6 +24,8 @@ require 'mocha'
 
 $:.unshift File.expand_path('../../lib', __FILE__)
 require 'garb'
+
+ActiveSupport::Deprecation.silenced = true
 
 class MiniTest::Unit::TestCase
   include Shoulda::InstanceMethods
