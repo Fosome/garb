@@ -1,3 +1,8 @@
+Version 0.9.2
+
+  * Removed all deprecated features: Garb::Report, Garb::Resource, Garb::Profile, and Garb::Account
+  * Moved the differing types of requests into a module, will refactor to share more code
+
 Version 0.9.0
 
   * New Garb::Model is solid. Garb::Resource and Garb::Report are deprecated.

@@ -6,6 +6,9 @@ Garb
 Important Changes
 =================
 
+  It has now been nearly 6 months, I have removed the deprecated features listed below in master.
+  I will release 0.9.2 shortly, with these features removed.
+
   With The release of version 0.9.0 I have officially deprecated Garb::Report, Garb::Resource,
   Garb::Profile, and Garb::Account. Garb::Report and Garb::Resource should be replaced by Garb::Model.
   Garb::Profile and Garb::Account are supplanted by their Garb::Management::* counterparts.
@@ -38,7 +41,7 @@ OAuth Access Token
     > Garb::Session.access_token = access_token # assign from oauth gem
 
 Accounts, WebProperties, Profiles, and Goals
---------
+--------------------------------------------
 
     > Garb::Management::Account.all
     > Garb::Management::WebProperty.all
@@ -46,7 +49,7 @@ Accounts, WebProperties, Profiles, and Goals
     > Garb::Management::Goal.all
 
 Profiles for a UA- Number (a WebProperty)
---------
+-----------------------------------------
 
     > profile = Garb::Management::Profile.all.detect {|p| p.web_property_id == 'UA-XXXXXXX-X'}
 
@@ -150,12 +153,13 @@ Requirements for Testing
 ------------------------
 
   * shoulda
-  * jferris-mocha
+  * mocha
+  * bourne
 
 Install
 -------
 
-    gem install garb
+    gem install garb OR with bundler: gem 'garb' and `bundle install`
 
 Contributors
 ------------
@@ -171,7 +175,7 @@ License
 
   (The MIT License)
 
-  Copyright (c) 2010 Viget Labs
+  Copyright (c) 2011 Viget Labs
 
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the
