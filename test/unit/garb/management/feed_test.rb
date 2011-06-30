@@ -6,7 +6,7 @@ module Garb
       context "a Feed" do
         setup do
           @request = stub
-          DataRequest.stubs(:new).returns(@request)
+          Request::Data.stubs(:new).returns(@request)
           @feed = Feed.new(Garb::Session.new, '/accounts')
         end
 

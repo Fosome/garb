@@ -39,7 +39,7 @@ class MiniTest::Unit::TestCase
   end
 
   def assert_data_params(expected)
-    assert_received(Garb::DataRequest, :new) {|e| e.with(Garb::Session, Garb::Model::URL, expected)}
+    assert_received(Garb::Request::Data, :new) {|e| e.with(Garb::Session, Garb::Model::URL, expected)}
   end
 end
 

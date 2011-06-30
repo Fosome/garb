@@ -57,7 +57,7 @@ module Garb
         context "when getting results" do
           setup do
             @response = stub(:body => "raw report data")
-            DataRequest.stubs(:new).returns(stub(:send_request => @response))
+            Request::Data.stubs(:new).returns(stub(:send_request => @response))
             ReportResponse.stubs(:new).returns(stub(:results => ['result']))
 
             @test_model.stubs(:metrics).returns(stub(:to_params => {'metrics' => 'ga:visits'}))

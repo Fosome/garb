@@ -46,7 +46,7 @@ module Garb
 
     private
     def send_request_for_data(profile, params)
-      request = DataRequest.new(profile.session, URL, params)
+      request = Request::Data.new(profile.session, URL, params)
       response = request.send_request
       response.body
     end

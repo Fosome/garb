@@ -13,22 +13,19 @@ rescue LoadError
 end
 
 require 'garb/version'
-require 'garb/authentication_request'
-require 'garb/data_request'
-require 'garb/account_feed_request'
+require 'garb/request/authentication'
+require 'garb/request/data'
+# require 'garb/account_feed_request'
 require 'garb/session'
 require 'garb/profile_reports'
 require 'garb/step'
 require 'garb/destination'
-require 'garb/goal'
-require 'garb/profile'
-require 'garb/account'
 require 'garb/filter_parameters'
 require 'garb/report_parameter'
 require 'garb/result_set'
 require 'garb/report_response'
-require 'garb/resource'
-require 'garb/report'
+# require 'garb/resource'
+# require 'garb/report'
 
 require 'garb/model'
 
