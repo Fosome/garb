@@ -82,12 +82,11 @@ module Garb
           end
 
           should "be able to filter" do
-            filter_parameters = stub(:<<)
-            FilterParameters.stubs(:new).returns(stub(:parameters => filter_parameters, :to_params => {'filters' => "params"}))
+            FilterParameters.stubs(:new).returns(stub(:to_params => {'filters' => "params"}))
             assert_equal ['result'], @test_model.results(@profile, :filters => {:page_path => '/'})
 
             assert_data_params(@params.merge({'filters' => 'params'}))
-            assert_received(filter_parameters, :<<) {|e| e.with({:page_path => '/'})}
+            assert_received(FilterParameters, :new) {|e| e.with({:page_path => '/'})}
           end
 
           should "be able to set the filter segment by id" do

@@ -56,9 +56,7 @@ module Garb
     end
 
     def parse_filters(options)
-      filters = FilterParameters.new
-      filters.parameters << options[:filters] if options.has_key?(:filters)
-      filters
+      FilterParameters.new(options[:filters])
     end
 
     def parse_segment(options)

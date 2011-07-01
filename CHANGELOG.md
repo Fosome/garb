@@ -2,6 +2,7 @@ Version 0.9.2
 
   * Removed all deprecated features: Garb::Report, Garb::Resource, Garb::Profile, and Garb::Account
   * Moved the differing types of requests into a module, will refactor to share more code
+  * Fixed OR'ing in :filters option for results
 
 Version 0.9.0
 

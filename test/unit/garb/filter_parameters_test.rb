@@ -20,30 +20,26 @@ module Garb
     # end
 
     context "A FilterParameters" do
-      setup do
-        @filter_parameters = FilterParameters.new
-      end
-
       context "when converting parameters hash into query string parameters" do
         should "parameterize hash operators and join elements with AND" do
-          @filter_parameters.parameters << {:city.eql => 'New York City', :state.eql => 'New York'}
+          filters = FilterParameters.new({:city.eql => 'New York City', :state.eql => 'New York'})
 
           params = ['ga:city%3D%3DNew+York+City', 'ga:state%3D%3DNew+York']
-          assert_equal params, @filter_parameters.to_params['filters'].split('%3B').sort
+          assert_equal params, filters.to_params['filters'].split('%3B').sort
         end
 
         should "properly encode operators" do
-          @filter_parameters.parameters << {:page_path.contains => 'New York'}
+          filters = FilterParameters.new({:page_path.contains => 'New York'})
 
           params = {'filters' => 'ga:pagePath%3D~New+York'}
-          assert_equal params, @filter_parameters.to_params
+          assert_equal params, filters.to_params
         end
 
         should "escape comma, semicolon, and backslash in values" do
-          @filter_parameters.parameters << {:url.eql => 'this;that,thing\other'}
+          filters = FilterParameters.new({:url.eql => 'this;that,thing\other'})
 
           params = {'filters' => 'ga:url%3D%3Dthis%5C%3Bthat%5C%2Cthing%5C%5Cother'}
-          assert_equal params, @filter_parameters.to_params
+          assert_equal params, filters.to_params
         end
       end
     end
