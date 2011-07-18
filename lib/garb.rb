@@ -12,30 +12,37 @@ rescue LoadError
   require 'active_support'
 end
 
-require 'garb/version'
-require 'garb/request/authentication'
-require 'garb/request/data'
+module Garb
+  autoload :Destination,      'garb/destination'
+  autoload :FilterParameters, 'garb/filter_parameters'
+  autoload :Model,            'garb/model'
+  autoload :ProfileReports,   'garb/profile_reports'
+  autoload :ReportParameter,  'garb/report_parameter'
+  autoload :ReportResponse,   'garb/report_response'
+  autoload :ResultSet,        'garb/result_set'
+  autoload :Session,          'garb/session'
+  autoload :Step,             'garb/step'
+  autoload :Version,          'garb/version'
+
+  module Management
+    autoload :Account,     'garb/management/account'
+    autoload :Feed,        'garb/management/feed'
+    autoload :Goal,        'garb/management/goal'
+    autoload :Profile,     'garb/management/profile'
+    autoload :Segment,     'garb/management/segment'
+    autoload :WebProperty, 'garb/management/web_property'
+  end
+
+  module Request
+    autoload :Authentication, "garb/request/authentication"
+    autoload :Data,           'garb/request/data'
+  end
+end
+
 # require 'garb/account_feed_request'
-require 'garb/session'
-require 'garb/profile_reports'
-require 'garb/step'
-require 'garb/destination'
-require 'garb/filter_parameters'
-require 'garb/report_parameter'
-require 'garb/result_set'
-require 'garb/report_response'
 # require 'garb/resource'
 # require 'garb/report'
 
-require 'garb/model'
-
-# management
-require 'garb/management/feed'
-require 'garb/management/segment'
-require 'garb/management/account'
-require 'garb/management/web_property'
-require 'garb/management/profile'
-require 'garb/management/goal'
 
 require 'support'
 
