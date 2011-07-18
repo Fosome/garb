@@ -3,7 +3,12 @@ require 'net/https'
 
 require 'cgi'
 require 'ostruct'
-require 'crack'
+
+begin 
+  require 'yajl/json_gem' # JSON.parse
+rescue LoadError
+  require 'json'
+end
 
 begin
   require 'active_support/inflector'

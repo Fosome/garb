@@ -3,7 +3,7 @@ module Garb
     KEYS = ['dxp:metric', 'dxp:dimension']
 
     def initialize(response_body, instance_klass = OpenStruct)
-      @xml = response_body
+      @data = response_body
       @instance_klass = instance_klass
     end
 
@@ -30,23 +30,23 @@ module Garb
     end
 
     def entries
-      feed? ? [parsed_xml['feed']['entry']].flatten.compact : []
+      feed? ? [parsed_data['feed']['entry']].flatten.compact : []
     end
 
     def parse_total_results
-      feed? ? parsed_xml['feed']['openSearch:totalResults'].to_i : 0
+      feed? ? parsed_data['feed']['openSearch:totalResults'].to_i : 0
     end
 
     def parse_sampled_flag
-      feed? ? (parsed_xml['feed']['dxp:containsSampledData'] == 'true') : false
+      feed? ? (parsed_data['feed']['dxp:containsSampledData'] == 'true') : false
     end
 
-    def parsed_xml
-      @parsed_xml ||= Crack::XML.parse(@xml)
+    def parsed_data
+      @parsed_data ||= JSON.parse(@data)
     end
 
     def feed?
-      !parsed_xml['feed'].nil?
+      !parsed_data['feed'].nil?
     end
 
     def values_for(entry)

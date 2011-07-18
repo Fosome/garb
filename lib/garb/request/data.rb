@@ -3,6 +3,8 @@ module Garb
     class Data
       class ClientError < StandardError; end
 
+      attr_writer :format
+
       def initialize(session, base_url, parameters={})
         @session = session
         @base_url = base_url
@@ -10,8 +12,13 @@ module Garb
       end
 
       def query_string
+        @parameters.merge!("alt" => format) if @parameters.keys.any?
         parameter_list = @parameters.map {|k,v| "#{k}=#{v}" }
         parameter_list.empty? ? '' : "?#{parameter_list.join('&')}"
+      end
+
+      def format
+        @format ||= "json" # TODO Support other formats?
       end
 
       def uri
