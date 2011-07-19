@@ -3,7 +3,6 @@ GEM
   remote: http://gems.github.com/
   specs:
     activesupport (3.0.3)
-    crack (0.1.8)
     i18n (0.4.2)
     jferris-mocha (0.9.8.20100526112143)
       rake
@@ -14,13 +13,13 @@ GEM
     simplecov (0.3.7)
       simplecov-html (>= 0.3.7)
     simplecov-html (0.3.9)
+    yajl-ruby (0.8.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   activesupport
-  crack
   i18n
   jferris-mocha
   minitest
@@ -28,3 +27,4 @@ DEPENDENCIES
   rake (~> 0.8.7)
   shoulda
   simplecov
+  yajl-ruby

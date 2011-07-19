@@ -22,7 +22,7 @@ module Garb
           entry = {
             "title" => "Google Analytics Account Garb",
             "link" => [{"rel" => "self", "href" => Feed::BASE_URL+"/accounts/123456"}],
-            "dxp:property" => [
+            "dxp$property" => [
               {"name" => "ga:accountId", "value" => "123456"},
               {"name" => "ga:accountName", "value" => "Garb"}
             ]
