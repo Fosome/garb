@@ -12,7 +12,7 @@ class GarbTest < MiniTest::Unit::TestCase
     end
 
     should "have a helper to parse properties out of entries" do
-      entry = {"dxp:property"=>[{"name"=>"ga:accountId", "value"=>"1189765"}, {"name"=>"ga:webPropertyId", "value"=>"UA-1189765-1"}]}
+      entry = {"dxp$property"=>[{"name"=>"ga:accountId", "value"=>"1189765"}, {"name"=>"ga:webPropertyId", "value"=>"UA-1189765-1"}]}
 
       assert_equal({"account_id" => '1189765', "web_property_id" => "UA-1189765-1"}, Garb.parse_properties(entry))
     end

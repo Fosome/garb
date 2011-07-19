@@ -1,6 +1,6 @@
 module Garb  
   class ReportResponse
-    KEYS = ['dxp:metric', 'dxp:dimension']
+    KEYS = ['dxp$metric', 'dxp$dimension']
 
     def initialize(response_body, instance_klass = OpenStruct)
       @data = response_body
@@ -38,7 +38,7 @@ module Garb
     end
 
     def parse_sampled_flag
-      feed? ? (parsed_data['feed']['dxp:containsSampledData'] == 'true') : false
+      feed? ? (parsed_data['feed']['dxp$containsSampledData'] == 'true') : false
     end
 
     def parsed_data

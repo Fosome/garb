@@ -11,8 +11,12 @@ module Garb
         @parameters = parameters
       end
 
+      def parameters
+        @parameters ||= {}
+      end
+
       def query_string
-        @parameters.merge!("alt" => format) if @parameters.keys.any?
+        parameters.merge!("alt" => format)
         parameter_list = @parameters.map {|k,v| "#{k}=#{v}" }
         parameter_list.empty? ? '' : "?#{parameter_list.join('&')}"
       end

@@ -44,7 +44,7 @@ module Garb
           entry = {
             "title" => "Google Analytics Profile example.com",
             "link" => [{"rel" => "self", "href" => Garb::Management::Feed::BASE_URL+"/accounts/1189765/webproperties/UA-1189765-1/profiles/98765"}],
-            "dxp:property" => [
+            "dxp$property" => [
               {"name" => "ga:profileId", "value" => "98765"},
               {"name" => "ga:accountId", "value" => "1189765"},
               {"name" => "ga:webPropertyId", "value" => 'UA-1189765-1'}

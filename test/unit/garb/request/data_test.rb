@@ -28,9 +28,9 @@ module Garb
           assert_equal ["alt=json", "ids=12345", "metrics=country"], query_string.split('&').sort
         end
       
-        should "return an empty query string if parameters are empty" do
+        should "only contain JSON response option if parameters are empty" do
           data_request = Request::Data.new(@session, "")
-          assert_equal "", data_request.query_string
+          assert_equal "?alt=json", data_request.query_string
         end
 
         should "be able to build a uri" do
