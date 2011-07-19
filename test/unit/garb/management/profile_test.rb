@@ -33,7 +33,7 @@ module Garb
         setup do
           entry = {
             "link" => [{"rel" => "self", "href" => Feed::BASE_URL+"/accounts/1189765/webproperties/UA-1189765-1/profiles/98765"}],
-            "dxp:property" => [
+            "dxp$property" => [
               {"name" => "ga:profileId", "value" => "98765"},
               {"name" => "ga:accountId", "value" => "1189765"},
               {"name" => "ga:webPropertyId", "value" => 'UA-1189765-1'},
