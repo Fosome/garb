@@ -169,6 +169,7 @@ Contributors
   * Patrick Reagan
   * Justin Marney
   * Nick Plante
+  * James Cook
 
 License
 -------
