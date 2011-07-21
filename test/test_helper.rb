@@ -25,8 +25,6 @@ require 'mocha'
 $:.unshift File.expand_path('../../lib', __FILE__)
 require 'garb'
 
-ActiveSupport::Deprecation.silenced = true
-
 class MiniTest::Unit::TestCase
   include Shoulda::InstanceMethods
   extend Shoulda::ClassMethods

@@ -2,7 +2,6 @@ GEM
   remote: http://rubygems.org/
   remote: http://gems.github.com/
   specs:
-    activesupport (3.0.3)
     i18n (0.4.2)
     jferris-mocha (0.9.8.20100526112143)
       rake
@@ -19,7 +18,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport
   i18n
   jferris-mocha
   minitest
