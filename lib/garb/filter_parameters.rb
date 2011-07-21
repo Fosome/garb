@@ -16,7 +16,7 @@ module Garb
     attr_accessor :parameters
 
     def initialize(parameters)
-      self.parameters = (Array.wrap(parameters) || [])
+      self.parameters = ([parameters].flatten || []).compact
     end
 
     def to_params

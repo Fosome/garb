@@ -4,7 +4,6 @@ source "http://gems.github.com"
 gem 'rake', '~> 0.8.7'
 
 gem 'i18n'
-gem 'activesupport'
 
 group :test do
   gem 'shoulda'
