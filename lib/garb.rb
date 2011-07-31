@@ -61,7 +61,7 @@ module Garb
   def to_google_analytics(thing)
     return thing.to_google_analytics if thing.respond_to?(:to_google_analytics)
 
-    "ga:#{thing.to_s.camelize(:lower)}"
+    "#{$1}ga:#{$2}" if "#{thing.to_s.camelize(:lower)}" =~ /^(-)?(.*)$/
   end
   alias :to_ga :to_google_analytics
 
