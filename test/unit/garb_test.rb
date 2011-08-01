@@ -6,6 +6,10 @@ class GarbTest < MiniTest::Unit::TestCase
       assert_equal '-ga:bob', Garb.to_google_analytics(stub(:to_google_analytics => '-ga:bob'))
       assert_equal 'ga:bob', Garb.to_google_analytics('bob')
     end
+    
+    should 'parse out - and put it before ga:' do      
+      assert_equal '-ga:pageviews', Garb.to_google_analytics('-pageviews')      
+    end
 
     should 'remove ga: prefix' do
       assert_equal 'bob', Garb.from_google_analytics('ga:bob')
