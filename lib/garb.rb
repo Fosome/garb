@@ -41,9 +41,6 @@ end
 # require 'garb/resource'
 # require 'garb/report'
 
-
-require 'support'
-
 module Garb
   GA = "http://schemas.google.com/analytics/2008"
 
@@ -88,3 +85,5 @@ module Garb
   # opts => open_timeout, read_timeout, ssl_timeout
   # probably just support open_timeout
 end
+
+require 'support'
