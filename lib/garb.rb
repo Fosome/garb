@@ -78,6 +78,11 @@ module Garb
     entry['link'].detect {|link| link["rel"] == rel}['href']
   end
 
+  def symbol_operator_slugs
+    [:eql, :not_eql, :gt, :gte, :lt, :lte, :desc, :descending, :matches,
+      :does_not_match, :contains, :does_not_contain, :substring, :not_substring]
+  end
+
   # new(address, port = nil, p_addr = nil, p_port = nil, p_user = nil, p_pass = nil)
 
   # opts => open_timeout, read_timeout, ssl_timeout
