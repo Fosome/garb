@@ -1,7 +1,3 @@
-unless Object.const_defined?("ActiveSupport")
-  require File.expand_path("./lib/support/string.rb")
-end
-
 module SymbolOperatorMethods
   def to_google_analytics
     operators = {

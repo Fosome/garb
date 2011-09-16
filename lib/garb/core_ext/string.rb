@@ -3,23 +3,23 @@ unless Object.const_defined?("ActiveSupport")
   class String
     def camelize(first_letter = :upper)
       case first_letter
-        when :upper then ActiveSupport::Inflector.camelize(self, true)
-        when :lower then ActiveSupport::Inflector.camelize(self, false)
+        when :upper then Garb::Inflector.camelize(self, true)
+        when :lower then Garb::Inflector.camelize(self, false)
       end
     end
     alias_method :camelcase, :camelize
 
     def underscore
-      ActiveSupport::Inflector.underscore(self)
+      Garb::Inflector.underscore(self)
     end
 
     def demodulize
-      ActiveSupport::Inflector.demodulize(self)
+      Garb::Inflector.demodulize(self)
     end
   end
 
 
-  module ActiveSupport
+  module Garb
     module Inflector
       extend self
 

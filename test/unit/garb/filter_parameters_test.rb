@@ -41,6 +41,13 @@ module Garb
           params = {'filters' => 'ga:url%3D%3Dthis%5C%3Bthat%5C%2Cthing%5C%5Cother'}
           assert_equal params, filters.to_params
         end
+
+        should "handle nested arrays mixed with hashes" do
+          filters = FilterParameters.new([{:page_path.contains => 'NYC'}, [{:city.eql => 'New York City'}, {:state.eql => 'New York'}]])
+
+          params = ['ga:pagePath%3D~NYC,ga:city%3D%3DNew+York+City,ga:state%3D%3DNew+York']
+          assert_equal params, filters.to_params['filters'].split('%3B').sort
+        end
       end
     end
   end

@@ -86,4 +86,4 @@ module Garb
   # probably just support open_timeout
 end
 
-require 'support'
+require 'garb/support'

@@ -16,19 +16,29 @@ module Garb
     attr_accessor :parameters
 
     def initialize(parameters)
-      self.parameters = ([parameters].flatten || []).compact
+      self.parameters = (Array.wrap(parameters) || []).compact
     end
 
+    [{}, [{}, {}]]
     def to_params
-      value = self.parameters.map do |param|
-        param.map do |k,v|
-          next unless k.is_a?(SymbolOperator)
-          escaped_v = v.to_s.gsub(/([,;\\])/) {|c| '\\'+c}
-          "#{URI.encode(k.to_google_analytics, /[=<>]/)}#{CGI::escape(escaped_v)}"
-        end.join('%3B') # Hash AND (no duplicate keys), escape char for ';' fixes oauth
-      end.join(',') # Array OR
+      value = array_to_params(self.parameters)
 
       value.empty? ? {} : {'filters' => value}
+    end
+
+    private
+    def array_to_params(arr)
+      arr.map do |param|
+        param.is_a?(Hash) ? hash_to_params(param) : array_to_params(param)
+      end.join(',') # Array OR
+    end
+
+    def hash_to_params(hsh)
+      hsh.map do |k,v|
+        next unless k.is_a?(SymbolOperator)
+        escaped_v = v.to_s.gsub(/([,;\\])/) {|c| '\\'+c}
+        "#{URI.encode(k.to_google_analytics, /[=<>]/)}#{CGI::escape(escaped_v)}"
+      end.join('%3B') # Hash AND (no duplicate keys), escape char for ';' fixes oauth
     end
   end
 end
