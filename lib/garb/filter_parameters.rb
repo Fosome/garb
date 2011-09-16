@@ -35,7 +35,8 @@ module Garb
 
     def hash_to_params(hsh)
       hsh.map do |k,v|
-        next unless k.is_a?(SymbolOperator)
+        next unless k.is_a?(SymbolOperatorMethods)
+
         escaped_v = v.to_s.gsub(/([,;\\])/) {|c| '\\'+c}
         "#{URI.encode(k.to_google_analytics, /[=<>]/)}#{CGI::escape(escaped_v)}"
       end.join('%3B') # Hash AND (no duplicate keys), escape char for ';' fixes oauth

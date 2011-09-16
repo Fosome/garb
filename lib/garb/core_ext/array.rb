@@ -1,5 +1,4 @@
 unless Object.const_defined?("ActiveSupport")
-  puts "Array extension."
   class Array
     def self.wrap(object)
       if object.nil?
