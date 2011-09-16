@@ -42,7 +42,6 @@ module Garb
 
       def build_request
         post = Net::HTTP::Post.new(uri.path)
-        post.read_timeout = Garb.read_timeout
         post.set_form_data(parameters)
         post
       end

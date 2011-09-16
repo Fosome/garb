@@ -73,7 +73,6 @@ module Garb
 
           post = mock
           post.expects(:set_form_data).with(params)
-          post.expects(:read_timeout=).with(Garb.read_timeout)
 
           Net::HTTP::Post.expects(:new).with('/accounts/ClientLogin').returns(post)
 
