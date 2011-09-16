@@ -72,6 +72,7 @@ module Garb
           @request.expects(:parameters).with().returns(params)
 
           post = mock
+          post.expects(:respond_to?).with(:'read_timeout=').returns(true)
           post.expects(:set_form_data).with(params)
           post.expects(:read_timeout=).with(Garb.read_timeout)
 
