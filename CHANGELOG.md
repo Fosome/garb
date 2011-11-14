@@ -1,3 +1,14 @@
+Version 0.9.2
+
+  * Removed all deprecated features: Garb::Report, Garb::Resource, Garb::Profile, and Garb::Account
+  * Moved the differing types of requests into a module, will refactor to share more code
+  * Fixed OR'ing in :filters option for results
+
+Version 0.9.0
+
+  * New Garb::Model is solid. Garb::Resource and Garb::Report are deprecated.
+  * New GA Management API is functional and should be used in place of Garb::Profile and Garb::Account
+
 Version 0.7.4
 
   * Removes HappyMapper dependency in favor of Crack so we can drop libxml dependency

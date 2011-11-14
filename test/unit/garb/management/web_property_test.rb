@@ -8,12 +8,12 @@ module Garb
           feed = stub(:entries => ["entry1"])
           Feed.stubs(:new).returns(feed)
 
-          WebProperty.stubs(:new)
+          WebProperty.stubs(:new_from_entry)
           WebProperty.all
 
           assert_received(Feed, :new) {|e| e.with(Session, '/accounts/~all/webproperties')}
           assert_received(feed, :entries)
-          assert_received(WebProperty, :new) {|e| e.with("entry1", Session)}
+          assert_received(WebProperty, :new_from_entry) {|e| e.with("entry1", Session)}
         end
 
         should "find all web properties for a given account" do
@@ -30,13 +30,13 @@ module Garb
         setup do
           entry = {
             "link" => [{"rel" => "self", "href" => Feed::BASE_URL+"/accounts/1189765/webproperties/UA-1189765-1"}],
-            "dxp:property" => [
+            "dxp$property" => [
               {"name" => "ga:accountId", "value" => "1189765"},
               {"name" => "ga:webPropertyId", "value" => 'UA-1189765-1'}
             ]
           }
 
-          @web_property = WebProperty.new(entry, Session)
+          @web_property = WebProperty.new_from_entry(entry, Session)
         end
 
         should "have an id" do
@@ -51,6 +51,12 @@ module Garb
           Profile.stubs(:for_web_property)
           @web_property.profiles
           assert_received(Profile, :for_web_property) {|e| e.with(@web_property)}
+        end
+
+        should "have goals" do
+          Goal.stubs(:for_web_property)
+          @web_property.goals
+          assert_received(Goal, :for_web_property) {|e| e.with(@web_property)}
         end
       end
     end

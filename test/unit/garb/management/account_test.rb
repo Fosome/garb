@@ -8,12 +8,12 @@ module Garb
           feed = stub(:entries => ["entry1"])
           Feed.stubs(:new).returns(feed)
 
-          Account.stubs(:new)
+          Account.stubs(:new_from_entry)
           Account.all
 
           assert_received(Feed, :new) {|e| e.with(Session, '/accounts')}
           assert_received(feed, :entries)
-          assert_received(Account, :new) {|e| e.with("entry1", Session)}
+          assert_received(Account, :new_from_entry) {|e| e.with("entry1", Session)}
         end
       end
 
@@ -22,12 +22,12 @@ module Garb
           entry = {
             "title" => "Google Analytics Account Garb",
             "link" => [{"rel" => "self", "href" => Feed::BASE_URL+"/accounts/123456"}],
-            "dxp:property" => [
+            "dxp$property" => [
               {"name" => "ga:accountId", "value" => "123456"},
               {"name" => "ga:accountName", "value" => "Garb"}
             ]
           }
-          @account = Account.new(entry, Session)
+          @account = Account.new_from_entry(entry, Session)
         end
 
         should "extract id and title from GA entry" do
@@ -47,7 +47,23 @@ module Garb
           assert_equal Session, @account.session
         end
 
-        should "have web properties"
+        should "have web properties" do
+          WebProperty.stubs(:for_account)
+          @account.web_properties
+          assert_received(WebProperty, :for_account) {|e| e.with(@account)}
+        end
+
+        should "have profiles" do
+          Profile.stubs(:for_account)
+          @account.profiles
+          assert_received(Profile, :for_account) {|e| e.with(@account)}
+        end
+
+        should "have goals" do
+          Goal.stubs(:for_account)
+          @account.goals
+          assert_received(Goal, :for_account) {|e| e.with(@account)}
+        end
       end
     end
   end

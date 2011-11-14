@@ -6,16 +6,16 @@ module Garb
       attr_reader :request
 
       def initialize(session, path)
-        @request = DataRequest.new(session, BASE_URL+path)
+        @request = Request::Data.new(session, BASE_URL+path)
       end
 
       def parsed_response
-        @parsed_response ||= Crack::XML.parse(response.body)
+        @parsed_response ||= JSON.parse(response.body)
       end
 
       def entries
         # possible to have nil entries, yuck
-        parsed_response ? [parsed_response['feed']['entry']].flatten.reject {|e| e.nil?} : []
+        parsed_response ? [parsed_response['feed']['entry']].flatten.compact : []
       end
 
       def response

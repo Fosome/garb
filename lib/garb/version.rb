@@ -2,8 +2,8 @@ module Garb
   module Version
 
     MAJOR = 0
-    MINOR = 8
-    TINY  = 4
+    MINOR = 9
+    TINY  = 2
 
     def self.to_s # :nodoc:
       [MAJOR, MINOR, TINY].join('.')

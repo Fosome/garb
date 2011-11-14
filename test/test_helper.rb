@@ -1,13 +1,20 @@
 begin
   require 'simplecov'
-  SimpleCov.start 'rails'
+  SimpleCov.adapters.define 'garb' do
+    add_filter '/test/'
+    add_filter '/config/'
+    add_filter 'version'
+
+    add_group 'Libraries', 'lib'
+  end
+
+  SimpleCov.start 'garb'
 rescue LoadError
   puts "Install simplecov if you use 1.9 and want coverage metrics"
 end
 
 $:.reject! { |e| e.include? 'TextMate' }
 
-require 'rubygems'
 require 'bundler'
 Bundler.setup(:default, :test)
 
@@ -30,7 +37,7 @@ class MiniTest::Unit::TestCase
   end
 
   def assert_data_params(expected)
-    assert_received(Garb::DataRequest, :new) {|e| e.with(Garb::Session, Garb::Model::URL, expected)}
+    assert_received(Garb::Request::Data, :new) {|e| e.with(Garb::Session, Garb::Model::URL, expected)}
   end
 end
 

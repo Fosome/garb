@@ -15,7 +15,7 @@ spec = Gem::Specification.new do |s|
   s.authors           = ['Tony Pitale']
   s.email             = 'tony.pitale@viget.com'
   s.homepage          = 'http://github.com/vigetlabs/garb'
-  s.files             = %w(README.md Rakefile) + Dir.glob("lib/**/*")
+  s.files             = %w(README.md CHANGELOG.md Rakefile) + Dir.glob("lib/**/*")
   s.test_files        = Dir.glob("test/**/*")
 
   s.add_dependency("crack", [">= 0.1.6"])

@@ -26,7 +26,9 @@ module Garb
     end
 
     def results(profile, options = {})
-      default_params = build_default_params(profile)
+      start_date = options.fetch(:start_date, Time.now - MONTH)
+      end_date = options.fetch(:end_date, Time.now)
+      default_params = build_default_params(profile, start_date, end_date)
 
       param_set = [
         default_params,
@@ -44,7 +46,7 @@ module Garb
 
     private
     def send_request_for_data(profile, params)
-      request = DataRequest.new(profile.session, URL, params)
+      request = Request::Data.new(profile.session, URL, params)
       response = request.send_request
       response.body
     end
@@ -54,9 +56,7 @@ module Garb
     end
 
     def parse_filters(options)
-      filters = FilterParameters.new
-      filters.parameters << options[:filters] if options.has_key?(:filters)
-      filters
+      FilterParameters.new(options[:filters])
     end
 
     def parse_segment(options)
@@ -70,11 +70,11 @@ module Garb
       sort
     end
 
-    def build_default_params(profile)
+    def build_default_params(profile, start_date, end_date)
       {
         'ids' => Garb.to_ga(profile.id),
-        'start-date' => format_time(Time.now - Model::MONTH),
-        'end-date' => format_time(Time.now)
+        'start-date' => format_time(start_date),
+        'end-date' => format_time(end_date)
       }
     end
 

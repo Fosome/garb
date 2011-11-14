@@ -6,13 +6,17 @@ class GarbTest < MiniTest::Unit::TestCase
       assert_equal '-ga:bob', Garb.to_google_analytics(stub(:to_google_analytics => '-ga:bob'))
       assert_equal 'ga:bob', Garb.to_google_analytics('bob')
     end
+    
+    should 'parse out - and put it before ga:' do      
+      assert_equal '-ga:pageviews', Garb.to_google_analytics('-pageviews')      
+    end
 
     should 'remove ga: prefix' do
       assert_equal 'bob', Garb.from_google_analytics('ga:bob')
     end
 
     should "have a helper to parse properties out of entries" do
-      entry = {"dxp:property"=>[{"name"=>"ga:accountId", "value"=>"1189765"}, {"name"=>"ga:webPropertyId", "value"=>"UA-1189765-1"}]}
+      entry = {"dxp$property"=>[{"name"=>"ga:accountId", "value"=>"1189765"}, {"name"=>"ga:webPropertyId", "value"=>"UA-1189765-1"}]}
 
       assert_equal({"account_id" => '1189765', "web_property_id" => "UA-1189765-1"}, Garb.parse_properties(entry))
     end

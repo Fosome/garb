@@ -44,27 +44,29 @@ module Garb
           entry = {
             "title" => "Google Analytics Profile example.com",
             "link" => [{"rel" => "self", "href" => Garb::Management::Feed::BASE_URL+"/accounts/1189765/webproperties/UA-1189765-1/profiles/98765"}],
-            "dxp:property" => [
+            "dxp$property" => [
               {"name" => "ga:profileId", "value" => "98765"},
               {"name" => "ga:accountId", "value" => "1189765"},
               {"name" => "ga:webPropertyId", "value" => 'UA-1189765-1'}
             ]
           }
 
-          @profile = Garb::Management::Profile.new(entry, Session)
+          @profile = Garb::Management::Profile.new_from_entry(entry, Session)
         end
 
         context "when getting results" do
           setup do
             @response = stub(:body => "raw report data")
-            DataRequest.stubs(:new).returns(stub(:send_request => @response))
+            Request::Data.stubs(:new).returns(stub(:send_request => @response))
             ReportResponse.stubs(:new).returns(stub(:results => ['result']))
 
             @test_model.stubs(:metrics).returns(stub(:to_params => {'metrics' => 'ga:visits'}))
             @test_model.stubs(:dimensions).returns(stub(:to_params => {'dimensions' => 'ga:pagePath'}))
 
             now = Time.now
-            Time.stubs(:new).returns(now)
+            Time.stubs(:now).returns(now)
+
+            # p @profile.id
 
             @params = {'ids' => Garb.to_ga(@profile.id),
               'start-date' => (now - Model::MONTH).strftime('%Y-%m-%d'),
@@ -80,12 +82,11 @@ module Garb
           end
 
           should "be able to filter" do
-            filter_parameters = stub(:<<)
-            FilterParameters.stubs(:new).returns(stub(:parameters => filter_parameters, :to_params => {'filters' => "params"}))
+            FilterParameters.stubs(:new).returns(stub(:to_params => {'filters' => "params"}))
             assert_equal ['result'], @test_model.results(@profile, :filters => {:page_path => '/'})
 
             assert_data_params(@params.merge({'filters' => 'params'}))
-            assert_received(filter_parameters, :<<) {|e| e.with({:page_path => '/'})}
+            assert_received(FilterParameters, :new) {|e| e.with({:page_path => '/'})}
           end
 
           should "be able to set the filter segment by id" do
@@ -113,7 +114,13 @@ module Garb
             assert_data_params(@params.merge({'start-index' => 10}))
           end
 
-          # should "be able to shift the date range"
+          should "be able to shift the date range" do
+            start_date = (Time.now - 1296000)
+            end_date = Time.now
+
+            assert_equal ['result'], @test_model.results(@profile, :start_date => start_date, :end_date => end_date)
+            assert_data_params(@params.merge({'start-date' => start_date.strftime('%Y-%m-%d'), 'end-date' => end_date.strftime('%Y-%m-%d')}))
+          end
 
           should "return a set of results in the defined class" do
             @test_model.stubs(:instance_klass).returns(ResultKlass)
@@ -123,7 +130,6 @@ module Garb
           end
         end
 
-        # should "have a block syntax for filtering results"
         # should "return results as an array of the class it belongs to, if that class is an ActiveRecord descendant"
         # should "return results as an array of the class it belongs to, if that class is a DataMapper descendant"
         # should "return results as an array of the class it belongs to, if that class is a MongoMapper descendant"

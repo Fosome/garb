@@ -1,14 +1,23 @@
 module Garb  
   class ReportResponse
-    KEYS = ['dxp:metric', 'dxp:dimension']
+    KEYS = ['dxp$metric', 'dxp$dimension']
 
     def initialize(response_body, instance_klass = OpenStruct)
-      @xml = response_body
+      @data = response_body
       @instance_klass = instance_klass
     end
 
     def results
-      @results ||= parse
+      if @results.nil?
+        @results = ResultSet.new(parse)
+        @results.total_results = parse_total_results
+        @results.sampled = parse_sampled_flag
+      end
+
+      @results
+    end
+
+    def sampled?
     end
     
     def total_results
@@ -21,17 +30,30 @@ module Garb
     private
     def parse
       entries.map do |entry|
-        hash = values_for(entry).inject({}) do |h, v|
-          h.merge(Garb.from_ga(v['name']) => v['value'])
-        end
-
-        @instance_klass.new(hash)
+        @instance_klass.new(Hash[
+          values_for(entry).map {|v| [Garb.from_ga(v['name']), v['value']]}
+        ])
       end
     end
 
     def entries
-      entry_hash = Crack::XML.parse(@xml)
-      entry_hash ? [entry_hash['feed']['entry']].flatten.compact : []
+      feed? ? [parsed_data['feed']['entry']].flatten.compact : []
+    end
+
+    def parse_total_results
+      feed? ? parsed_data['feed']['openSearch:totalResults'].to_i : 0
+    end
+
+    def parse_sampled_flag
+      feed? ? (parsed_data['feed']['dxp$containsSampledData'] == 'true') : false
+    end
+
+    def parsed_data
+      @parsed_data ||= JSON.parse(@data)
+    end
+
+    def feed?
+      !parsed_data['feed'].nil?
     end
 
     def values_for(entry)
