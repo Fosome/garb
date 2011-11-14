@@ -19,13 +19,6 @@ module Garb
 
     def sampled?
     end
-    
-    def total_results
-      feed = Crack::XML.parse(@xml)['feed']
-      if feed and feed["openSearch:totalResults"] and feed["entry"]
-        feed["openSearch:totalResults"].to_i
-      end
-    end
 
     private
     def parse
@@ -41,7 +34,7 @@ module Garb
     end
 
     def parse_total_results
-      feed? ? parsed_data['feed']['openSearch:totalResults'].to_i : 0
+      feed? ? parsed_data['feed']['openSearch$totalResults']['$t'].to_i : 0
     end
 
     def parse_sampled_flag
