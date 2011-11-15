@@ -34,7 +34,7 @@ module Garb
     end
 
     def parse_total_results
-      feed? ? parsed_data['feed']['openSearch$totalResults']['$t'].to_i : 0
+      feed? && !parsed_data['feed']['openSearch$totalResults'].nil? ? parsed_data['feed']['openSearch$totalResults']['$t'].to_i : 0
     end
 
     def parse_sampled_flag
