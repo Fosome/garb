@@ -48,6 +48,24 @@ module Garb
           params = ['ga:pagePath%3D~NYC,ga:city%3D%3DNew+York+City,ga:state%3D%3DNew+York']
           assert_equal params, filters.to_params['filters'].split('%3B').sort
         end
+
+        should "handle 3 filters ORed together" do
+          filters = FilterParameters.new([{:keyword.substring => 'seo'}, {:keyword.contains => "^(?:.*\\W+)?(open)\\W+(site)(?:\\W+.*)?$"}, {:keyword.eql => 'yahoo'}])
+
+          params = ["ga:keyword%3D%3Dyahoo","ga:keyword%3D@seo","ga:keyword%3D~%5E%28%3F%3A.%2A%5C%5CW%2B%29%3F%28open%29%5C%5CW%2B%28site%29%28%3F%3A%5C%5CW%2B.%2A%29%3F%24"]
+          assert_equal params, filters.to_params['filters'].split(',').sort
+        end
+
+        should "handle 3 filters ORed together ANDed with a 4th" do
+          or_group = [{:keyword.substring => 'seo'}, {:keyword.contains => "^(?:.*\\W+)?(open)\\W+(site)(?:\\W+.*)?$"}, {:keyword.eql => 'yahoo'}]
+          filters = FilterParameters.new({:or_group => or_group, :keyword.not_eql => 'seomoz blog'})
+
+          and_split = filters.to_params['filters'].split('%3B').sort
+          assert_equal 2, and_split.size
+          assert_equal "ga:keyword!%3Dseomoz+blog", and_split[0]
+          params = ["ga:keyword%3D%3Dyahoo","ga:keyword%3D@seo","ga:keyword%3D~%5E%28%3F%3A.%2A%5C%5CW%2B%29%3F%28open%29%5C%5CW%2B%28site%29%28%3F%3A%5C%5CW%2B.%2A%29%3F%24"]
+          assert_equal params, and_split[1].split(',').sort
+        end
       end
     end
   end
