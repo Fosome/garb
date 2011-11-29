@@ -35,7 +35,7 @@ module Garb
 
     def hash_to_params(hsh)
       hsh.map do |k,v|
-        if k == :or_group
+        if [:or_group, 'or_group'].include?(k) # or_group can be passes as either a string or a symbol
           array_to_params(v)
         else
           next unless k.is_a?(SymbolOperatorMethods)
