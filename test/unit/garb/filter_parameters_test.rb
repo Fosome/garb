@@ -56,9 +56,9 @@ module Garb
           assert_equal params, filters.to_params['filters'].split(',').sort
         end
 
-        should "handle 3 filters ORed together ANDed with a 4th when or_group is a symbol" do
-          or_group = [{:keyword.substring => 'seo'}, {:keyword.contains => "^(?:.*\\W+)?(open)\\W+(site)(?:\\W+.*)?$"}, {:keyword.eql => 'yahoo'}]
-          filters = FilterParameters.new({:or_group => or_group, :keyword.not_eql => 'seomoz blog'})
+        should "handle 3 filters ORed together ANDed with a 4th when branded_or_group is a symbol" do
+          branded_or_group = [{:keyword.substring => 'seo'}, {:keyword.contains => "^(?:.*\\W+)?(open)\\W+(site)(?:\\W+.*)?$"}, {:keyword.eql => 'yahoo'}]
+          filters = FilterParameters.new({:branded_or_group => branded_or_group, :keyword.not_eql => 'seomoz blog'})
 
           and_split = filters.to_params['filters'].split('%3B').sort
           assert_equal 2, and_split.size
@@ -67,9 +67,9 @@ module Garb
           assert_equal params, and_split[1].split(',').sort
         end
 
-        should "handle 3 filters ORed together ANDed with a 4th when or_group is a string" do
-          or_group = [{:keyword.substring => 'seo'}, {:keyword.contains => "^(?:.*\\W+)?(open)\\W+(site)(?:\\W+.*)?$"}, {:keyword.eql => 'yahoo'}]
-          filters = FilterParameters.new({'or_group' => or_group, :keyword.not_eql => 'seomoz blog'})
+        should "handle 3 filters ORed together ANDed with a 4th when branded_or_group is a string" do
+          branded_or_group = [{:keyword.substring => 'seo'}, {:keyword.contains => "^(?:.*\\W+)?(open)\\W+(site)(?:\\W+.*)?$"}, {:keyword.eql => 'yahoo'}]
+          filters = FilterParameters.new({'branded_or_group' => branded_or_group, :keyword.not_eql => 'seomoz blog'})
 
           and_split = filters.to_params['filters'].split('%3B').sort
           assert_equal 2, and_split.size

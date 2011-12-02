@@ -13,6 +13,9 @@ module Garb
     # define_operators :eql, :not_eql, :gt, :gte, :lt, :lte, :matches,
     #   :does_not_match, :contains, :does_not_contain, :substring, :not_substring
 
+    # or_groups can be passes as either a string or a symbol
+    OR_GROUP_NAMES = [:branded_or_group, 'branded_or_group', :dimension_or_group, 'dimension_or_group']
+
     attr_accessor :parameters
 
     def initialize(parameters)
@@ -35,7 +38,7 @@ module Garb
 
     def hash_to_params(hsh)
       hsh.map do |k,v|
-        if [:or_group, 'or_group'].include?(k) # or_group can be passes as either a string or a symbol
+        if OR_GROUP_NAMES.include?(k)
           array_to_params(v)
         else
           next unless k.is_a?(SymbolOperatorMethods)
