@@ -13,7 +13,7 @@ module Garb
         account = new
         account.session = session
         account.path = Garb.parse_link(entry, "self").gsub(Feed::BASE_URL, '')
-        account.title = entry['title'].gsub('Google Analytics Account ', '') # can we get this in properties=?
+        account.title = entry['title']['$t'].gsub('Google Analytics Account ', '') # can we get this in properties=?
         account.properties = Garb.parse_properties(entry)
         account
       end

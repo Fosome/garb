@@ -20,7 +20,7 @@ module Garb
       context "an Account" do
         setup do
           entry = {
-            "title" => "Google Analytics Account Garb",
+            "title" => {"$t"=>"Google Analytics Account Garb"},
             "link" => [{"rel" => "self", "href" => Feed::BASE_URL+"/accounts/123456"}],
             "dxp$property" => [
               {"name" => "ga:accountId", "value" => "123456"},
