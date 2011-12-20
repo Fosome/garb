@@ -2,9 +2,9 @@ require 'test_helper'
 
 module Garb
   class SessionTest < MiniTest::Unit::TestCase
-    
+
     context "The Session class" do
-      
+
       should "be able retrieve an auth_token for a user" do
         auth_request = mock {|m| m.expects(:auth_token).with({}).returns('toke') }
         Request::Authentication.expects(:new).with('email', 'password', {}).returns(auth_request)
@@ -21,10 +21,10 @@ module Garb
         Session.login('email', 'password', opts)
         assert_equal 'toke', Session.auth_token
       end
-      
+
       should "retain the email address for this session" do
         Request::Authentication.stubs(:new).returns(stub(:auth_token => 'toke'))
-        
+
         Session.login('email', 'password')
         assert_equal 'email', Session.email
       end
@@ -44,7 +44,7 @@ module Garb
       setup do
         @session = Session.new
       end
-      
+
       should "be able retrieve an auth_token for a user" do
         auth_request = mock {|m| m.expects(:auth_token).with({}).returns('toke') }
         Request::Authentication.expects(:new).with('email', 'password', {}).returns(auth_request)
@@ -61,10 +61,10 @@ module Garb
         @session.login('email', 'password', opts)
         assert_equal 'toke', @session.auth_token
       end
-      
+
       should "retain the email address for this session" do
         Request::Authentication.stubs(:new).returns(stub(:auth_token => 'toke'))
-        
+
         @session.login('email', 'password')
         assert_equal 'email', @session.email
       end

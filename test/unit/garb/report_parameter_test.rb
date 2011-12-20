@@ -2,25 +2,25 @@ require 'test_helper'
 
 module Garb
   class ReportParameterTest < MiniTest::Unit::TestCase
-    
+
     context "An instance of the ReportParameter class" do
       setup do
         @metrics = ReportParameter.new(:metrics)
       end
-      
+
       should "have a name" do
         assert_equal "metrics", @metrics.name
       end
-      
+
       should "have a list of elements" do
         assert_equal [], @metrics.elements
       end
-      
+
       should "be able to add new elements" do
         assert_equal(@metrics, @metrics << :page_path)
         assert_equal [:page_path], @metrics.elements
       end
-      
+
       should "merge an array of elements" do
         assert_equal(@metrics, @metrics << [:page_path])
         assert_equal [:page_path], @metrics.elements
@@ -38,6 +38,6 @@ module Garb
         end
       end
     end
-    
+
   end
 end
