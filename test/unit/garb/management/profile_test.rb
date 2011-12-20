@@ -19,7 +19,7 @@ module Garb
         should "find all profiles for a given account" do
           Profile.stubs(:all)
           Profile.for_account(stub(:session => 'session', :path => '/accounts/123'))
-          assert_received(Profile, :all) {|e| e.with('session', '/accounts/123/webproperties/~all/profiles')}          
+          assert_received(Profile, :all) {|e| e.with('session', '/accounts/123/webproperties/~all/profiles')}
         end
 
         should "find all profiles for a given web_property" do

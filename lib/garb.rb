@@ -4,7 +4,7 @@ require 'net/https'
 require 'cgi'
 require 'ostruct'
 
-begin 
+begin
   require 'yajl/json_gem' # JSON.parse
 rescue LoadError
   require 'json'

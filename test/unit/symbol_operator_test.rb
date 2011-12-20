@@ -19,16 +19,16 @@ class SymbolOperatorTest < MiniTest::Unit::TestCase
     #   op2 = SymbolOperator.new(:hello, "==")
     #   assert_equal op1, op2
     # end
-    # 
+    #
     # should "not be equal to another operator if target, operator, or prefix is different" do
     #   op1 = SymbolOperator.new(:hello, "==")
     #   op2 = SymbolOperator.new(:hello, "==", true)
     #   refute_equal op1, op2
-    # 
+    #
     #   op1 = SymbolOperator.new(:hello1, "==")
     #   op2 = SymbolOperator.new(:hello2, "==")
     #   refute_equal op1, op2
-    # 
+    #
     #   op1 = SymbolOperator.new(:hello, "!=")
     #   op2 = SymbolOperator.new(:hello, "==")
     #   refute_equal op1, op2

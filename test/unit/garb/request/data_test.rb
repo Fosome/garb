@@ -3,7 +3,7 @@ require 'test_helper'
 module Garb
   module Request
     class DataTest < MiniTest::Unit::TestCase
-    
+
       context "An instance of the Request::Data class" do
         setup do
           @session = Session.new
@@ -18,16 +18,16 @@ module Garb
         should "be able to build the query string from parameters" do
           parameters = {'ids' => '12345', 'metrics' => 'country'}
           data_request = Request::Data.new(@session, "", parameters)
-        
+
           query_string = data_request.query_string
-        
+
           assert_match(/^\?/, query_string)
-        
+
           query_string.sub!(/^\?/, '')
-        
+
           assert_equal ["alt=json", "ids=12345", "metrics=country"], query_string.split('&').sort
         end
-      
+
         should "only contain JSON response option if parameters are empty" do
           data_request = Request::Data.new(@session, "")
           assert_equal "?alt=json", data_request.query_string

@@ -1,4 +1,4 @@
-module Garb  
+module Garb
   class ReportResponse
     KEYS = ['dxp$metric', 'dxp$dimension']
 
