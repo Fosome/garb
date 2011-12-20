@@ -20,7 +20,7 @@ module Garb
           'source'      => 'vigetLabs-garb-001'
         }
       end
-    
+
       def uri
         URI.parse(URL)
       end
@@ -45,7 +45,7 @@ module Garb
         post.set_form_data(parameters)
         post
       end
-    
+
       def auth_token(opts={})
         ssl_mode = opts[:secure] ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE
         send_request(ssl_mode).body.match(/^Auth=(.*)$/)[1]

@@ -30,7 +30,7 @@ unless Object.const_defined?("ActiveSupport")
           lower_case_and_underscored_word.to_s[0].chr.downcase + camelize(lower_case_and_underscored_word)[1..-1]
         end
       end
-   
+
       def underscore(camel_cased_word)
         word = camel_cased_word.to_s.dup
         word.gsub!(/::/, '/')
