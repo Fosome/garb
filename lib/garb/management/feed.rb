@@ -1,16 +1,16 @@
 module Garb
   module Management
     class Feed
-      BASE_URL = "https://www.google.com/analytics/feeds/datasources/ga"
+      BASE_URL = "https://www.googleapis.com/analytics/v2.4/management"
 
       attr_reader :request
 
       def initialize(session, path)
-        @request = Request::Data.new(session, BASE_URL+path)
+        @request = Request::Data.new(session, BASE_URL + path, Request::Data::XML)
       end
 
       def parsed_response
-        @parsed_response ||= JSON.parse(response.body)
+        @parsed_response ||= Crack::XML.parse(response.body)
       end
 
       def entries

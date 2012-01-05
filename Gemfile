@@ -4,6 +4,7 @@ source "http://gems.github.com"
 gem 'rake', '~> 0.8.7'
 
 gem 'i18n'
+gem 'crack'
 
 group :test do
   gem 'shoulda'

@@ -3,11 +3,15 @@ module Garb
     class Data
       class ClientError < StandardError; end
 
+      XML = 'atom'
+      JSON = 'json'
+
       attr_writer :format
 
-      def initialize(session, base_url, parameters={})
+      def initialize(session, base_url, response_format, parameters={})
         @session = session
         @base_url = base_url
+        @response_format = response_format
         @parameters = parameters
       end
 
@@ -16,13 +20,9 @@ module Garb
       end
 
       def query_string
-        parameters.merge!("alt" => format)
+        parameters.merge!("alt" => @response_format)
         parameter_list = @parameters.map {|k,v| "#{k}=#{v}" }
         parameter_list.empty? ? '' : "?#{parameter_list.join('&')}"
-      end
-
-      def format
-        @format ||= "json" # TODO Support other formats?
       end
 
       def uri
@@ -44,11 +44,11 @@ module Garb
         http = Net::HTTP.new(uri.host, uri.port, Garb.proxy_address, Garb.proxy_port)
         http.use_ssl = true
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-        http.get("#{uri.path}#{query_string}", {'Authorization' => "GoogleLogin auth=#{@session.auth_token}", 'GData-Version' => '2'})
+        http.get("#{uri.path}#{query_string}", {'Authorization' => "GoogleLogin auth=#{@session.auth_token}", 'GData-Version' => '2.4'})
       end
 
       def oauth_user_request
-        @session.access_token.get("#{uri}#{query_string}", {'GData-Version' => '2'})
+        @session.access_token.get("#{uri}#{query_string}", {'GData-Version' => '2.4'})
       end
     end
   end

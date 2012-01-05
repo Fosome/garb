@@ -17,7 +17,7 @@ module Garb
 
         should "be able to build the query string from parameters" do
           parameters = {'ids' => '12345', 'metrics' => 'country'}
-          data_request = Request::Data.new(@session, "", parameters)
+          data_request = Request::Data.new(@session, "", Request::Data::JSON, parameters)
         
           query_string = data_request.query_string
         
@@ -28,14 +28,19 @@ module Garb
           assert_equal ["alt=json", "ids=12345", "metrics=country"], query_string.split('&').sort
         end
       
-        should "only contain JSON response option if parameters are empty" do
-          data_request = Request::Data.new(@session, "")
+        should "only contain JSON response option if parameters are empty when requesting JSON response" do
+          data_request = Request::Data.new(@session, "", Request::Data::JSON)
           assert_equal "?alt=json", data_request.query_string
+        end
+
+        should "only contain atom response option if parameters are empty when requesting XML response" do
+          data_request = Request::Data.new(@session, "", Request::Data::XML)
+          assert_equal "?alt=atom", data_request.query_string
         end
 
         should "be able to build a uri" do
           url = 'http://example.com'
-          assert_equal URI.parse(url), Request::Data.new(@session, url).uri
+          assert_equal URI.parse(url), Request::Data.new(@session, url, Request::Data::JSON).uri
         end
 
         should "be able to send a request for a single user" do
@@ -44,7 +49,7 @@ module Garb
             m.expects(:kind_of?).with(Net::HTTPSuccess).returns(true)
           end
 
-          data_request = Request::Data.new(@session, 'https://example.com/data', 'key' => 'value')
+          data_request = Request::Data.new(@session, 'https://example.com/data', Request::Data::XML, 'key' => 'value')
           data_request.stubs(:single_user_request).returns(response)
           data_request.send_request
 
@@ -58,7 +63,7 @@ module Garb
             m.expects(:kind_of?).with(Net::HTTPSuccess).returns(true)
           end
 
-          data_request = Request::Data.new(@session, 'https://example.com/data', 'key' => 'value')
+          data_request = Request::Data.new(@session, 'https://example.com/data', Request::Data::XML, 'key' => 'value')
           data_request.stubs(:oauth_user_request).returns(response)
           data_request.send_request
 
@@ -70,7 +75,7 @@ module Garb
           @session.stubs(:oauth_user?).returns(true)
           response = mock('Net::HTTPUnauthorized', :body => 'Error')
 
-          data_request = Request::Data.new(@session, 'https://example.com/data', 'key' => 'value')
+          data_request = Request::Data.new(@session, 'https://example.com/data', Request::Data::XML, 'key' => 'value')
           data_request.stubs(:oauth_user_request).returns(response)
 
           assert_raises(Garb::Request::Data::ClientError) do
@@ -82,11 +87,11 @@ module Garb
           access_token = stub(:get => "responseobject")
           @session.stubs(:access_token).returns(access_token)
 
-          data_request = Request::Data.new(@session, 'https://example.com/data', 'key' => 'value')
+          data_request = Request::Data.new(@session, 'https://example.com/data', Request::Data::XML, 'key' => 'value')
           assert_equal 'responseobject', data_request.oauth_user_request
 
           assert_received(@session, :access_token)
-          assert_received(access_token, :get) {|e| e.with('https://example.com/data?key=value&alt=json', {'GData-Version' => '2'})}
+          assert_received(access_token, :get) {|e| e.with('https://example.com/data?alt=atom&key=value', {'GData-Version' => '2.4'})}
         end
 
         should "be able to request via http with an auth token" do
@@ -96,9 +101,9 @@ module Garb
           http = mock do |m|
             m.expects(:use_ssl=).with(true)
             m.expects(:verify_mode=).with(OpenSSL::SSL::VERIFY_NONE)
-            m.expects(:get).with('/data?key=value&alt=json', {
+            m.expects(:get).with('/data?alt=atom&key=value', {
               'Authorization' => 'GoogleLogin auth=toke',
-              'GData-Version' => '2'
+              'GData-Version' => '2.4'
             }).returns(response)
           end
 
@@ -106,7 +111,7 @@ module Garb
           Garb.proxy_port = "1234"
           Net::HTTP.expects(:new).with('example.com', 443, "127.0.0.1", "1234").returns(http)
 
-          data_request = Request::Data.new(@session, 'https://example.com/data', 'key' => 'value')
+          data_request = Request::Data.new(@session, 'https://example.com/data', Request::Data::XML, 'key' => 'value')
           assert_equal response, data_request.single_user_request
         end
       end
