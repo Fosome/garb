@@ -52,7 +52,7 @@ end
 symbol_slugs.each do |operator|
   Symbol.class_eval <<-RUBY
     def #{operator}
-      warn("The use of SymbolOperator(#{operator}, etc.) has been deprecated. Please use named filters.")
+      #warn("The use of SymbolOperator(#{operator}, etc.) has been deprecated. Please use named filters.")
       SymbolOperator.new(self, :#{operator})
     end unless method_defined?(:#{operator})
   RUBY
