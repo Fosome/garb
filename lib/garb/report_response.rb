@@ -1,6 +1,8 @@
 module Garb  
   class ReportResponse
-    KEYS = ['dxp$metric', 'dxp$dimension']
+    require 'xmlsimple'
+
+    KEYS = ['metric', 'dimension']
 
     def initialize(response_body, instance_klass = OpenStruct)
       @data = response_body
@@ -30,7 +32,7 @@ module Garb
     end
 
     def entries
-      feed? ? [parsed_data['feed']['entry']].flatten.compact : []
+      feed? ? [parsed_data['feed']['aggregates']].flatten.compact : []
     end
 
     def parse_total_results
@@ -42,7 +44,8 @@ module Garb
     end
 
     def parsed_data
-      @parsed_data ||= JSON.parse(@data)
+      # @parsed_data ||= JSON.parse(@data)
+      @parsed_data ||= {'feed' => XmlSimple.xml_in(@data)}
     end
 
     def feed?

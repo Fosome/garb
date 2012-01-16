@@ -1,6 +1,8 @@
 module Garb
   module Management
     class Feed
+      require 'xmlsimple'
+      
       BASE_URL = "https://www.google.com/analytics/feeds/datasources/ga"
 
       attr_reader :request
@@ -10,7 +12,8 @@ module Garb
       end
 
       def parsed_response
-        @parsed_response ||= JSON.parse(response.body)
+        # @parsed_response ||= JSON.parse(response.body)
+        @parsed_response ||= {'feed' => XmlSimple.xml_in(response.body)}
       end
 
       def entries
