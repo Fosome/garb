@@ -2,7 +2,7 @@ module Garb
   class ResultSet
     include Enumerable
 
-    attr_accessor :total_results, :sampled
+    attr_accessor :total_results, :sampled, :aggregate_total_visits
 
     alias :sampled? :sampled
 

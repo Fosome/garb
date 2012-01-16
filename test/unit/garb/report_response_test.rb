@@ -34,11 +34,24 @@ module Garb
           response = ReportResponse.new(@json)
           assert_equal true, response.results.sampled?
         end
+
+        should "know the aggregate total number of visits" do
+          response = ReportResponse.new(@json)
+          assert_equal 433074, response.results.aggregate_total_visits
+        end
+
+        should "return 0 if aggregate total visits isn't known" do
+          json = JSON.parse(@json)
+          json['feed']['dxp$aggregates']['dxp$metric'][0]['name'] = 'ga:notvisits'
+
+          response = ReportResponse.new(json.to_json)
+          assert_equal 0, response.results.aggregate_total_visits
+        end
       end
 
       should "return an empty array if there are no results" do
         response = ReportResponse.new("result json")
-        JSON.stubs(:parse).with("result json").returns({'feed' => {'entry' => nil}})
+        JSON.stubs(:parse).with("result json").returns({'feed' => {'entry' => nil, 'dxp$aggregates' => {'dxp$metric' => []}}})
 
         assert_equal [], response.results.to_a
       end

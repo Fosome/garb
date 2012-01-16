@@ -12,6 +12,7 @@ module Garb
         @results = ResultSet.new(parse)
         @results.total_results = parse_total_results
         @results.sampled = parse_sampled_flag
+        @results.aggregate_total_visits = parse_aggregate_total_visits
       end
 
       @results
@@ -39,6 +40,14 @@ module Garb
 
     def parse_sampled_flag
       feed? ? (parsed_data['feed']['dxp$containsSampledData'] == 'true') : false
+    end
+
+    def parse_aggregate_total_visits
+      if feed? && aggregate_visits = parsed_data['feed']['dxp$aggregates']['dxp$metric'].detect { |metric| metric['name'] == Garb::to_ga('visits') }
+        aggregate_visits['value'].to_i
+      else
+        0
+      end
     end
 
     def parsed_data

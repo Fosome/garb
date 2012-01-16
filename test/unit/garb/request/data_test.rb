@@ -91,7 +91,7 @@ module Garb
           assert_equal 'responseobject', data_request.oauth_user_request
 
           assert_received(@session, :access_token)
-          assert_received(access_token, :get) {|e| e.with('https://example.com/data?alt=atom&key=value', {'GData-Version' => '2.4'})}
+          assert_received(access_token, :get) {|e| e.with('https://example.com/data?key=value&alt=atom', {'GData-Version' => '2.4'})}
         end
 
         should "be able to request via http with an auth token" do
@@ -101,7 +101,7 @@ module Garb
           http = mock do |m|
             m.expects(:use_ssl=).with(true)
             m.expects(:verify_mode=).with(OpenSSL::SSL::VERIFY_NONE)
-            m.expects(:get).with('/data?alt=atom&key=value', {
+            m.expects(:get).with('/data?key=value&alt=atom', {
               'Authorization' => 'GoogleLogin auth=toke',
               'GData-Version' => '2.4'
             }).returns(response)
