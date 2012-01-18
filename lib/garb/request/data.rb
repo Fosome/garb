@@ -36,7 +36,7 @@ module Garb
           oauth_user_request
         end
 
-        raise ClientError, response.body.inspect unless response.kind_of?(Net::HTTPSuccess)
+        raise ClientError, "#{response.code} #{response.body}" unless response.kind_of?(Net::HTTPSuccess)
         response
       end
 
