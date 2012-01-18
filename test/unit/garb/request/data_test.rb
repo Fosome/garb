@@ -73,12 +73,12 @@ module Garb
         should "raise if the request is unauthorized" do
           @session.stubs(:single_user?).returns(false)
           @session.stubs(:oauth_user?).returns(true)
-          response = mock('Net::HTTPUnauthorized', :body => 'Error', :code => '401')
+          response = mock('Net::HTTPUnauthorized', :body => 'Error message', :code => '401')
 
           data_request = Request::Data.new(@session, 'https://example.com/data', Request::Data::XML, 'key' => 'value')
           data_request.stubs(:oauth_user_request).returns(response)
 
-          assert_raises(Garb::Request::Data::ClientError) do
+          assert_raises(Garb::Request::Data::ClientError, '401 Error message') do
             data_request.send_request
           end
         end
