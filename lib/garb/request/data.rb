@@ -1,7 +1,14 @@
 module Garb
   module Request
     class Data
-      class ClientError < StandardError; end
+      class ClientError < StandardError
+        attr_reader :response_code
+
+        def initialize(message = nil, response_code = nil)
+          @response_code = response_code.to_i unless response_code.nil?
+          super(message)
+        end
+      end
 
       XML = 'atom'
       JSON = 'json'
@@ -36,7 +43,7 @@ module Garb
           oauth_user_request
         end
 
-        raise ClientError, "#{response.code} #{response.body}" unless response.kind_of?(Net::HTTPSuccess)
+        raise ClientError.new(response.body, response.code) unless response.kind_of?(Net::HTTPSuccess)
         response
       end
 

@@ -78,9 +78,26 @@ module Garb
           data_request = Request::Data.new(@session, 'https://example.com/data', Request::Data::XML, 'key' => 'value')
           data_request.stubs(:oauth_user_request).returns(response)
 
-          assert_raises(Garb::Request::Data::ClientError, '401 Error message') do
+          exception = assert_raises(Garb::Request::Data::ClientError) do
             data_request.send_request
           end
+          assert_equal 401, exception.response_code
+          assert_equal 'Error message', exception.message
+        end
+
+        should "raise if the request is unauthorized and there is no status code" do
+          @session.stubs(:single_user?).returns(false)
+          @session.stubs(:oauth_user?).returns(true)
+          response = mock('Net::HTTPUnauthorized', :body => '<foo>fake XML Error message without status code</foo>', :code => nil)
+
+          data_request = Request::Data.new(@session, 'https://example.com/data', Request::Data::XML, 'key' => 'value')
+          data_request.stubs(:oauth_user_request).returns(response)
+
+          exception = assert_raises(Garb::Request::Data::ClientError) do
+            data_request.send_request
+          end
+          assert_equal nil, exception.response_code
+          assert_equal '<foo>fake XML Error message without status code</foo>', exception.message
         end
 
         should "be able to request via the ouath access token" do
