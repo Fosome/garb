@@ -43,7 +43,11 @@ module Garb
         else
           next unless k.is_a?(SymbolOperatorMethods)
 
-          escaped_v = v.to_s.gsub(/([,;\\])/) {|c| '\\'+c}
+          if k.is_contains?
+            escaped_v = v.to_s
+          else
+            escaped_v = v.to_s.gsub(/([,;\\])/) {|c| '\\'+c}
+          end
           "#{URI.encode(k.to_google_analytics, /[=<>]/)}#{CGI::escape(escaped_v)}"
         end
       end.join('%3B') # Hash AND (no duplicate keys), escape char for ';' fixes oauth

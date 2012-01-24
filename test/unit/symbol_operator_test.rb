@@ -14,6 +14,13 @@ class SymbolOperatorTest < MiniTest::Unit::TestCase
       assert_equal "-ga:metric", SymbolOperator.new(:metric, :desc).to_google_analytics
     end
 
+    should "return correct value for is_contains?" do
+      assert_equal true, SymbolOperator.new(:keyword, :contains).is_contains?
+      assert_equal false, SymbolOperator.new(:keyword, :does_not_contain).is_contains?
+      assert_equal false, SymbolOperator.new(:keyword, :eql).is_contains?
+      assert_equal false, SymbolOperator.new(:keyword, :not_eql).is_contains?
+    end
+
     # should "know if it is equal to another operator" do
     #   op1 = SymbolOperator.new(:hello, "==")
     #   op2 = SymbolOperator.new(:hello, "==")

@@ -22,6 +22,10 @@ module SymbolOperatorMethods
 
     [:desc, :descending].include?(@operator) ? "#{o}#{t}" : "#{t}#{o}"
   end
+
+  def is_contains?
+    @operator == :contains
+  end
 end
 
 class SymbolOperator
