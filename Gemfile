@@ -11,7 +11,6 @@ group :test do
   gem 'simplecov'
   gem 'minitest', :require => false
   gem 'jferris-mocha', :require => false
-  gem 'yajl-ruby'
 end
 
 group :demo do

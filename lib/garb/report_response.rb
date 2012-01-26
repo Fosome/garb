@@ -1,6 +1,6 @@
 module Garb  
   class ReportResponse
-    KEYS = ['dxp$metric', 'dxp$dimension']
+    KEYS = ['dxp:metric', 'dxp:dimension']
 
     def initialize(response_body, instance_klass = OpenStruct)
       @data = response_body
@@ -35,23 +35,30 @@ module Garb
     end
 
     def parse_total_results
-      feed? && !parsed_data['feed']['openSearch$totalResults'].nil? ? parsed_data['feed']['openSearch$totalResults']['$t'].to_i : 0
+      feed? && !parsed_data['feed']['openSearch:totalResults'].nil? ? parsed_data['feed']['openSearch:totalResults'].to_i : 0
     end
 
     def parse_sampled_flag
-      feed? ? (parsed_data['feed']['dxp$containsSampledData'] == 'true') : false
+      feed? ? (parsed_data['feed']['dxp:containsSampledData'] == 'true') : false
     end
 
     def parse_aggregate_total_visits
-      if feed? && aggregate_visits = parsed_data['feed']['dxp$aggregates']['dxp$metric'].detect { |metric| metric['name'] == Garb::to_ga('visits') }
-        aggregate_visits['value'].to_i
+      if feed? && metric_aggregates = parsed_data['feed']['dxp:aggregates']['dxp:metric']
+        if metric_aggregates.is_a?(Hash)
+          return metric_aggregates['value'].to_i if metric_aggregates['name'] == Garb::to_ga('visits')
+          return 0
+        else # Array
+          aggregate_visits = metric_aggregates.detect { |metric| metric['name'] == Garb::to_ga('visits') }
+          return aggregate_visits['value'].to_i if aggregate_visits
+          return 0
+        end
       else
         0
       end
     end
 
     def parsed_data
-      @parsed_data ||= JSON.parse(@data)
+      @parsed_data ||= Crack::XML.parse(@data)
     end
 
     def feed?

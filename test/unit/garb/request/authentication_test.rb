@@ -20,7 +20,7 @@ module Garb
               'Email'       => 'user@example.com',
               'Passwd'      => 'fuzzybunnies',
               'accountType' => 'HOSTED_OR_GOOGLE',
-              'service'     => 'analytics',
+              'service'     => 'analytics.readonly',
               'source'      => 'vigetLabs-garb-001'
             }
         

@@ -38,6 +38,12 @@ module Garb
         Session.access_token = 'some_oauth_access_token'
         assert_equal true, Session.oauth_user?
       end
+
+      should "know if the Session is for oauth2" do
+        Session.token = 'some_oauth2_token'
+        assert_equal true, Session.oauth2_user?
+      end
+
     end
 
     context "A Session" do
@@ -78,6 +84,12 @@ module Garb
         @session.access_token = 'some_oauth_access_token'
         assert_equal true, @session.oauth_user?
       end
+
+      should "know if the Session is for oauth2" do
+        @session.token = 'some_oauth2_token'
+        assert_equal true, @session.oauth2_user?
+      end
+
     end
 
   end

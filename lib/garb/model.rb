@@ -1,7 +1,8 @@
 module Garb
   module Model
     MONTH = 2592000
-    URL = "https://www.google.com/analytics/feeds/data"
+    URL_2_3 = "https://www.google.com/analytics/feeds/data"
+    URL_2_4 = "https://www.googleapis.com/analytics/v2.4/data"
 
     def self.extended(base)
       ProfileReports.add_report_method(base)
@@ -46,7 +47,7 @@ module Garb
 
     private
     def send_request_for_data(profile, params)
-      request = Request::Data.new(profile.session, URL, Request::Data::JSON, params)
+      request = Request::Data.new(profile.session, profile.session.oauth2_user? ? URL_2_4 : URL_2_3, params)
       response = request.send_request
       response.body
     end

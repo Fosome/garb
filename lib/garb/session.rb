@@ -1,7 +1,7 @@
 module Garb
   class Session
     module Methods
-      attr_accessor :auth_token, :access_token, :email
+      attr_accessor :auth_token, :access_token, :email, :token
 
       # use only for single user authentication
       def login(email, password, opts={})
@@ -12,6 +12,10 @@ module Garb
 
       def single_user?
         auth_token && auth_token.is_a?(String)
+      end
+
+      def oauth2_user?
+        !token.nil?
       end
 
       def oauth_user?

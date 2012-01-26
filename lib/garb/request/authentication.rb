@@ -16,7 +16,7 @@ module Garb
           'Email'       => @email,
           'Passwd'      => @password,
           'accountType' => @account_type,
-          'service'     => 'analytics',
+          'service'     => 'analytics.readonly',
           'source'      => 'vigetLabs-garb-001'
         }
       end

@@ -10,15 +10,11 @@ module Garb
         end
       end
 
-      XML = 'atom'
-      JSON = 'json'
+      SERVER_APP_KEY = 'AIzaSyB5L3vCb60CGr1tAuzPB1sX_EcEJuAa5aE'
 
-      attr_writer :format
-
-      def initialize(session, base_url, response_format, parameters={})
+      def initialize(session, base_url, parameters={})
         @session = session
         @base_url = base_url
-        @response_format = response_format
         @parameters = parameters
       end
 
@@ -27,7 +23,7 @@ module Garb
       end
 
       def query_string
-        parameters.merge!("alt" => @response_format)
+        parameters.merge!("key" => SERVER_APP_KEY) unless @session.oauth2_user?
         parameter_list = @parameters.map {|k,v| "#{k}=#{v}" }
         parameter_list.empty? ? '' : "?#{parameter_list.join('&')}"
       end
@@ -39,6 +35,8 @@ module Garb
       def send_request
         response = if @session.single_user?
           single_user_request
+        elsif @session.oauth2_user?
+          oauth2_user_request
         elsif @session.oauth_user?
           oauth_user_request
         end
@@ -51,11 +49,15 @@ module Garb
         http = Net::HTTP.new(uri.host, uri.port, Garb.proxy_address, Garb.proxy_port)
         http.use_ssl = true
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-        http.get("#{uri.path}#{query_string}", {'Authorization' => "GoogleLogin auth=#{@session.auth_token}", 'GData-Version' => '2.4'})
+        http.get("#{uri.path}#{query_string}", {'Authorization' => "GoogleLogin auth=#{@session.auth_token}", 'GData-Version' => '2'})
+      end
+
+      def oauth2_user_request
+        @session.token.get("#{uri}#{query_string}", {'GData-Version' => '2'})
       end
 
       def oauth_user_request
-        @session.access_token.get("#{uri}#{query_string}", {'GData-Version' => '2.4'})
+        @session.access_token.get("#{uri}#{query_string}", {'GData-Version' => '2'})
       end
     end
   end

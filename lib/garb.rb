@@ -5,12 +5,6 @@ require 'cgi'
 require 'ostruct'
 require 'crack'
 
-begin 
-  require 'yajl/json_gem' # JSON.parse
-rescue LoadError
-  require 'json'
-end
-
 module Garb
   autoload :Destination,      'garb/destination'
   autoload :FilterParameters, 'garb/filter_parameters'

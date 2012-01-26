@@ -128,6 +128,14 @@ module Garb
             assert_equal ['result'], @test_model.results(@profile)
             assert_received(ReportResponse, :new) {|e| e.with("raw report data", ResultKlass)}
           end
+
+          should 'use the 2.4 URL when in an OAuth2 session' do
+            @profile.session.stubs(:oauth2_user?).returns(true)
+
+            assert_equal ['result'], @test_model.results(@profile)
+            assert_received(ReportResponse, :new) {|e| e.with("raw report data", OpenStruct)}
+            assert_received(Garb::Request::Data, :new) {|e| e.with(Garb::Session, Garb::Model::URL_2_4, @params)}
+          end
         end
 
         # should "return results as an array of the class it belongs to, if that class is an ActiveRecord descendant"
