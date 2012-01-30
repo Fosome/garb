@@ -33,16 +33,20 @@ module Garb
       end
 
       def send_request
-        response = if @session.single_user?
-          single_user_request
-        elsif @session.oauth2_user?
-          oauth2_user_request
-        elsif @session.oauth_user?
-          oauth_user_request
-        end
+        if @session.oauth2_user?
+          response = oauth2_user_request
+          raise ClientError.new(response.body, response.status) unless response.status == 200
+          response
+        else
+          response = if @session.single_user?
+            single_user_request
+          elsif @session.oauth_user?
+            oauth_user_request
+          end
 
-        raise ClientError.new(response.body, response.code) unless response.kind_of?(Net::HTTPSuccess)
-        response
+          raise ClientError.new(response.body, response.code) unless response.kind_of?(Net::HTTPSuccess)
+          response
+        end
       end
 
       def single_user_request

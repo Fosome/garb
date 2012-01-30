@@ -134,11 +134,8 @@ module Garb
         
         context 'for an oauth2 user' do 
           should "be able to send a request for an oauth user" do
-            @session.stubs(:single_user?).returns(false)
             @session.stubs(:oauth2_user?).returns(true)
-            response = mock('Net::HTTPOK') do |m|
-              m.expects(:kind_of?).with(Net::HTTPSuccess).returns(true)
-            end
+            response = mock('OAuth2::Response', :status => 200)
 
             data_request = Request::Data.new(@session, 'https://example.com/data', 'akey' => 'value')
             data_request.stubs(:oauth2_user_request).returns(response)
@@ -148,9 +145,10 @@ module Garb
           end
 
           should "raise if the request is unauthorized" do
-            @session.stubs(:single_user?).returns(false)
             @session.stubs(:oauth2_user?).returns(true)
-            response = mock('Net::HTTPUnauthorized', :body => 'Error message', :code => '401')
+            response = mock('OAuth2::Response', :body => 'Error message', :status => 401) do |m|
+              m.expects(:status).returns(401)
+            end
 
             data_request = Request::Data.new(@session, 'https://example.com/data', 'akey' => 'value')
             data_request.stubs(:oauth2_user_request).returns(response)
@@ -160,21 +158,6 @@ module Garb
             end
             assert_equal 401, exception.response_code
             assert_equal 'Error message', exception.message
-          end
-
-          should "raise if the request is unauthorized and there is no status code" do
-            @session.stubs(:single_user?).returns(false)
-            @session.stubs(:oauth2_user?).returns(true)
-            response = mock('Net::HTTPUnauthorized', :body => '<foo>fake XML Error message without status code</foo>', :code => nil)
-
-            data_request = Request::Data.new(@session, 'https://example.com/data', 'akey' => 'value')
-            data_request.stubs(:oauth2_user_request).returns(response)
-
-            exception = assert_raises(Garb::Request::Data::ClientError) do
-              data_request.send_request
-            end
-            assert_equal nil, exception.response_code
-            assert_equal '<foo>fake XML Error message without status code</foo>', exception.message
           end
 
           should "be able to request via the token" do
