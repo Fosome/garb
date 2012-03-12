@@ -26,5 +26,29 @@ class GarbTest < MiniTest::Unit::TestCase
 
       assert_equal "http://google.com/accounts/12345", Garb.parse_link(entry, "self")
     end
+
+    should "parse out the next link" do
+      entry = {"link" => [{"rel" => "self", "href" => "http://google.com/accounts/12345"}, {"rel" => "next", "href" => "http://google.com/accounts/12345/next"}]}
+
+      assert_equal "http://google.com/accounts/12345/next", Garb.parse_link(entry, "next")
+    end
+
+    should "parse out the next link when only one link is provided" do
+      entry = {"link" => {"rel" => "next", "href" => "http://google.com/accounts/12345/next"}}
+
+      assert_equal "http://google.com/accounts/12345/next", Garb.parse_link(entry, "next")
+    end
+
+    should "return nil when the next link doesn't exist in the link array" do
+      entry = {"link" => [{"rel" => "self", "href" => "http://google.com/accounts/12345"}, {"rel" => "prev", "href" => "http://google.com/accounts/12345/prev"}]}
+
+      assert_nil Garb.parse_link(entry, "next")
+    end
+
+    should "return nil when the next link doesn't exist in the link hash" do
+      entry = {"link" => {"rel" => "self", "href" => "http://google.com/accounts/12345"}}
+
+      assert_nil Garb.parse_link(entry, "next")
+    end
   end
 end

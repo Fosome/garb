@@ -67,7 +67,9 @@ module Garb
   end
 
   def parse_link(entry, rel)
-    entry['link'].detect {|link| link["rel"] == rel}['href']
+    matched_entry = [entry['link']].flatten.detect {|link| link["rel"] == rel}
+    return matched_entry['href'] if matched_entry
+    nil
   end
 
   def symbol_operator_slugs
