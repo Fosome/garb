@@ -14,7 +14,7 @@ module Garb
 
           # An edge exists where a user has more than 1000 GA Profiles.
           # Google will only return a max of 1000 profiles per request.
-          # Therefor, we may have to make follow-up requests to get all the profiles.
+          # Therefore, we may have to make follow-up requests to get all the profiles.
           # This look will get all profiles, making the extra requests if needed.
           loop do
             parsed_response = parsed_response(parameters)
