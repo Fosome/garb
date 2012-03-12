@@ -121,10 +121,10 @@ module Garb
 
             assert_received(@session, :access_token)
             assert_received(access_token, :get) do |e|
-              e.with() do |URL, header_hash|
-                assert_match /^https:\/\/example.com\/data\?/, URL
-                assert_match /key=AIzaSyB5L3vCb60CGr1tAuzPB1sX_EcEJuAa5aE/, URL
-                assert_match /akey=value/, URL
+              e.with() do |url, header_hash|
+                assert_match /^https:\/\/example.com\/data\?/, url
+                assert_match /key=AIzaSyB5L3vCb60CGr1tAuzPB1sX_EcEJuAa5aE/, url
+                assert_match /akey=value/, url
                 expected_hash = {'GData-Version' => '2'}
                 assert_equal expected_hash, header_hash
               end
