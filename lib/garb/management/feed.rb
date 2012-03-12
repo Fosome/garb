@@ -9,14 +9,14 @@ module Garb
       end
 
       def entries
-        @entries ||= [].tap do |total_entries|
+        [].tap do |total_entries|
           parameters = {}
 
           # An edge exists where a user has more than 1000 GA Profiles.
           # Google will only return a max of 1000 profiles per request.
           # Therefor, we may have to make follow-up requests to get all the profiles.
           # This look will get all profiles, making the extra requests if needed.
-          while true
+          loop do
             parsed_response = parsed_response(parameters)
             return total_entries unless parsed_response # return if there is no valid response
 
@@ -49,8 +49,8 @@ module Garb
         def parameters_to_hash(parameters)
           {}.with_indifferent_access.tap do |param_hash|
             parameters.split('&').each do |element|
-              element = element.split('=')
-              param_hash[element[0]] = element[1]
+              key, value = element.split('=')
+              param_hash[key] = value
             end
           end
         end
