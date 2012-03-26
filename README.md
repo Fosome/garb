@@ -74,6 +74,13 @@ Get the Results
 
   Be forewarned, these numbers are for the last **30** days and may be slightly different from the numbers displayed in Google Analytics' dashboard for **1 month**.
 
+Get all Results
+---------------
+
+Google Analytics returns 1000 results at a time. To paginate over all results:
+
+    > Exits.all(profile) { |exit| ... }
+
 Other Parameters
 ----------------
 

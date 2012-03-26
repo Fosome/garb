@@ -1,3 +1,7 @@
+Version 0.9.x
+
+  * Added Garb::Model.all that paginates all data
+
 Version 0.9.2
 
   * Removed all deprecated features: Garb::Report, Garb::Resource, Garb::Profile, and Garb::Account
