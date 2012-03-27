@@ -47,7 +47,6 @@ module Garb
     def all(profile, options = {}, &block)
       limit = options.delete(:limit)
       total = 0
-      options = {}
       while ((rs = results(profile, options)) && rs.any?)
         rs.each do |r|
           yield r
