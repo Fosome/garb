@@ -141,6 +141,15 @@ module Garb
             assert_equal ['result', 'result'], results
           end
           
+          should "be able to fetch multiple pages of results with a limit" do
+            results = []
+            @test_model.all(@profile, :limit => 1) do |result|
+              results << result
+            end
+            assert_equal ['result'], results
+          end
+          
+          
         end
 
         # should "return results as an array of the class it belongs to, if that class is an ActiveRecord descendant"

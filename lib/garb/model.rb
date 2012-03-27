@@ -48,11 +48,11 @@ module Garb
       limit = options.delete(:limit)
       total = 0
       options = {}
-      options[:limit] = limit if limit
       while ((rs = results(profile, options)) && rs.any?)
         rs.each do |r|
-          total += 1
           yield r
+          total += 1
+          return self if limit and total >= limit
         end
         options[:offset] = total
       end
