@@ -23,7 +23,7 @@ module Garb
       end
 
       def query_string
-        parameters.merge!("key" => SERVER_APP_KEY) unless @session.oauth2_user?
+        parameters.merge!("key" => SERVER_APP_KEY) if @session.single_user?
         parameter_list = @parameters.map {|k,v| "#{k}=#{v}" }
         parameter_list.empty? ? '' : "?#{parameter_list.join('&')}"
       end
@@ -37,12 +37,8 @@ module Garb
           response = oauth2_user_request
           raise ClientError.new(response.body, response.status) unless response.status == 200
           response
-        else
-          response = if @session.single_user?
-            single_user_request
-          elsif @session.oauth_user?
-            oauth_user_request
-          end
+        elsif @session.single_user?
+          response = single_user_request
 
           raise ClientError.new(response.body, response.code) unless response.kind_of?(Net::HTTPSuccess)
           response
@@ -58,10 +54,6 @@ module Garb
 
       def oauth2_user_request
         @session.token.get("#{uri}#{query_string}", {'GData-Version' => '2'})
-      end
-
-      def oauth_user_request
-        @session.access_token.get("#{uri}#{query_string}", {'GData-Version' => '2'})
       end
     end
   end

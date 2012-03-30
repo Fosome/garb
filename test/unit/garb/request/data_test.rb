@@ -48,6 +48,7 @@ module Garb
 
         should "be able to request via http with an auth token" do
           @session.expects(:auth_token).with().returns('toke')
+          @session.expects(:single_user?).returns(true)
           response = mock
 
           http = mock do |m|
@@ -67,71 +68,6 @@ module Garb
           assert_equal response, data_request.single_user_request
         end
 
-        context 'for an oauth user' do
-          should "be able to send a request" do
-            @session.stubs(:single_user?).returns(false)
-            @session.stubs(:oauth_user?).returns(true)
-            response = mock('Net::HTTPOK') do |m|
-              m.expects(:kind_of?).with(Net::HTTPSuccess).returns(true)
-            end
-
-            data_request = Request::Data.new(@session, 'https://example.com/data', 'akey' => 'value')
-            data_request.stubs(:oauth_user_request).returns(response)
-            data_request.send_request
-
-            assert_received(data_request, :oauth_user_request)
-          end
-
-          should "raise if the request is unauthorized" do
-            @session.stubs(:single_user?).returns(false)
-            @session.stubs(:oauth_user?).returns(true)
-            response = mock('Net::HTTPUnauthorized', :body => 'Error message', :code => '401')
-
-            data_request = Request::Data.new(@session, 'https://example.com/data', 'akey' => 'value')
-            data_request.stubs(:oauth_user_request).returns(response)
-
-            exception = assert_raises(Garb::Request::Data::ClientError) do
-              data_request.send_request
-            end
-            assert_equal 401, exception.response_code
-            assert_equal 'Error message', exception.message
-          end
-
-          should "raise if the request is unauthorized and there is no status code" do
-            @session.stubs(:single_user?).returns(false)
-            @session.stubs(:oauth_user?).returns(true)
-            response = mock('Net::HTTPUnauthorized', :body => '<foo>fake XML Error message without status code</foo>', :code => nil)
-
-            data_request = Request::Data.new(@session, 'https://example.com/data', 'akey' => 'value')
-            data_request.stubs(:oauth_user_request).returns(response)
-
-            exception = assert_raises(Garb::Request::Data::ClientError) do
-              data_request.send_request
-            end
-            assert_equal nil, exception.response_code
-            assert_equal '<foo>fake XML Error message without status code</foo>', exception.message
-          end
-
-          should "be able to request via the access token" do
-            access_token = stub(:get => "responseobject")
-            @session.stubs(:access_token).returns(access_token)
-
-            data_request = Request::Data.new(@session, 'https://example.com/data', 'akey' => 'value')
-            assert_equal 'responseobject', data_request.oauth_user_request
-
-            assert_received(@session, :access_token)
-            assert_received(access_token, :get) do |e|
-              e.with() do |url, header_hash|
-                assert_match /^https:\/\/example.com\/data\?/, url
-                assert_match /key=AIzaSyB5L3vCb60CGr1tAuzPB1sX_EcEJuAa5aE/, url
-                assert_match /akey=value/, url
-                expected_hash = {'GData-Version' => '2'}
-                assert_equal expected_hash, header_hash
-              end
-            end
-          end
-        end
-        
         context 'for an oauth2 user' do 
           should "be able to send a request for an oauth user" do
             @session.stubs(:oauth2_user?).returns(true)
@@ -167,7 +103,7 @@ module Garb
             data_request = Request::Data.new(@session, 'https://example.com/data', 'akey' => 'value')
             assert_equal 'responseobject', data_request.oauth2_user_request
 
-            assert_received(@session, :token) {|expect| expect.twice }
+            assert_received(@session, :token)
             assert_received(token, :get) do |e|
               e.with() do |URL, header_hash|
                 assert_match /^https:\/\/example.com\/data\?/, URL

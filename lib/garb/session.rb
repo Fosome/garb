@@ -17,10 +17,6 @@ module Garb
       def oauth2_user?
         !token.nil?
       end
-
-      def oauth_user?
-        !access_token.nil?
-      end
     end
 
     include Methods

@@ -34,11 +34,6 @@ module Garb
         assert_equal true, Session.single_user?
       end
 
-      should "know if the Session is for oauth" do
-        Session.access_token = 'some_oauth_access_token'
-        assert_equal true, Session.oauth_user?
-      end
-
       should "know if the Session is for oauth2" do
         Session.token = 'some_oauth2_token'
         assert_equal true, Session.oauth2_user?
@@ -78,11 +73,6 @@ module Garb
       should "know if the Session is for a single user" do
         @session.auth_token = "abcdefg1234567"
         assert_equal true, @session.single_user?
-      end
-
-      should "know if the Session is for oauth" do
-        @session.access_token = 'some_oauth_access_token'
-        assert_equal true, @session.oauth_user?
       end
 
       should "know if the Session is for oauth2" do
