@@ -43,6 +43,20 @@ module Garb
       data = send_request_for_data(profile, build_params(param_set))
       ReportResponse.new(data, instance_klass).results
     end
+    
+    def all(profile, options = {}, &block)
+      limit = options.delete(:limit)
+      total = 0
+      while ((rs = results(profile, options)) && rs.any?)
+        rs.each do |r|
+          yield r
+          total += 1
+          return self if limit and total >= limit
+        end
+        options[:offset] = total
+      end
+      self
+    end
 
     private
     def send_request_for_data(profile, params)

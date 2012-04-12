@@ -108,7 +108,7 @@ module Garb
             assert_equal ['result'], @test_model.results(@profile, :limit => 20)
             assert_data_params(@params.merge({'max-results' => 20}))
           end
-
+          
           should "be able to offset" do
             assert_equal ['result'], @test_model.results(@profile, :offset => 10)
             assert_data_params(@params.merge({'start-index' => 10}))
@@ -128,6 +128,28 @@ module Garb
             assert_equal ['result'], @test_model.results(@profile)
             assert_received(ReportResponse, :new) {|e| e.with("raw report data", ResultKlass)}
           end
+          
+          should "be able to fetch multiple pages of results" do
+            results = []
+            count = 0
+            @test_model.all(@profile) do |result|
+              results << result
+              # stub a subsequent response
+              count += 1
+              ReportResponse.stubs(:new).returns(stub(:results => [])) if count == 2
+            end
+            assert_equal ['result', 'result'], results
+          end
+          
+          should "be able to fetch multiple pages of results with a limit" do
+            results = []
+            @test_model.all(@profile, :limit => 1) do |result|
+              results << result
+            end
+            assert_equal ['result'], results
+          end
+          
+          
         end
 
         # should "return results as an array of the class it belongs to, if that class is an ActiveRecord descendant"
