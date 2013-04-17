@@ -75,7 +75,8 @@ module Garb
       {
         'ids' => Garb.to_ga(profile.id),
         'start-date' => format_time(start_date),
-        'end-date' => format_time(end_date)
+        'end-date' => format_time(end_date),
+        'quotaUser' => "cmoz-#{profile.id}"
       }
     end
 
