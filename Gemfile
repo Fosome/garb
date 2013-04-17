@@ -1,7 +1,6 @@
-source :rubygems
-source "http://gems.github.com"
+source 'https://rubygems.org'
 
-gem 'rake', '~> 0.8.7'
+gem 'rake'
 
 gem 'i18n'
 gem 'crack'
