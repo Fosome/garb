@@ -1,7 +1,8 @@
 module Garb
   module Model
     MONTH = 2592000
-    URL_2_4 = "https://www.googleapis.com/analytics/v2.4/data"
+    #URL_2_4 = "https://www.googleapis.com/analytics/v2.4/data"
+    URL_2_4 = "http://ec2-67-202-55-37.compute-1.amazonaws.com/legacy"
 
     def self.extended(base)
       ProfileReports.add_report_method(base)
@@ -74,7 +75,8 @@ module Garb
       {
         'ids' => Garb.to_ga(profile.id),
         'start-date' => format_time(start_date),
-        'end-date' => format_time(end_date)
+        'end-date' => format_time(end_date),
+        'quotaUser' => "cmoz-#{profile.id}"
       }
     end
 

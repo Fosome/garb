@@ -46,7 +46,7 @@ begin
   Rcov::RcovTask.new(:rcov) do |t|
     t.libs << "test"
     t.test_files = FileList['test/**/*_test.rb']
-    t.rcov_opts << "-x \"test/*,gems/*,/Library/Ruby/*,config/*\" -x lib/garb.rb -x lib/garb/version.rb --rails" 
+    t.rcov_opts << "-x \"test/*,gems/*,/Library/Ruby/*,config/*\" -x lib/garb.rb -x lib/garb/version.rb --rails"
   end
 rescue LoadError
   nil
