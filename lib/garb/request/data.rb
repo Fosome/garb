@@ -41,6 +41,8 @@ module Garb
       end
 
       def single_user_request
+        @parameters.merge!(:key => @session.api_key) if @session.api_key
+
         http = Net::HTTP.new(uri.host, uri.port, Garb.proxy_address, Garb.proxy_port)
         http.use_ssl = true
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
