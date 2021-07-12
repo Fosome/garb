@@ -16,13 +16,13 @@ module Garb
       end
 
       def query_string
-        parameters.merge!("alt" => format)
+        # parameters.merge!("alt" => format)
         parameter_list = @parameters.map {|k,v| "#{k}=#{v}" }
         parameter_list.empty? ? '' : "?#{parameter_list.join('&')}"
       end
 
       def format
-        @format ||= "json" # TODO Support other formats?
+        # @format ||= "json" # TODO Support other formats?
       end
 
       def uri
@@ -36,7 +36,7 @@ module Garb
           oauth_user_request
         end
 
-        raise ClientError, response.body.inspect unless response.kind_of?(Net::HTTPSuccess)
+        raise ClientError, response.body.inspect unless response.kind_of?(Net::HTTPSuccess) || (response.respond_to?(:status) && response.status == 200)
         response
       end
 

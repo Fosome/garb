@@ -51,7 +51,7 @@ module Garb
           assert_received(data_request, :single_user_request)
         end
 
-        should "be able to send a request for an oauth user" do
+        should "be able to send a request for an oauth user (Net::HTTP)" do
           @session.stubs(:single_user?).returns(false)
           @session.stubs(:oauth_user?).returns(true)
           response = mock('Net::HTTPOK') do |m|
@@ -65,10 +65,40 @@ module Garb
           assert_received(data_request, :oauth_user_request)
         end
 
-        should "raise if the request is unauthorized" do
+        should "be able to send a request for an oauth user (OAuth2)" do
+          @session.stubs(:single_user?).returns(false)
+          @session.stubs(:oauth_user?).returns(true)
+          response = mock('OAuth2::Response') do |m|
+            m.expects(:status).returns(200)
+          end
+
+          data_request = Request::Data.new(@session, 'https://example.com/data', 'key' => 'value')
+          data_request.stubs(:oauth_user_request).returns(response)
+          data_request.send_request
+
+          assert_received(data_request, :oauth_user_request)
+        end
+
+        should "raise if the request is unauthorized (Net::HTTP)" do
           @session.stubs(:single_user?).returns(false)
           @session.stubs(:oauth_user?).returns(true)
           response = mock('Net::HTTPUnauthorized', :body => 'Error')
+
+          data_request = Request::Data.new(@session, 'https://example.com/data', 'key' => 'value')
+          data_request.stubs(:oauth_user_request).returns(response)
+
+          assert_raises(Garb::Request::Data::ClientError) do
+            data_request.send_request
+          end
+        end
+
+        should "raise if the request is unauthorized (OAuth2)" do
+          @session.stubs(:single_user?).returns(false)
+          @session.stubs(:oauth_user?).returns(true)
+          response = mock('OAuth2::Response') do |m|
+            m.expects(:status).returns(401)
+            m.expects(:body).returns('Error')
+          end
 
           data_request = Request::Data.new(@session, 'https://example.com/data', 'key' => 'value')
           data_request.stubs(:oauth_user_request).returns(response)
